@@ -1,0 +1,11 @@
+# Auto normalize line endings. This reduces LF<->CRLF warnings.
+* text=auto
+
+# Force LF for these text file types in repo
+*.sh text eol=lf
+*.dart text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.xml text eol=lf
