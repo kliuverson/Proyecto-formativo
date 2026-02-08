@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../view/home/page/home_page.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -8,9 +9,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Ferremateriales',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const Scaffold(
-        body: Center(child: Text('Ferremateriales — estructura creada')),
-      ),
+      home: const HomePage(),
     );
   }
 }

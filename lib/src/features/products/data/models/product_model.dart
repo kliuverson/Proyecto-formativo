@@ -1,8 +1,7 @@
 import '../../domain/entities/product.dart';
 
 class ProductModel extends Product {
-  ProductModel({required String id, required String name, required String description, required double price})
-      : super(id: id, name: name, description: description, price: price);
+  const ProductModel({required super.id, required super.name, required super.description, required super.price});
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
         id: json['id'] as String,
