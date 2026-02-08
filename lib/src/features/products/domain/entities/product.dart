@@ -4,5 +4,5 @@ class Product {
   final String description;
   final double price;
 
-  Product({required this.id, required this.name, required this.description, required this.price});
+  const Product({required this.id, required this.name, required this.description, required this.price});
 }
