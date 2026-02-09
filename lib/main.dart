@@ -1,3 +1,5 @@
+import 'package:ferremateriales/utils/theme/theme.dart';
+import 'package:ferremateriales/view/login/login.dart';
 import 'package:flutter/material.dart';
 import 'view/home/page/home_page.dart';
 
@@ -13,11 +15,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Ferremateriales ',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        useMaterial3: true,
-      ),
-      home: const HomePage(),
+      themeMode: ThemeMode.system,
+      theme: TAppTheme.lightAppTheme,
+      darkTheme: TAppTheme.darkAppTheme,
+      home: Login(),
     );
   }
 }

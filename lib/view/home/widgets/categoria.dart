@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Categoria extends StatefulWidget {
-  const Categoria({Key? key}) : super(key: key);
+  const Categoria({super.key});
 
   @override
   State<Categoria> createState() => _CategoriaState();
