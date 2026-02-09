@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Buscador extends StatefulWidget {
-  const Buscador({Key? key}) : super(key: key);
+  const Buscador({super.key});
 
   @override
   State<Buscador> createState() => _BuscadorState();
