@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class CategoryPage extends StatelessWidget {
+  const CategoryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text('Profile Page'),
+        child: Text('Category Page'),
       ),
     );
   }
