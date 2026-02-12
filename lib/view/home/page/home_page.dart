@@ -25,12 +25,16 @@ class _HomePageState extends State<HomePage> {
     debugPrint('Notificaciones');
   }
 
-  void _onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-    debugPrint('Tab seleccionado: $index');
+void _onTabTapped(int index) {
+  if (index == 0) {
+    Navigator.pushNamed(context, '/home');
+  } else if (index == 1) {
+    Navigator.pushNamed(context, '/favorite');
+  } else if (index == 2) {
+    Navigator.pushNamed(context, '/cart');
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
