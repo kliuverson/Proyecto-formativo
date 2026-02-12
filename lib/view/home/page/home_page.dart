@@ -4,7 +4,7 @@ import '../widgets/categoria.dart';
 import '../widgets/productos.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -14,7 +14,7 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
   void _openMenu() {
-    debugPrint('Menú hamburguesa');
+    debugPrint('Menú');
   }
 
   void _openProfile() {
@@ -41,7 +41,7 @@ void _onTabTapped(int index) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Ferremateriales D.C.G'),
+        title: const Text('Ferremateriales DGC'),
         leading: IconButton(
           icon: const Icon(Icons.menu),
           onPressed: _openMenu,
@@ -71,7 +71,7 @@ void _onTabTapped(int index) {
         ),
       ),
 
-      /// 🔽 Barra inferior
+      ///  bottom navigation bar
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onTabTapped,
