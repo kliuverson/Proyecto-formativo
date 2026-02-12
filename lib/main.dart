@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:ferremateriales/utils/theme/theme.dart';
+import 'package:ferremateriales/view/home/page/splash_page.dart';
 import 'package:ferremateriales/view/login/login.dart';
 import 'package:ferremateriales/view/modulos/carrito/pages/cart_page.dart';
 import 'package:ferremateriales/view/modulos/category/pages/Category_page.dart';
@@ -20,10 +21,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Ferremateriales',
+      title: 'Ferremateriales DGC',
       themeMode: ThemeMode.system,
       theme: TAppTheme.lightAppTheme,
       darkTheme: TAppTheme.darkAppTheme,
+        home: const SplashPage(),
 
       initialRoute: '/',
 
