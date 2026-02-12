@@ -14,9 +14,15 @@ class _SplashPageState extends State<SplashPage>
 
   late AnimationController _controller;
 
-  late Animation<double> _logoScale;   // efecto POP
-  late Animation<double> _textSlide;   // movimiento horizontal
-  late Animation<double> _textOpacity; // aparición suave
+  late Animation<double> _logoScale;
+  late Animation<double> _logoMove;
+  late Animation<double> _textSlide;
+  late Animation<double> _textOpacity;
+
+  // 🔧 AJUSTA SOLO ESTO
+  static const double logoSize = 90;
+  static const double textSize = 200;
+  static const double spacing = -45; // negativo = más pegados
 
   @override
   void initState() {
@@ -27,23 +33,34 @@ class _SplashPageState extends State<SplashPage>
       duration: const Duration(milliseconds: 2200),
     );
 
-    //  LOGO POP (zoom con rebote)
-    _logoScale = Tween<double>(begin: 1.0, end: 1.5).animate(
+    // POP del logo
+    _logoScale = Tween<double>(begin: 0.8, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Curves.elasticOut,
+        curve: const Interval(0.0, 0.35, curve: Curves.elasticOut),
       ),
     );
 
-    //  TEXTO SALE DESDE EL LOGO
-    _textSlide = Tween<double>(begin: 0, end: 70).animate(
+    // LOGO se mueve a la izquierda después del pop
+    _logoMove = Tween<double>(begin: 0, end: -(textSize / 2)).animate(
       CurvedAnimation(
         parent: _controller,
         curve: const Interval(0.35, 1.0, curve: Curves.easeOut),
       ),
     );
 
-    //  TEXTO APARECE SUAVE
+    // TEXTO sale desde dentro del logo
+    _textSlide = Tween<double>(
+      begin: 0,
+      end: (logoSize / 2) + spacing,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.45, 1.0, curve: Curves.easeOut),
+      ),
+    );
+
+    // aparición del texto
     _textOpacity = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
         parent: _controller,
@@ -53,7 +70,6 @@ class _SplashPageState extends State<SplashPage>
 
     _controller.forward();
 
-    // Navegación automática
     Future.delayed(const Duration(seconds: 4), () {
       if (!mounted) return;
       Navigator.pushReplacement(
@@ -69,9 +85,20 @@ class _SplashPageState extends State<SplashPage>
     super.dispose();
   }
 
+  Widget _image(String path, double size) {
+    return SizedBox.square(
+      dimension: size,
+      child: FittedBox(
+        fit: BoxFit.contain,
+        child: Image.asset(path),
+      ),
+    );
+  }
+
   @override
-  Widget build(BuildContext context)
-   {   const double size = 100;
+  Widget build(BuildContext context) {
+    final totalWidth = logoSize + textSize;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -79,34 +106,27 @@ class _SplashPageState extends State<SplashPage>
           animation: _controller,
           builder: (context, child) {
             return SizedBox(
-              width: 260,
-              height: 120,
+              width: totalWidth,
+              height: logoSize > textSize ? logoSize : textSize,
               child: Stack(
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 children: [
 
-                  //  TEXTO QUE SALE DEL LOGO
-                  Positioned(
-                    left: _textSlide.value,
+                  // TEXTO
+                  Transform.translate(
+                    offset: Offset(_textSlide.value, 0),
                     child: Opacity(
                       opacity: _textOpacity.value,
-                      child: Image.asset(
-                        "assets/icons/letra_R.png",
-                        height: size,
-                        width: size,
-                        fit: BoxFit.contain,
-                      ),
+                      child: _image("assets/icons/letra_R.png", textSize),
                     ),
                   ),
 
-                  //  LOGO ENCIMA (para que parezca que el texto sale de adentro)
-                  ScaleTransition(
-                    scale: _logoScale,
-                    child: Image.asset(
-                      "assets/icons/logo_recortado.png",
-                      height: size,
-                      width: size,
-                      fit: BoxFit.contain,
+                  // LOGO (centro → izquierda)
+                  Transform.translate(
+                    offset: Offset(_logoMove.value, 0),
+                    child: ScaleTransition(
+                      scale: _logoScale,
+                      child: _image("assets/icons/logo_recortado.png", logoSize),
                     ),
                   ),
                 ],
