@@ -1,4 +1,8 @@
+
+import 'package:ferremateriales/view/modulos/productos/model/product.dart';
+import 'package:ferremateriales/view/modulos/productos/pages/product_details.dart';
 import 'package:flutter/material.dart';
+
 
 class Productos extends StatelessWidget {
   const Productos({super.key});
@@ -6,10 +10,26 @@ class Productos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> productos = [
-      {'nombre': 'Producto 1', 'precio': '\$99.99', 'imagen': Icons.shopping_bag},
-      {'nombre': 'Producto 2', 'precio': '\$149.99', 'imagen': Icons.shopping_bag},
-      {'nombre': 'Producto 3', 'precio': '\$79.99', 'imagen': Icons.shopping_bag},
-      {'nombre': 'Producto 4', 'precio': '\$199.99', 'imagen': Icons.shopping_bag},
+      {
+        'nombre': 'Martillo',
+        'precio': '\$25.0',
+        'imagen': Icons.build,
+      },
+      {
+        'nombre': 'Taladro',
+        'precio': '\$120.0',
+        'imagen': Icons.handyman,
+      },
+      {
+        'nombre': 'Destornillador',
+        'precio': '\$15.0',
+        'imagen': Icons.construction,
+      },
+      {
+        'nombre': 'Llave Inglesa',
+        'precio': '\$30.0',
+        'imagen': Icons.build_circle,
+      },
     ];
 
     return Padding(
@@ -33,45 +53,68 @@ class Productos extends StatelessWidget {
             ),
             itemCount: productos.length,
             itemBuilder: (context, index) {
-              return Card(
-                elevation: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        color: Colors.grey[300],
-                        child: Center(
-                          child: Icon(
-                            productos[index]['imagen'],
-                            size: 50,
-                            color: Colors.grey[600],
+              final productoMap = productos[index];
+
+              return GestureDetector(
+                onTap: () {
+                  // 🔥 Convertimos Map en Product
+                  final product = Product(
+                    id: index.toString(),
+                    name: productoMap['nombre'],
+                    price: double.parse(
+                      productoMap['precio'].replaceAll('\$', ''),
+                    ),
+                    icon: productoMap['imagen'],
+                  );
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ProductDetail(product: product),
+                    ),
+                  );
+                },
+                child: Card(
+                  elevation: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          color: Colors.grey[300],
+                          child: Center(
+                            child: Icon(
+                              productoMap['imagen'],
+                              size: 50,
+                              color: Colors.grey[600],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            productos[index]['nombre'],
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            productos[index]['precio'],
-                            style: const TextStyle(
-                              color: Colors.green,
-                              fontWeight: FontWeight.bold,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              productoMap['nombre'],
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          ),
-                        ],
+                            Text(
+                              productoMap['precio'],
+                              style: const TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },
