@@ -21,8 +21,8 @@ class _SplashPageState extends State<SplashPage>
 
   // 🔧 AJUSTA SOLO ESTO
   static const double logoSize = 90;
-  static const double textSize = 200;
-  static const double spacing = -45; // negativo = más pegados
+  static const double textSize = 150;
+  static const double spacing = -2; // negativo = más pegados
 
   @override
   void initState() {
@@ -100,7 +100,6 @@ class _SplashPageState extends State<SplashPage>
     final totalWidth = logoSize + textSize;
 
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Center(
         child: AnimatedBuilder(
           animation: _controller,
@@ -112,16 +111,16 @@ class _SplashPageState extends State<SplashPage>
                 alignment: Alignment.center,
                 children: [
 
-                  // TEXTO
+                  // texto
                   Transform.translate(
                     offset: Offset(_textSlide.value, 0),
                     child: Opacity(
                       opacity: _textOpacity.value,
-                      child: _image("assets/icons/letra_R.png", textSize),
+                      child: _image("assets/icons/logo_recortado_light.png", textSize),
                     ),
                   ),
 
-                  // LOGO (centro → izquierda)
+                  // logo(centro → izquierda)
                   Transform.translate(
                     offset: Offset(_logoMove.value, 0),
                     child: ScaleTransition(

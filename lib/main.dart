@@ -7,6 +7,12 @@ import 'package:ferremateriales/view/modulos/carrito/pages/cart_page.dart';
 import 'package:ferremateriales/view/modulos/category/pages/Category_page.dart';
 import 'package:ferremateriales/view/modulos/favorites/pages/favorite_page.dart';
 import 'package:ferremateriales/view/modulos/profile/pages/profile_page.dart';
+import 'package:ferremateriales/view/modulos/about/page/about_page.dart';
+import 'package:ferremateriales/view/modulos/address/pages/address_page.dart';
+import 'package:ferremateriales/view/modulos/orders/pages/orders_pages.dart';
+import 'package:ferremateriales/view/modulos/about/page/support/pages/support_page.dart';
+
+
 
 import 'view/home/page/home_page.dart';
 
@@ -36,6 +42,10 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => const ProfilePage(),
         '/cart': (context) => const CartPage(),
         '/category': (context) => const CategoryPage(),
+        '/orders': (context) => const OrdersPage(),
+        '/address': (context) => const AddressPage(),
+        'about': (context) => const AboutPage(),
+        '/support': (context) => const SupportPage(),
       },
     );
   }

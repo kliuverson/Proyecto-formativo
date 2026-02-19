@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '../widgets/buscador.dart';
 import '../widgets/categoria.dart';
 import '../widgets/productos.dart';
+import '../widgets/app_drawer.dart';
+
+
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,8 +16,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
-  void _openMenu() {
-    debugPrint('Menú');
+  void_openDrawer() {
+    Scaffold.of(context).openDrawer();
   }
 
   void _openProfile() {
@@ -39,13 +42,16 @@ void _onTabTapped(int index) {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const AppDrawer(), 
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Ferremateriales DGC'),
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: _openMenu,
-        ),
+        leading: Builder(
+          builder: (context) => IconButton(
+             icon: const Icon(Icons.menu),
+             onPressed: () => Scaffold.of(context).openDrawer(),
+            ),
+          ),
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_none),
