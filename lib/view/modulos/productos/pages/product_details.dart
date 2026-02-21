@@ -48,7 +48,7 @@ class ProductDetail extends StatelessWidget {
 
             const SizedBox(height: 30),
 
-            /// 🔥 BOTÓN AGREGAR AL CARRITO
+            ///  BOTÓN AGREGAR AL CARRITO
             ElevatedButton(
               onPressed: () {
                 final cartItem = CartItem(

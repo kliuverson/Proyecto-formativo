@@ -1,0 +1,20 @@
+[
+  {
+    "id": "m1",
+    "title": "Taladro Percutor",
+    "description": "Taladro de alta potencia para obra.",
+    "price": 129.99
+  },
+  {
+    "id": "m2",
+    "title": "Cinta Métrica 5m",
+    "description": "Cinta resistente con cierre metálico.",
+    "price": 9.5
+  },
+  {
+    "id": "m3",
+    "title": "Caja de Tornillos",
+    "description": "Caja surtida de 200 tornillos.",
+    "price": 14.0
+  }
+]
