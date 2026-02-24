@@ -11,7 +11,7 @@ import '../widgets/app_drawer.dart';
 
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -78,9 +78,9 @@ class ModulesList extends StatelessWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _currentIndex = 0;
+  final int _currentIndex = 0;
 
-  void _openDrawer() {
+  void _openDrawer(BuildContext context){
     Scaffold.of(context).openDrawer();
   }
 
@@ -114,7 +114,7 @@ void _onTabTapped(int index) {
         leading: Builder(
           builder: (context) => IconButton(
              icon: const Icon(Icons.menu),
-             onPressed: () => Scaffold.of(context).openDrawer(),
+             onPressed: () => _openDrawer(context)
             ),
           ),
         actions: [
