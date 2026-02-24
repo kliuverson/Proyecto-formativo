@@ -93,7 +93,7 @@ class Login extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () => Navigator.pushNamed(context, "/home"),
                           child: Text(TText.signIn),
                         ),
                       ),
