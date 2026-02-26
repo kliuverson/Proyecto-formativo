@@ -1,18 +1,13 @@
-import 'package:flutter/material.dart';
-
 class Product {
   final String id;
   final String name;
   final double price;
-  final IconData icon;
-
   bool isFavorite;
 
   Product({
     required this.id,
     required this.name,
     required this.price,
-    required this.icon,
-    this.isFavorite = false 
+    this.isFavorite = false,
   });
 }

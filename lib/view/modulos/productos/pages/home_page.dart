@@ -35,6 +35,7 @@ class HomePage extends StatelessWidget {
               final product = products[index];
 
               return GestureDetector(
+                key: ValueKey(product.id),
                 onTap: () {
                   Navigator.push(
                     context,

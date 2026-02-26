@@ -1,9 +1,8 @@
-
 import 'package:ferremateriales/view/modulos/productos/model/product.dart';
 import 'package:ferremateriales/view/modulos/productos/pages/product_details.dart';
+import 'package:ferremateriales/view/modulos/productos/widget/product_card.dart';
 import 'package:ferremateriales/view/modulos/productos/service/product_service.dart';
 import 'package:flutter/material.dart';
-
 
 class Productos extends StatelessWidget {
   const Productos({super.key});
@@ -27,11 +26,15 @@ class Productos extends StatelessWidget {
                 return const Center(child: CircularProgressIndicator());
               }
               if (snapshot.hasError) {
-                return Center(child: Text('Error cargando productos: ${snapshot.error}'));
+                return Center(
+                  child: Text('Error cargando productos: ${snapshot.error}'),
+                );
               }
 
-              final products = snapshot.data ?? ProductService.getStaticProducts();
-              final display = products.length > 4 ? products.sublist(0, 4) : products;
+              final products =
+                  snapshot.data ?? ProductService.getStaticProducts();
+              final display =
+                  products.length > 4 ? products.sublist(0, 4) : products;
 
               return GridView.builder(
                 shrinkWrap: true,
@@ -46,7 +49,8 @@ class Productos extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final product = display[index];
 
-                  return GestureDetector(
+                  return ProductCard(
+                    product: product,
                     onTap: () {
                       Navigator.push(
                         context,
@@ -55,47 +59,6 @@ class Productos extends StatelessWidget {
                         ),
                       );
                     },
-                    child: Card(
-                      elevation: 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              color: Colors.grey[300],
-                              child: Center(
-                                child: Icon(
-                                  product.icon,
-                                  size: 50,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  product.name,
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Text(
-                                  '\$${product.price}',
-                                  style: const TextStyle(
-                                    color: Colors.green,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   );
                 },
               );
