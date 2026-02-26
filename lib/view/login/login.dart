@@ -102,7 +102,9 @@ class Login extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, "/register");
+                          },
                           child: Text(TText.createAccount),
                         ),
                       ),

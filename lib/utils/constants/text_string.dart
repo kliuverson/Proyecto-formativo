@@ -28,4 +28,7 @@ class TText {
   static const String resendEmail = "Reenviar correo";
   static const String resendEmailIn = "Reenviar correo en";
   static const String and = "y";
+
+  // -- Texto de formulario de registro de cuentra
+  static const String nameLabel = "Ej: Jesus Bovea";
 }
