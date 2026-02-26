@@ -1,3 +1,4 @@
+import 'package:ferremateriales/view/modulos/favorites/pages/favorite_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ferremateriales/src/injection_container.dart' as di;
 import 'package:ferremateriales/utils/theme/theme.dart';
@@ -5,16 +6,12 @@ import 'package:ferremateriales/view/home/page/splash_page.dart';
 import 'package:ferremateriales/view/login/login.dart';
 import 'package:ferremateriales/view/modulos/carrito/pages/cart_page.dart';
 import 'package:ferremateriales/view/modulos/category/pages/Category_page.dart';
-import 'package:ferremateriales/view/modulos/favorites/pages/favorite_page.dart';
 import 'package:ferremateriales/view/modulos/profile/pages/profile_page.dart';
 import 'package:ferremateriales/view/modulos/about/page/about_page.dart';
 import 'package:ferremateriales/view/modulos/address/pages/address_page.dart';
 import 'package:ferremateriales/view/modulos/orders/pages/orders_pages.dart';
 import 'package:ferremateriales/view/modulos/about/page/support/pages/support_page.dart';
 import 'package:ferremateriales/view/modulos/modules/pages/modules_demo_page.dart';
-
-
-
 import 'view/home/page/home_page.dart';
 
 void main() async {
