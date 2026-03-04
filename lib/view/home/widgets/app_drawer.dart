@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
-  // 🔐 Cambia esto por tu sistema real de login
+  // Cambia esto por tu sistema real de login
   bool get isAuthenticated => true;
 
   @override
@@ -64,7 +64,7 @@ class AppDrawer extends StatelessWidget {
               onTap: () => Navigator.pushNamed(context, '/cart'),
             ),
 
-            // favoritos solo si está autenticado
+            // favoritos solo si tienes cuenta 
             if (isAuthenticated)
               _item(
                 context,
