@@ -4,8 +4,8 @@ class TText {
   //Login Encabezado
   static const String loginTitle = "¡Bienvenido de nuevo!";
   static const String loginSubTitle =
-      "Accede a tus cuentas favoritas y sigue disfrutando sin límites";
-      
+      "Las mejores herramientas y materiales para construir tus ideas";
+
   // -- Textos de Formulario de Autenticación
   static const String firstName = "Nombre";
   static const String lastName = "Apellido";
@@ -29,6 +29,7 @@ class TText {
   static const String resendEmailIn = "Reenviar correo en";
   static const String and = "y";
 
-  // -- Texto de formulario de registro de cuentra
-  static const String nameLabel = "Ej: Jesus Bovea";
+ 
+  // -- Texto Crear Cuenta
+  static const String titleRegister = "Crea tu cuenta";
 }

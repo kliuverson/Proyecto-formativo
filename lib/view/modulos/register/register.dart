@@ -1,7 +1,9 @@
+import 'package:ferremateriales/common/form_divider.dart';
+import 'package:ferremateriales/common/social_buttons.dart';
 import 'package:ferremateriales/utils/constants/size.dart';
 import 'package:ferremateriales/utils/constants/text_string.dart';
-import 'package:ferremateriales/view/login/styles/spacing_style.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:ferremateriales/utils/helpers/helpers_functions.dart';
+import 'package:ferremateriales/view/modulos/register/widget/register_form.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -9,107 +11,27 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = THelpersFunctions.esModoOscuro(context);
     return Scaffold(
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Padding(
-          padding: TSpacingStyleAppBar.paddingAppBar,
+          padding: const EdgeInsetsGeometry.all(TSize.defaultSpace),
           child: Column(
             children: [
-              Center(
-                child: Container(
-                  width: 64,
-                  height: 64,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Icon(
-                    CupertinoIcons.person_2,
-                    color: Colors.white,
-                    size: TSize.iconLg,
-                  ),
-                ),
+              // Titulo
+              Text(
+                TText.titleRegister,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
-              const SizedBox(height: TSize.sm),
-              Center(
-                child: Text(
-                  "Crear Cuenta",
-                  style: Theme.of(context).textTheme.headlineLarge,
-                ),
-              ),
-              const SizedBox(height: TSize.xs),
-              Center(
-                child: Text(
-                  "Registrate para empezar a comprar",
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ),
-
+              const SizedBox(height: TSize.spaceBtwSections),
               // Formulario de Registro
-              Form(
-                child: Padding(
-                  padding: EdgeInsetsGeometry.symmetric(
-                    vertical: TSize.spaceBtwSections,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Nombre Completo",
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      const SizedBox(height: TSize.sm),
-                      // Nombre completo
-                      TextFormField(
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(CupertinoIcons.mail),
-                          labelText: TText.email,
-                          hintText: TText.emailExample,
-                        ),
-                      ),
-                      const SizedBox(height: TSize.spaceBtwItems),
-                      Text("Correo Electronico"),
-                      const SizedBox(height: TSize.sm),
-                      // Correo electronico
-                      TextFormField(
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(CupertinoIcons.mail),
-                          labelText: TText.email,
-                          hintText: TText.emailExample,
-                        ),
-                      ),
-                      const SizedBox(height: TSize.spaceBtwItems),
-                      Text(
-                        "Telefono",
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      const SizedBox(height: TSize.sm),
-                      // Telefono
-                      TextFormField(
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(CupertinoIcons.mail),
-                          labelText: TText.email,
-                          hintText: TText.emailExample,
-                        ),
-                      ),
-                      const SizedBox(height: TSize.spaceBtwItems),
-                      Text(
-                        "Contraseña",
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      const SizedBox(height: TSize.sm),
-                      // Contraseña
-                      TextFormField(
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(CupertinoIcons.mail),
-                          labelText: "Minimo 8 caracteres",
-                          hintText: TText.emailExample,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              TFormRegister(),
+              const SizedBox(height: TSize.spaceBtwSections),
+              // Formulario Divider
+              TDividerForm(isDark: isDark, dividerText: TText.orSignUpWith),
+              const SizedBox(height: TSize.spaceBtwSections),
+              TSocialButtons()
             ],
           ),
         ),
