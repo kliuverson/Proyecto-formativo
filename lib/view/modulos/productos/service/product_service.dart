@@ -16,6 +16,7 @@ class ProductService {
               name: m.title,
               price: m.price,
               icon: Icons.store,
+                image: 'https://via.placeholder.com/400x300.png?text=${Uri.encodeComponent(m.title)}',
             ))
         .toList();
   }
@@ -23,9 +24,9 @@ class ProductService {
   /// Fallback estático (por si se necesita synchronous). No usado por defecto.
   static List<Product> getStaticProducts() {
     return [
-      Product(id: "1", name: "Martillo", price: 25.0, icon: Icons.build),
-      Product(id: "2", name: "Taladro", price: 120.0, icon: Icons.handyman),
-      Product(id: "3", name: "Destornillador", price: 15.0, icon: Icons.construction),
+      Product(id: "1", name: "Martillo", price: 25.0, icon: Icons.build, image: 'https://via.placeholder.com/400x300.png?text=Martillo'),
+      Product(id: "2", name: "Taladro", price: 120.0, icon: Icons.handyman, image: 'https://via.placeholder.com/400x300.png?text=Taladro'),
+      Product(id: "3", name: "Destornillador", price: 15.0, icon: Icons.construction, image: 'https://via.placeholder.com/400x300.png?text=Destornillador'),
     ];
   }
 }

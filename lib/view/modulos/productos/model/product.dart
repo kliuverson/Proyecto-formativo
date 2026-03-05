@@ -5,6 +5,7 @@ class Product {
   final String name;
   final double price;
   final IconData icon;
+  final String image;
 
   bool isFavorite;
 
@@ -13,6 +14,7 @@ class Product {
     required this.name,
     required this.price,
     required this.icon,
-    this.isFavorite = false 
+    required this.image,
+    this.isFavorite = false,
   });
 }
