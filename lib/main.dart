@@ -1,4 +1,5 @@
 import 'package:ferremateriales/view/modulos/favorites/pages/favorite_page.dart';
+import 'package:ferremateriales/view/modulos/register/register.dart';
 import 'package:flutter/material.dart';
 import 'package:ferremateriales/src/injection_container.dart' as di;
 import 'package:ferremateriales/utils/theme/theme.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/home': (context) => const HomePage(),
         '/login': (context) => const Login(),
+        '/register':(context) => const RegisterScreen(),
         '/favorite': (context) => const FavoritesPage(),
         '/profile': (context) => const ProfilePage(),
         '/cart': (context) => const CartPage(),

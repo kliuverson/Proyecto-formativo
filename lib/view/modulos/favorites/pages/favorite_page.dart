@@ -1,7 +1,7 @@
 // lib/view/modulos/favorites/pages/favorites_page.dart
 import 'package:ferremateriales/view/modulos/favorites/service/favo_service.dart';
 import 'package:ferremateriales/view/modulos/productos/pages/product_details.dart'; // Para la navegación a detalles
-import 'package:ferremateriales/view/modulos/productos/model/product.dart'; // Tu modelo Product
+//import 'package:ferremateriales/view/modulos/productos/model/product.dart'; // Tu modelo Product
 import 'package:flutter/material.dart';
 
 class FavoritesPage extends StatefulWidget {
@@ -82,7 +82,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
                     return ListTile(
                       // Usando product.image como leading
-                      leading: product.image!= null && product.image.isNotEmpty
+                      leading: product.image != null && product.image.isNotEmpty
                          ? Image.network(
                               product.image,
                               width: 50,
