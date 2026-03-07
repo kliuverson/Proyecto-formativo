@@ -140,7 +140,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Colors.black.withOpacity(0.3),
+                  Colors.black.withAlpha(76),
                   Colors.transparent,
                 ],
                 begin: Alignment.bottomCenter,
