@@ -1,10 +1,4 @@
-const express = require("express");
-
-const app = express();
-
-app.get("/", (req, res)=>{
-    res.send("API de Ferremateriales funcionando ");
-});
+const app = require("./src/app")
 
 const port = 3000;
 
