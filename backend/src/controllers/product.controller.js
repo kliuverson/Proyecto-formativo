@@ -56,6 +56,12 @@ exports.createProduct = async (req, res) => {
 
   } catch (error) {
 
+    if(error.code === 11000){
+      return res.status(409).json({
+        message: "El SKU ya existe"
+      });
+    }
+
     res.status(400).json({
       message: "Error al crear el producto",
       error: error.message
@@ -72,7 +78,7 @@ exports.updateProduct = async (req, res) => {
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true }
+      { new: true, runValidators: true }
     );
 
     if (!updatedProduct) {
