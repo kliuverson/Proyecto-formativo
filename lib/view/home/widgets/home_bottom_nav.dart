@@ -1,14 +1,40 @@
+
+
 import 'package:flutter/material.dart';
+import 'package:ferremateriales/view/home/page/home_page.dart';
+import 'package:ferremateriales/view/modulos/favorites/pages/favorite_page.dart';
+import 'package:ferremateriales/view/modulos/carrito/pages/cart_page.dart';
+import 'package:ferremateriales/view/modulos/category/pages/category_page.dart';
+import 'package:ferremateriales/view/modulos/profile/pages/profile_page.dart';
 
 class HomeBottomNav extends StatelessWidget {
   final int currentIndex;
-  final Function(int) onTap;
 
-  const HomeBottomNav({
-    super.key,
-    required this.currentIndex,
-    required this.onTap,
-  });
+  const HomeBottomNav({super.key, required this.currentIndex});
+
+  void _onTap(BuildContext context, int index) {
+    String route = '/home';
+    switch (index) {
+      case 0:
+        route = '/home';
+        break;
+      case 1:
+        route = '/favorite';
+        break;
+      case 2:
+        route = '/cart';
+        break;
+      case 3:
+        route = '/category';
+        break;
+      case 4:
+        route = '/profile';
+        break;
+    }
+
+    // Reemplaza la pantalla actual y evita apilar rutas
+    Navigator.pushNamedAndRemoveUntil(context, route,(route) => false,);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,33 +44,28 @@ class HomeBottomNav extends StatelessWidget {
       selectedItemColor: Colors.orange,
       unselectedItemColor: Colors.grey[400],
       currentIndex: currentIndex,
-      onTap: onTap,
+      onTap: (index) => _onTap(context, index),
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: 'Inicio',
-        ), // Index 0
-
+        ),
         BottomNavigationBarItem(
           icon: Icon(Icons.favorite_border),
           label: 'Favoritos',
-        ), // Index 1
-
+        ),
         BottomNavigationBarItem(
           icon: Icon(Icons.shopping_cart_outlined),
           label: 'Carrito',
-        ), // Index 2
-
-        // >>> ¡AÑADE ESTE ITEM PARA CATEGORÍAS! <<<
+        ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.category_outlined), // O el ícono que prefieras para categorías
+          icon: Icon(Icons.category_outlined),
           label: 'Categorías',
-        ), // Index 3
-
+        ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person_outline),
           label: 'Perfil',
-        ), // Index 4 (Ahora este es el 4, correctamente)
+        ),
       ],
     );
   }

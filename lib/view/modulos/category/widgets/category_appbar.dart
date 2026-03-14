@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
-class CategoryAppBar extends StatelessWidget {
-
+class CategoryAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isDarkMode;
   final VoidCallback toggleTheme;
   final Color accentColor;
   final Color borderColor;
   final Color backgroundColor;
+  final String title;
+  final VoidCallback? onBack;
+  final VoidCallback? onCart;
+  final VoidCallback? onSearch;
 
   const CategoryAppBar({
     super.key,
@@ -15,57 +18,57 @@ class CategoryAppBar extends StatelessWidget {
     required this.accentColor,
     required this.borderColor,
     required this.backgroundColor,
+    required this.title,
+    this.onBack,
+    this.onCart,
+    this.onSearch,
   });
 
   @override
   Widget build(BuildContext context) {
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        border: Border(
-          bottom: BorderSide(color: borderColor),
+    return AppBar(
+      backgroundColor: backgroundColor,
+      elevation: 0,
+      leading: onBack != null
+          ? IconButton(
+              icon: Icon(Icons.arrow_back, color: accentColor),
+              onPressed: onBack,
+            )
+          : null,
+      title: Text(
+        title,
+        style: TextStyle(
+          color: accentColor,
+          fontWeight: FontWeight.bold,
         ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-
-          IconButton(
-            icon: Icon(Icons.home, color: accentColor),
-            onPressed: (){
-              Navigator.pushNamed(context, '/home');
-            },
+      actions: [
+        IconButton(
+          icon: Icon(Icons.search, color: accentColor),
+          onPressed: onSearch,
+        ),
+        IconButton(
+          icon: Icon(Icons.shopping_cart, color: accentColor),
+          onPressed: onCart,
+        ),
+        IconButton(
+          icon: Icon(
+            isDarkMode ? Icons.light_mode : Icons.dark_mode,
+            color: accentColor,
           ),
-
-          Image.asset(
-            'assets/icons/logo_recortado.png',
-            height: 40,
-          ),
-
-          Row(
-            children: [
-
-              IconButton(
-                icon: Icon(
-                  isDarkMode ? Icons.light_mode : Icons.dark_mode,
-                  color: accentColor,
-                ),
-                onPressed: toggleTheme,
-              ),
-
-              IconButton(
-                icon: Icon(Icons.shopping_cart_outlined, color: accentColor),
-                onPressed: (){
-                  Navigator.pushNamed(context, '/carrito');
-                },
-              ),
-
-            ],
-          )
-        ],
+          onPressed: toggleTheme,
+        ),
+      ],
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(1),
+        child: Container(
+          color: borderColor,
+          height: 1,
+        ),
       ),
     );
   }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

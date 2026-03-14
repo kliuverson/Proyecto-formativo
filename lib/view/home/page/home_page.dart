@@ -1,16 +1,10 @@
-import '../widgets/banner_carousel.dart';
 import 'package:flutter/material.dart';
-import 'package:ferremateriales/src/injection_container.dart' as di;
-import 'package:ferremateriales/src/data/module_repository.dart';
-import 'package:ferremateriales/src/models/module_model.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import '../widgets/buscador.dart';
+import 'package:ferremateriales/src/routes/app_routes.dart';
+
+import '../widgets/banner_carousel.dart';
 import '../widgets/category_grid.dart';
 import '../widgets/productos.dart';
 import '../widgets/app_drawer.dart';
-import '../widgets/home_appbar.dart';
-import '../widgets/home_bottom_nav.dart';
-import 'package:ferremateriales/view/modulos/carrito/pages/cart_page.dart'; // Importa tu CartPage real
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,170 +14,181 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _currentIndex = 0;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  void _openDrawer() {
-    _scaffoldKey.currentState?.openDrawer();
-  }
+  int currentIndex = 0;
 
-  void _openNotifications() {
-    debugPrint('Notificaciones');
-  }
+  void onTap(int index) {
 
-  void _onTabTapped(int index) {
     setState(() {
-      _currentIndex = index;
+      currentIndex = index;
     });
+
+    switch(index){
+
+      case 0:
+        Navigator.pushNamed(context, AppRoutes.home);
+        break;
+
+      case 1:
+        Navigator.pushNamed(context, AppRoutes.category);
+        break;
+
+      case 2:
+        Navigator.pushNamed(context, AppRoutes.favorite);
+        break;
+
+      case 3:
+        Navigator.pushNamed(context, AppRoutes.cart);
+        break;
+
+      case 4:
+        Navigator.pushNamed(context, AppRoutes.profile);
+        break;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
-      key: _scaffoldKey,
+
+      /// MENU LATERAL
       drawer: const AppDrawer(),
 
-      /// 🔹 APPBAR EXTERNO
-      appBar: HomeAppBar(
-        onMenu: _openDrawer,
-        onNotifications: _openNotifications,
-      ),
+      body: CustomScrollView(
+        slivers: [
 
-      /// 🔹 BODY (IndexedStack por pestañas)
-      // Los children del IndexedStack ahora coinciden con el orden de los ítems en HomeBottomNav:
-      // 0: Inicio, 1: Favoritos, 2: Carrito, 3: Categorías (completa), 4: Perfil
-      body: IndexedStack(
-        index: _currentIndex,
-        children: [
-          // Pestaña 0: Inicio (scrollable con contenido principal)
-          SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Buscador(),
-                const SizedBox(height: 20),
-                const BannerCarousel(),
-                const SizedBox(height: 24),
-                const CategoriesGrid(),
-                const SizedBox(height: 20),
-                const Productos(),
-                const SizedBox(height: 24),
-                const Divider(),
-                const SizedBox(height: 12),
-                const Text(
-                  'Módulos locales',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+          /// APPBAR ESTILO AMAZON
+          SliverAppBar(
+  pinned: true,
+  expandedHeight: 120,
+  backgroundColor: const Color.fromARGB(255, 255, 106, 20),
+
+  /// MENU HAMBURGUESA
+  leading: Builder(
+    builder: (context) {
+      return IconButton(
+        icon: const Icon(Icons.menu, color: Colors.black),
+        onPressed: () {
+          Scaffold.of(context).openDrawer();
+        },
+      );
+    },
+  ),
+
+  flexibleSpace: FlexibleSpaceBar(
+    background: SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+            /// TITULO
+            const Padding(
+              padding: EdgeInsets.only(left: 56, top: 8),
+              child: Text(
+                "FerreMateriales",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: Color.fromARGB(255, 0, 0, 0),
                 ),
-                const SizedBox(height: 12),
-                ModulesList(limit: 3),
-              ],
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            /// BUSCADOR
+            Container(
+              height: 45,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const TextField(
+                decoration: InputDecoration(
+                  hintText: "Buscar herramientas...",
+                  prefixIcon: Icon(Icons.search),
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  ),
+),
+
+
+          /// BANNER PROMOCIONAL
+          const SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.only(top: 10),
+              child: BannerCarousel(),
             ),
           ),
 
-          // Pestaña 1: Favoritos (Ahora es la segunda pestaña)
-          const Center(
-            child: Text('Favoritos', style: TextStyle(fontSize: 18)),
+          /// CATEGORÍAS
+          const SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: CategoryGrid(),
+            ),
           ),
 
-          // Pestaña 2: Carrito (Ahora es la tercera pestaña, y usa tu CartPage real)
-          const CartPage(),
-
-          // Pestaña 3: Categorías (Ahora es la cuarta pestaña)
-          const Center(
-            child: Text('Vista de Categorías (completa)', style: TextStyle(fontSize: 18)),
+          /// PRODUCTOS DESTACADOS
+          const SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Productos(),
+            ),
           ),
 
-          // Pestaña 4: Perfil (Ahora es la quinta pestaña)
-          const Center(
-            child: Text('Perfil', style: TextStyle(fontSize: 18)),
+          const SliverToBoxAdapter(
+            child: SizedBox(height: 40),
           ),
+
         ],
       ),
 
-      /// 🔹 FLOATING BUTTON
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Navigator.pushNamed(context, '/modules_demo'),
-        icon: const Icon(Icons.storage),
-        label: const Text('Demo local'),
+      /// MENÚ INFERIOR
+      bottomNavigationBar: BottomNavigationBar(
+
+        currentIndex: currentIndex,
+        onTap: onTap,
+
+        type: BottomNavigationBarType.fixed,
+
+        items: const [
+
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Inicio",
+          ),
+
+          BottomNavigationBarItem(
+            icon: Icon(Icons.category),
+            label: "Categorías",
+          ),
+
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: "Favoritos",
+          ),
+
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: "Carrito",
+          ),
+
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: "Perfil",
+          ),
+        ],
       ),
-
-      /// 🔹 BOTTOM NAV SEPARADO
-      bottomNavigationBar: HomeBottomNav(
-        currentIndex: _currentIndex,
-        onTap: _onTabTapped,
-      ),
-    );
-  }
-}
-
-/// 🔹 MÓDULOS LISTA (Hive + Repository)
-class ModulesList extends StatelessWidget {
-  final int? limit;
-
-  const ModulesList({super.key, this.limit});
-
-  @override
-  Widget build(BuildContext context) {
-    final ModuleRepository repo = di.sl<ModuleRepository>();
-
-    return FutureBuilder<List<ModuleModel>>(
-      future: repo.getModules(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Padding(
-            padding: EdgeInsets.symmetric(vertical: 24.0),
-            child: Center(child: CircularProgressIndicator()),
-          );
-        }
-
-        if (snapshot.hasError) {
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text('Error al cargar módulos: ${snapshot.error}'),
-          );
-        }
-
-        return ValueListenableBuilder<Box>(
-          valueListenable: Hive.box('modules').listenable(),
-          builder: (context, box, _) {
-            final modules =
-                box.values.whereType<ModuleModel>().toList();
-
-            if (modules.isEmpty) {
-              return const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text('No hay módulos disponibles'),
-              );
-            }
-
-            final display =
-                limit!= null? modules.take(limit!).toList() : modules;
-
-            return ListView.separated(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: display.length,
-              separatorBuilder: (_, __) =>
-                  const Divider(height: 1),
-              itemBuilder: (context, index) {
-                final m = display[index];
-
-                return ListTile(
-                  title: Text(m.title),
-                  subtitle: Text(m.description),
-                  trailing:
-                      Text('\$${m.price.toStringAsFixed(2)}'),
-                );
-              },
-            );
-          },
-        );
-      },
     );
   }
 }
