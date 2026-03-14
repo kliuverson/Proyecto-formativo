@@ -3,24 +3,18 @@ import '../model/category_data.dart';
 import 'category_card.dart';
 
 class CategoryGrid extends StatelessWidget {
-
-  final Color accentColor;
-  final Color surfaceColor;
-  final Color borderColor;
-  final Color textPrimaryColor;
-  final Color textSecondaryColor;
-
-  const CategoryGrid({
-    super.key,
-    required this.accentColor,
-    required this.surfaceColor,
-    required this.borderColor,
-    required this.textPrimaryColor,
-    required this.textSecondaryColor,
-  });
+  const CategoryGrid({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    final theme = Theme.of(context);
+
+    final accentColor = theme.colorScheme.primary;
+    final surfaceColor = theme.colorScheme.surface;
+    final borderColor = Colors.grey.shade300;
+    final textPrimaryColor = theme.textTheme.bodyLarge!.color!;
+    final textSecondaryColor = theme.textTheme.bodyMedium!.color!;
 
     return GridView.builder(
       shrinkWrap: true,
@@ -33,16 +27,16 @@ class CategoryGrid extends StatelessWidget {
       ),
       itemCount: categories.length,
       itemBuilder: (context, index) {
+        final category = categories[index];
 
         return CategoryCard(
-          category: categories[index],
+          category: category,
           accentColor: accentColor,
           surfaceColor: surfaceColor,
           borderColor: borderColor,
           textPrimaryColor: textPrimaryColor,
           textSecondaryColor: textSecondaryColor,
         );
-
       },
     );
   }

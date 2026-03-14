@@ -11,14 +11,10 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage> {
-
   bool isDarkMode = true;
 
   Color get backgroundColor =>
       isDarkMode ? const Color(0xFF0A0E17) : const Color(0xFFF5F7FA);
-
-  Color get surfaceColor =>
-      isDarkMode ? const Color(0xFF141A24) : Colors.white;
 
   Color get textPrimaryColor =>
       isDarkMode ? Colors.white : const Color(0xFF1F2937);
@@ -26,12 +22,9 @@ class _CategoryPageState extends State<CategoryPage> {
   Color get textSecondaryColor =>
       isDarkMode ? const Color(0xFF9CA3AF) : const Color(0xFF6B7280);
 
-  Color get borderColor =>
-      isDarkMode ? const Color(0xFF2A2F3A) : const Color(0xFFE5E7EB);
-
   Color get accentColor => const Color(0xFFF4B740);
 
-  void toggleTheme(){
+  void toggleTheme() {
     setState(() {
       isDarkMode = !isDarkMode;
     });
@@ -39,48 +32,40 @@ class _CategoryPageState extends State<CategoryPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: SafeArea(
+
+      appBar: CategoryAppBar(
+        title: 'Herramientas',
+        isDarkMode: isDarkMode,
+        toggleTheme: toggleTheme,
+        accentColor: accentColor,
+        borderColor: Colors.grey,
+        backgroundColor: Colors.white,
+        onBack: () {
+          Navigator.pop(context);
+        },
+        onCart: () {
+          Navigator.pushNamed(context, '/cart');
+        },
+        onSearch: () {
+          print("Buscar en categorías");
+        },
+      ),
+
+      body: SingleChildScrollView(
         child: Column(
           children: [
-
-            CategoryAppBar(
-              isDarkMode: isDarkMode,
-              toggleTheme: toggleTheme,
+            CategoryHeader(
               accentColor: accentColor,
-              borderColor: borderColor,
-              backgroundColor: backgroundColor,
+              textPrimaryColor: textPrimaryColor,
+              textSecondaryColor: textSecondaryColor,
             ),
 
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-
-                    CategoryHeader(
-                      accentColor: accentColor,
-                      textPrimaryColor: textPrimaryColor,
-                      textSecondaryColor: textSecondaryColor,
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: CategoryGrid(
-                        accentColor: accentColor,
-                        surfaceColor: surfaceColor,
-                        borderColor: borderColor,
-                        textPrimaryColor: textPrimaryColor,
-                        textSecondaryColor: textSecondaryColor,
-                      ),
-                    )
-
-                  ],
-                ),
-              ),
-            )
-
+            const Padding(
+              padding: EdgeInsets.all(16),
+              child: CategoryGrid(), // ✅ ahora sin parámetros
+            ),
           ],
         ),
       ),

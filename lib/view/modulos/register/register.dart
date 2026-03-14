@@ -16,7 +16,7 @@ class RegisterScreen extends StatelessWidget {
       appBar: AppBar(),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsetsGeometry.all(TSize.defaultSpace),
+          padding: const EdgeInsets.all(TSize.defaultSpace),
           child: Column(
             children: [
               // Titulo

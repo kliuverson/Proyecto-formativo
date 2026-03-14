@@ -1,3 +1,4 @@
+// lib/view/modulos/productos/model/product.dart
 import 'package:flutter/material.dart';
 
 class Product {
@@ -5,7 +6,7 @@ class Product {
   final String name;
   final double price;
   final IconData icon;
-  final String image;
+  final String image; // Asumo que es la URL de la imagen
 
   bool isFavorite;
 
@@ -17,4 +18,14 @@ class Product {
     required this.image,
     this.isFavorite = false,
   });
+
+  // >>> ¡IMPORTANTE! Sobrescribir == y hashCode para que la lista funcione correctamente <<<
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Product && other.id == id; // Dos productos son iguales si tienen el mismo ID
+  }
+
+  @override
+  int get hashCode => id.hashCode; // El hashCode se basa en el ID
 }

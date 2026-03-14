@@ -20,6 +20,48 @@ class _BannerCarouselState extends State<BannerCarousel> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(viewportFraction: 0.92);
+
+    // Espera a que el widget se haya renderizado antes de iniciar autoplay
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _startAutoplay();
+    });
+  }
+
+  @override
+  void dispose() {
+    // Cancelar timer y limpiar PageController al desmontar
+    _autoplayTimer?.cancel();
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _startAutoplay() {
+    _autoplayTimer?.cancel();
+    _autoplayTimer = Timer.periodic(const Duration(seconds: 4), (_) {
+      if (!mounted) return; // evita errores si el widget está desmontado
+
+      final next = (currentIndex + 1) % banners.length;
+      _pageController.animateToPage(
+        next,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
+
+  void _restartAutoplay() {
+    _autoplayTimer?.cancel();
+    _autoplayTimer = Timer(const Duration(seconds: 6), () {
+      if (!mounted) return;
+      _startAutoplay();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -45,7 +87,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
 
         const SizedBox(height: 12),
 
-        /// 🔵 Indicadores
+        // 🔵 Indicadores
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: banners.asMap().entries.map((entry) {
@@ -65,39 +107,6 @@ class _BannerCarouselState extends State<BannerCarousel> {
         ),
       ],
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController(viewportFraction: 0.92);
-    _startAutoplay();
-  }
-
-  @override
-  void dispose() {
-    _autoplayTimer?.cancel();
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  void _startAutoplay() {
-    _autoplayTimer?.cancel();
-    _autoplayTimer = Timer.periodic(const Duration(seconds: 4), (_) {
-      final next = (currentIndex + 1) % banners.length;
-      _pageController.animateToPage(
-        next,
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.easeInOut,
-      );
-    });
-  }
-
-  void _restartAutoplay() {
-    _autoplayTimer?.cancel();
-    _autoplayTimer = Timer(const Duration(seconds: 6), () {
-      _startAutoplay();
-    });
   }
 
   Widget _buildBanner(String imageUrl) {
@@ -135,7 +144,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
             },
           ),
 
-          /// Overlay oscuro suave
+          // Overlay oscuro suave
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -149,7 +158,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
             ),
           ),
 
-          /// Texto promocional
+          // Texto promocional
           const Positioned(
             left: 20,
             bottom: 20,
