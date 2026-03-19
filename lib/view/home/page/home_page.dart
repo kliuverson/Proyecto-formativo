@@ -1,10 +1,12 @@
 import 'package:ferremateriales/view/modulos/category/widgets/category_grid.dart';
+import 'package:ferremateriales/view/modulos/productos/model/product.dart';
+import 'package:ferremateriales/view/modulos/productos/pages/product_page.dart';
+import 'package:ferremateriales/view/modulos/productos/service/product_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ferremateriales/src/routes/app_routes.dart';
 
 import '../widgets/banner_carousel.dart';
-import '../widgets/productos.dart';
 import '../widgets/app_drawer.dart';
 import '../cubit/search_product_cubit.dart';
 
@@ -16,17 +18,36 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<ProductModel> allProducts = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadProducts();
+  }
+
+  void loadProducts() async {
+    final products = await ProductService.getProducts();
+
+    print("Productos cargados: ${products.length}");
+
+    if (!mounted) return;
+
+    setState(() {
+      allProducts = products;
+    });
+
+    context.read<SearchProductCubit>().setProducts(products);
+  }
 
   int currentIndex = 0;
 
   void onTap(int index) {
-
     setState(() {
       currentIndex = index;
     });
 
-    switch(index){
-
+    switch (index) {
       case 0:
         Navigator.pushNamed(context, AppRoutes.home);
         break;
@@ -51,158 +72,140 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      /// MENU LATERAL
+      drawer: const AppDrawer(),
 
-    return BlocProvider(
-      create: (_) => SearchProductCubit(),
-      child: Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          /// APPBAR ESTILO AMAZON
+          SliverAppBar(
+            pinned: true,
+            expandedHeight: 120,
+            backgroundColor: const Color.fromARGB(255, 255, 106, 20),
 
-        /// MENU LATERAL
-        drawer: const AppDrawer(),
+            /// MENU HAMBURGUESA
+            leading: Builder(
+              builder: (context) {
+                return IconButton(
+                  icon: const Icon(Icons.menu, color: Colors.black),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                );
+              },
+            ),
 
-        body: CustomScrollView(
-          slivers: [
+            flexibleSpace: FlexibleSpaceBar(
+              background: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      /// 🔥 LOGO (REEMPLAZA EL TEXTO)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5, top: 8),
+                        child: Image.asset(
+                          "assets/icons/icono_page.png",
+                          height: 35,
+                        ),
+                      ),
 
-            /// APPBAR ESTILO AMAZON
-            SliverAppBar(
-              pinned: true,
-              expandedHeight: 120,
-              backgroundColor: const Color.fromARGB(255, 255, 106, 20),
+                      const SizedBox(height: 10),
 
-              /// MENU HAMBURGUESA
-              leading: Builder(
-                builder: (context) {
-                  return IconButton(
-                    icon: const Icon(Icons.menu, color: Colors.black),
-                    onPressed: () {
-                      Scaffold.of(context).openDrawer();
-                    },
-                  );
-                },
-              ),
-
-              flexibleSpace: FlexibleSpaceBar(
-                background: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-
-                        /// 🔥 LOGO (REEMPLAZA EL TEXTO)
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5, top: 8),
-                          child: Image.asset(
-                            "assets/icons/icono_page.png",
-                            height: 35,
+                      /// BUSCADOR
+                      Container(
+                        height: 45,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: TextField(
+                          onChanged: (value) {
+                            context.read<SearchProductCubit>().searchProducts(
+                              value,
+                            );
+                          },
+                          decoration: const InputDecoration(
+                            hintText: "Buscar herramientas...",
+                            prefixIcon: Icon(Icons.search),
+                            border: InputBorder.none,
                           ),
                         ),
-
-                        const SizedBox(height: 10),
-
-                        /// BUSCADOR
-                        Container(
-                          height: 45,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: TextField(
-                            onChanged: (value) {
-                              context.read<SearchProductCubit>().searchProducts(value, []);
-                            },
-                            decoration: const InputDecoration(
-                              hintText: "Buscar herramientas...",
-                              prefixIcon: Icon(Icons.search),
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
+          ),
 
-            /// BANNER PROMOCIONAL
-            const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: BannerCarousel(),
+          /// BANNER PROMOCIONAL
+          const SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.only(top: 10),
+              child: BannerCarousel(),
+            ),
+          ),
+
+          /// CATEGORÍAS
+          const SliverToBoxAdapter(
+            child: Padding(padding: EdgeInsets.all(16), child: CategoryGrid()),
+          ),
+
+          /// PRODUCTOS DESTACADOS
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: BlocBuilder<SearchProductCubit, List<ProductModel>>(
+                builder: (context, filteredProducts) {
+                  print(
+                    "🟢 Productos en UI (Cubit): ${filteredProducts.length}",
+                  );
+                  if (filteredProducts.isEmpty) {
+                    return const Center(
+                      child: Text("No se encontraron productos"),
+                    );
+                  }
+
+                  return Productos(products: filteredProducts);
+                },
               ),
             ),
+          ),
 
-            /// CATEGORÍAS
-            const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: CategoryGrid(),
-              ),
-            ),
+          const SliverToBoxAdapter(child: SizedBox(height: 40)),
+        ],
+      ),
 
-            /// PRODUCTOS DESTACADOS
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: BlocBuilder<SearchProductCubit, List>(
-                  builder: (context, filteredProducts) {
+      /// MENÚ INFERIOR
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentIndex,
+        onTap: onTap,
 
-                    if (filteredProducts.isEmpty) {
-                      return const Center(
-                        child: Text("No se encontraron productos"),
-                      );
-                    }
+        type: BottomNavigationBarType.fixed,
 
-                    return const Productos();
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Inicio"),
 
-                  },
-                ),
-              ),
-            ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.category),
+            label: "Categorías",
+          ),
 
-            const SliverToBoxAdapter(
-              child: SizedBox(height: 40),
-            ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: "Favoritos",
+          ),
 
-          ],
-        ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: "Carrito",
+          ),
 
-        /// MENÚ INFERIOR
-        bottomNavigationBar: BottomNavigationBar(
-
-          currentIndex: currentIndex,
-          onTap: onTap,
-
-          type: BottomNavigationBarType.fixed,
-
-          items: const [
-
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "Inicio",
-            ),
-
-            BottomNavigationBarItem(
-              icon: Icon(Icons.category),
-              label: "Categorías",
-            ),
-
-            BottomNavigationBarItem(
-              icon: Icon(Icons.favorite),
-              label: "Favoritos",
-            ),
-
-            BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart),
-              label: "Carrito",
-            ),
-
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: "Perfil",
-            ),
-          ],
-        ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Perfil"),
+        ],
       ),
     );
   }

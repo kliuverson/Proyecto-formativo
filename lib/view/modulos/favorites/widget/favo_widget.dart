@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ferremateriales/view/modulos/favorites/service/favo_service.dart';
-import 'package:ferremateriales/view/modulos/favorites/service/session_service.dart';
 import 'package:ferremateriales/view/modulos/productos/model/product.dart';
 
 class ProductCard extends StatefulWidget {
-  final Product product;
+  final ProductModel product;
 
   const ProductCard({super.key, required this.product});
 
@@ -18,12 +17,6 @@ class _ProductCardState extends State<ProductCard> {
   void _toggleFavorite() {
     setState(() {
       favoritesService.toggleFavorite(widget.product);
-
-      if (favoritesService.isFavorite(widget.product)) {
-        SessionService.addToSession('Favoritos', widget.product);
-      } else {
-        SessionService.removeFromSessionById('Favoritos', widget.product.id);
-      }
     });
   }
 
@@ -71,13 +64,13 @@ class _ProductCardState extends State<ProductCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.product.name,
+                      widget.product.nombre,
                       style: const TextStyle(fontWeight: FontWeight.bold),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      '\$${widget.product.price}',
+                      '\$${widget.product.precio}',
                       style: const TextStyle(
                         color: Colors.green,
                         fontWeight: FontWeight.bold,

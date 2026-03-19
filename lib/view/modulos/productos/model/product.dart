@@ -1,33 +1,49 @@
-// lib/view/modulos/productos/model/product.dart
-import 'package:flutter/material.dart';
+class ProductModel {
+  final String sku;
+  final String nombre;
+  final String descripcion;
+  final double precio;
+  final int stock;
+  final String category;
+  final String image;
+  final bool estaActivo;
 
-class Product {
-  final String id;
-  final String name;
-  final double price;
-  final IconData icon;
-  final String image; // Asumo que es la URL de la imagen
-  final String category; 
-
-  bool isFavorite;
-
-  Product({
-    required this.id,
-    required this.name,
-    required this.price,
-    required this.icon,
-    required this.image,
+  ProductModel({
+    required this.sku,
+    required this.nombre,
+    required this.descripcion,
+    required this.precio,
+    required this.stock,
     required this.category,
-    this.isFavorite = false,
+    required this.image,
+    required this.estaActivo,
   });
 
-  // >>> ¡IMPORTANTE! Sobrescribir == y hashCode para que la lista funcione correctamente <<<
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is Product && other.id == id; // Dos productos son iguales si tienen el mismo ID
+  /// CONVERTIR JSON → OBJETO
+  factory ProductModel.fromJson(Map<String, dynamic> json) {
+    return ProductModel(
+      sku: json['sku'],
+      nombre: json['nombre'],
+      descripcion: json['descripcion'] ?? '',
+      precio: (json['precio'] as num).toDouble(),
+      stock: json['stock'] ?? 0,
+      category: json['category'] ?? '',
+      image: json['image'],
+      estaActivo: json['estaActivo'] ?? true,
+    );
   }
 
-  @override
-  int get hashCode => id.hashCode; // El hashCode se basa en el ID
+  /// OPCIONAL (por si envías datos al backend)
+  Map<String, dynamic> toJson() {
+    return {
+      'sku': sku,
+      'nombre': nombre,
+      'descripcion': descripcion,
+      'precio': precio,
+      'stock': stock,
+      'category': category,
+      'image': image,
+      'estaActivo': estaActivo,
+    };
+  }
 }

@@ -1,8 +1,10 @@
+import 'package:ferremateriales/view/modulos/category/cubit/category_product_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../model/category_data.dart';
 import 'category_card.dart';
 import '../../productos/pages/products_by_category_page.dart';
-import '../../productos/service/product_service.dart';
+
 
 class CategoryGrid extends StatelessWidget {
   const CategoryGrid({super.key});
@@ -41,10 +43,11 @@ class CategoryGrid extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ProductsByCategoryPage(
-                  categoryName: category.name,
-                  products: ProductService.getProductsByCategory(category.name),
-                ),
+                builder: (context) => BlocProvider(create: 
+                (_) => CategoryProductCubit()
+                ..loadByCategory(category.name),
+                child: ProductsByCategoryPage(categoryName: category.name),
+                )
               ),
             );
 

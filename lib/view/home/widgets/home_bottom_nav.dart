@@ -1,11 +1,5 @@
-
-
 import 'package:flutter/material.dart';
-import 'package:ferremateriales/view/home/page/home_page.dart';
-import 'package:ferremateriales/view/modulos/favorites/pages/favorite_page.dart';
-import 'package:ferremateriales/view/modulos/carrito/pages/cart_page.dart';
-import 'package:ferremateriales/view/modulos/category/pages/category_page.dart';
-import 'package:ferremateriales/view/modulos/profile/pages/profile_page.dart';
+
 
 class HomeBottomNav extends StatelessWidget {
   final int currentIndex;

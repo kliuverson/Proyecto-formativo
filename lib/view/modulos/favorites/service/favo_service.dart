@@ -1,6 +1,5 @@
-// lib/view/modulos/favorites/service/favo_service.dart
 import 'package:flutter/material.dart';
-import 'package:ferremateriales/view/modulos/productos/model/product.dart'; // Tu modelo Product
+import 'package:ferremateriales/view/modulos/productos/model/product.dart';
 
 class FavoritesService extends ChangeNotifier {
   static final FavoritesService _instance = FavoritesService._internal();
@@ -11,37 +10,24 @@ class FavoritesService extends ChangeNotifier {
 
   FavoritesService._internal();
 
-  // Aseguramos que _favorites sea una lista mutable
-  final List<Product> _favorites = [];
+  final List<ProductModel> _favorites = [];
 
-  // Getter para acceder a la lista de favoritos (inmutable desde fuera)
-  List<Product> get favorites => List.unmodifiable(_favorites);
+  List<ProductModel> get favorites => List.unmodifiable(_favorites);
 
-  void toggleFavorite(Product product) {
-    // Busca si ya existe un producto con el mismo ID en la lista de favoritos
-    final int existingIndex = _favorites.indexWhere((p) => p.id == product.id);
+  void toggleFavorite(ProductModel product) {
+    final index =
+        _favorites.indexWhere((p) => p.sku == product.sku);
 
-    if (existingIndex!= -1) {
-      // Si el producto ya está en favoritos, lo removemos
-      _favorites.removeAt(existingIndex);
-      product.isFavorite = false; // Actualizamos el estado del producto
-      debugPrint('Producto removido de favoritos: ${product.name}');
+    if (index != -1) {
+      _favorites.removeAt(index);
     } else {
-      // Si el producto no está en favoritos, lo añadimos
       _favorites.add(product);
-      product.isFavorite = true; // Actualizamos el estado del producto
-      debugPrint('Producto añadido a favoritos: ${product.name}');
     }
 
-    // ¡Crucial! Notifica a todos los oyentes (como AnimatedBuilder) que el estado ha cambiado.
     notifyListeners();
-
-    // Debugging adicional para verificar el contenido del servicio
-    debugPrint('FavoritesService.toggleFavorite -> count: ${_favorites.length} ids: ${_favorites.map((p) => p.id).join(',')}');
   }
 
-  // Verifica si un producto está en favoritos
-  bool isFavorite(Product product) {
-    return _favorites.any((p) => p.id == product.id);
+  bool isFavorite(ProductModel product) {
+    return _favorites.any((p) => p.sku == product.sku);
   }
 }

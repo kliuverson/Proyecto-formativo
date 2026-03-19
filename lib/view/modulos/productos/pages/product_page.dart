@@ -1,64 +1,54 @@
+import 'package:ferremateriales/view/home/widgets/product_card.dart';
+import 'package:flutter/material.dart';
 import 'package:ferremateriales/view/modulos/productos/model/product.dart';
 import 'package:ferremateriales/view/modulos/productos/pages/product_details.dart';
-import 'package:ferremateriales/view/modulos/productos/service/product_service.dart';
-import 'package:flutter/material.dart';
 
+class Productos extends StatelessWidget {
+  final List<ProductModel> products;
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  const Productos({super.key, required this.products});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Productos")),
-      body: FutureBuilder<List<Product>>(
-        future: ProductService.getProducts(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text('Error cargando productos: ${snapshot.error}'));
-          }
+    final display =
+        products.length > 4 ? products.sublist(0, 4) : products;
 
-          final products = snapshot.data ?? ProductService.getStaticProducts();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Productos Destacados',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 12),
 
-          return GridView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: products.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-            ),
-            itemBuilder: (context, index) {
-              final product = products[index];
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 0.90,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+          ),
+          itemCount: display.length,
+          itemBuilder: (context, index) {
+            final product = display[index];
 
-              return GestureDetector(
-                key: ValueKey(product.id),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => ProductDetail(product: product),
-                    ),
-                  );
-                },
-                child: Card(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(product.icon, size: 50),
-                      Text(product.name),
-                      Text("\$${product.price}"),
-                    ],
+            return ProductCard(
+              product: product,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ProductDetail(product: product),
                   ),
-                ),
-              );
-            },
-          );
-        },
-      ),
+                );
+              },
+            );
+          },
+        ),
+      ],
     );
   }
 }
