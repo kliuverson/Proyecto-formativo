@@ -97,6 +97,10 @@ class _SplashPageState extends State<SplashPage>
 
   @override
   Widget build(BuildContext context) {
+
+    // 🔥 DETECTA SI ES MODO OSCURO
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     final totalWidth = logoSize + textSize;
 
     return Scaffold(
@@ -104,6 +108,7 @@ class _SplashPageState extends State<SplashPage>
         child: AnimatedBuilder(
           animation: _controller,
           builder: (context, child) {
+
             return SizedBox(
               width: totalWidth,
               height: logoSize > textSize ? logoSize : textSize,
@@ -111,21 +116,31 @@ class _SplashPageState extends State<SplashPage>
                 alignment: Alignment.center,
                 children: [
 
-                  // texto
+                  // 🔤 TEXTO
                   Transform.translate(
                     offset: Offset(_textSlide.value, 0),
                     child: Opacity(
                       opacity: _textOpacity.value,
-                      child: _image("assets/icons/logo_recortado_light.png", textSize),
+                      child: _image(
+                        isDarkMode
+                          ? "assets/icons/logo_recortado_light.png" // blanco
+                          : "assets/icons/logo_recortado_dark.png",  // negro
+                        textSize,
+                      ),
                     ),
                   ),
 
-                  // logo(centro → izquierda)
+                  // 🔵 LOGO
                   Transform.translate(
                     offset: Offset(_logoMove.value, 0),
                     child: ScaleTransition(
                       scale: _logoScale,
-                      child: _image("assets/icons/logo_recortado.png", logoSize),
+                      child: _image(
+                        isDarkMode
+                          ? "assets/icons/logo_recortado.png"       // blanco
+                          : "assets/icons/logo_recortado.png",// negro
+                        logoSize,
+                      ),
                     ),
                   ),
                 ],

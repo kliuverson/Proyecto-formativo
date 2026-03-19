@@ -70,6 +70,7 @@ flutter:
     - assets/icons/
     - assets/images/user/
     - assets/data/sample_modules.json
+    - assets/images/category/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

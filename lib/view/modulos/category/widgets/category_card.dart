@@ -37,39 +37,63 @@ class CategoryCard extends StatelessWidget {
           Expanded(
             child: ClipRRect(
               borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-              child: Image.asset(
-                category.imageUrl,
-                fit: BoxFit.cover,
-                width: double.infinity,
+              child: Stack(
+                children: [
+
+                  // IMAGEN
+                  Positioned.fill(
+                    child: Image.asset(
+                      category.imageUrl,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+
+                  //  DEGRADADO 
+                  Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.transparent,
+                            Colors.black.withOpacity(0.7),
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  //  TEXTO ENCIMA DE LA IMAGEN
+                  Positioned(
+                    bottom: 8,
+                    left: 8,
+                    right: 8,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          category.name,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          category.description,
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
 
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-
-                Text(
-                  category.name,
-                  style: TextStyle(
-                    color: textPrimaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                Text(
-                  category.description,
-                  style: TextStyle(
-                    color: textSecondaryColor,
-                    fontSize: 12,
-                  ),
-                ),
-
-              ],
-            ),
-          ),
         ],
       ),
     );
