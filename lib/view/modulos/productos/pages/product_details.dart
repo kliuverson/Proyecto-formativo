@@ -1,10 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:ferremateriales/view/modulos/productos/model/product.dart';
 import 'package:ferremateriales/view/modulos/carrito/pages/model/cart_model.dart';
 import 'package:ferremateriales/view/modulos/carrito/pages/service/cart_service.dart';
-import 'package:flutter/material.dart';
-import '../model/product.dart';
 
 class ProductDetail extends StatelessWidget {
-  final Product product;
+  final ProductModel product;
 
   const ProductDetail({
     super.key,
@@ -15,21 +15,34 @@ class ProductDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(product.name),
+        title: Text(product.nombre),
       ),
-      body: Padding(
+
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
+
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(
-              product.icon,
-              size: 100,
+
+            /// 🔥 IMAGEN
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Image.network(
+                product.image.isNotEmpty
+                    ? product.image
+                    : "https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0",
+                height: 220,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
             ),
+
             const SizedBox(height: 20),
 
+            /// 🔹 NOMBRE
             Text(
-              product.name,
+              product.nombre,
               style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -38,34 +51,50 @@ class ProductDetail extends StatelessWidget {
 
             const SizedBox(height: 10),
 
+            /// 🔹 PRECIO
             Text(
-              "\$${product.price}",
+              "\$${product.precio.toStringAsFixed(0)}",
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 22,
                 color: Colors.green,
+                fontWeight: FontWeight.bold,
               ),
+            ),
+
+            const SizedBox(height: 15),
+
+            /// 🔹 DESCRIPCIÓN
+            Text(
+              product.descripcion.isNotEmpty
+                  ? product.descripcion
+                  : "Sin descripción disponible",
+              style: const TextStyle(fontSize: 16),
             ),
 
             const SizedBox(height: 30),
 
-            ///  BOTÓN AGREGAR AL CARRITO
-            ElevatedButton(
-              onPressed: () {
-                final cartItem = CartItem(
-                  id: product.id,
-                  name: product.name,
-                  price: product.price,
-                );
+            /// 🔥 BOTÓN
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
 
-                CartService.addProduct(cartItem);
+                  final cartItem = CartItem(
+                    id: product.sku,
+                    name: product.nombre,
+                    price: product.precio,
+                  );
 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("Producto agregado al carrito"),
-                  ),
-                );
-              },
-              child: const Text("Agregar al carrito"),
+                  CartService.addProduct(cartItem);
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Producto agregado al carrito"),
+                    ),
+                  );
+                },
+                child: const Text("Agregar al carrito"),
+              ),
             ),
           ],
         ),

@@ -1,10 +1,9 @@
-import 'package:ferremateriales/view/home/page/home_page.dart';
 import 'package:ferremateriales/view/home/widgets/module_list.dart';
 import 'package:ferremateriales/view/modulos/category/widgets/category_grid.dart';
 import 'package:flutter/material.dart';
 import '../widgets/banner_carousel.dart';
 import '../widgets/buscador.dart';
-import '../widgets/productos.dart';
+
 
 
 class HomeContent extends StatelessWidget {
@@ -26,7 +25,6 @@ class HomeContent extends StatelessWidget {
           
           ),
           const SizedBox(height: 20),
-          const Productos(),
           const SizedBox(height: 24),
           const Divider(),
           const SizedBox(height: 12),

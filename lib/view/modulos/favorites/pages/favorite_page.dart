@@ -29,12 +29,19 @@ class _FavoritesPageState extends State<FavoritesPage> {
       body: AnimatedBuilder(
         animation: _favoritesService, // Escucha los cambios en FavoritesService
         builder: (context, _) {
-          final favorites = _favoritesService.favorites; // Accede a la lista de favoritos
+          final favorites =
+              _favoritesService.favorites; // Accede a la lista de favoritos
 
           // >>> DEBUGGING ADICIONAL <<<
-          debugPrint('FavoritesPage.AnimatedBuilder reconstruyendo. Favoritos en lista: ${favorites.length}');
+          debugPrint(
+            'FavoritesPage.AnimatedBuilder reconstruyendo. Favoritos en lista: ${favorites.length}',
+          );
           if (favorites.isNotEmpty) {
-            favorites.forEach((p) => debugPrint(' Fav: ${p.name}, ID: ${p.id}, isFavorite: ${p.isFavorite}'));
+            favorites.forEach(
+              (p) => debugPrint(
+                ' Fav: ${p.nombre}, ID: ${p.sku}',
+              ),
+            );
           }
           // >>> FIN DEBUGGING <<<
 
@@ -77,35 +84,43 @@ class _FavoritesPageState extends State<FavoritesPage> {
                     final product = favorites[index];
 
                     // >>> DEBUGGING ADICIONAL POR CADA ITEM <<<
-                    debugPrint('Construyendo ListTile para favorito: ${product.name}, ID: ${product.id}, isFavorite: ${product.isFavorite}');
+                    debugPrint(
+                      'Construyendo ListTile para favorito: ${product.nombre}, ID: ${product.sku}',
+                    );
                     // >>> FIN DEBUGGING <<<
 
                     return ListTile(
-                      // Usando product.image como leading
-                      leading: product.image != null && product.image.isNotEmpty
-                         ? Image.network(
-                              product.image,
-                              width: 50,
-                              height: 50,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) =>
-                                  Icon(product.icon, size: 40, color: Colors.grey), // Fallback a IconData si la imagen falla
-                            )
-                          : Icon(product.icon, size: 40, color: Colors.grey), // Si no hay URL de imagen, usa el icono
-                      
-                      title: Text(product.name),
-                      subtitle: Text('\$${product.price.toStringAsFixed(2)}'),
+                      leading:
+                          product.image.isNotEmpty
+                              ? Image.network(
+                                product.image,
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                                errorBuilder:
+                                    (_, __, ___) => const Icon(
+                                      Icons.image,
+                                      size: 40,
+                                      color: Colors.grey,
+                                    ),
+                              )
+                              : const Icon(
+                                Icons.image,
+                                size: 40,
+                                color: Colors.grey,
+                              ),
+
+                      title: Text(product.nombre),
+
+                      subtitle: Text("\$${product.precio.toStringAsFixed(0)}"),
+
                       trailing: IconButton(
-                        icon: Icon(
-                          // Usamos product.isFavorite, que debería estar actualizado por toggleFavorite
-                          product.isFavorite? Icons.favorite : Icons.favorite_border,
-                          color: product.isFavorite? Colors.red : Colors.grey,
-                        ),
+                        icon: const Icon(Icons.favorite, color: Colors.red),
                         onPressed: () {
-                          // Al presionar el corazón en la lista de favoritos, lo quita
                           _favoritesService.toggleFavorite(product);
                         },
                       ),
+
                       onTap: () {
                         Navigator.push(
                           context,

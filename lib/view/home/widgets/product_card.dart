@@ -2,14 +2,10 @@ import 'package:ferremateriales/view/modulos/productos/model/product.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatefulWidget {
-  final Product product;
+  final ProductModel product;
   final VoidCallback onTap;
 
-  const ProductCard({
-    super.key,
-    required this.product,
-    required this.onTap,
-  });
+  const ProductCard({super.key, required this.product, required this.onTap});
 
   @override
   State<ProductCard> createState() => _ProductCardState();
@@ -32,12 +28,10 @@ class _ProductCardState extends State<ProductCard>
       duration: const Duration(milliseconds: 250),
     );
 
-    _favAnimation = Tween<double>(begin: 1, end: 1.25).animate(
-      CurvedAnimation(
-        parent: _favController,
-        curve: Curves.easeOut,
-      ),
-    );
+    _favAnimation = Tween<double>(
+      begin: 1,
+      end: 1.25,
+    ).animate(CurvedAnimation(parent: _favController, curve: Curves.easeOut));
   }
 
   @override
@@ -91,7 +85,9 @@ class _ProductCardState extends State<ProductCard>
                     top: Radius.circular(16),
                   ),
                   child: Image.network(
-                    product.image,
+                    product.image.isNotEmpty
+                        ? product.image
+                        : "https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0",
                     height: 110,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -107,7 +103,7 @@ class _ProductCardState extends State<ProductCard>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        product.name,
+                        product.nombre,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
@@ -119,11 +115,10 @@ class _ProductCardState extends State<ProductCard>
 
                       /// 🔹 PRECIO + CARRITO EN FILA
                       Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "\$${product.price.toStringAsFixed(0)}",
+                            "\$${product.precio.toStringAsFixed(0)}",
                             style: const TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.w700,
@@ -133,19 +128,14 @@ class _ProductCardState extends State<ProductCard>
 
                           AnimatedScale(
                             scale: isAdding ? 0.85 : 1,
-                            duration:
-                                const Duration(milliseconds: 150),
+                            duration: const Duration(milliseconds: 150),
                             child: GestureDetector(
                               onTap: _addToCart,
                               child: Container(
-                                padding:
-                                    const EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: isAdding
-                                      ? Colors.green
-                                      : Colors.blue,
-                                  borderRadius:
-                                      BorderRadius.circular(10),
+                                  color: isAdding ? Colors.green : Colors.blue,
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Icon(
                                   isAdding
@@ -186,11 +176,8 @@ class _ProductCardState extends State<ProductCard>
                       ],
                     ),
                     child: Icon(
-                      isFavorite
-                          ? Icons.favorite
-                          : Icons.favorite_border,
-                      color:
-                          isFavorite ? Colors.red : Colors.grey,
+                      isFavorite ? Icons.favorite : Icons.favorite_border,
+                      color: isFavorite ? Colors.red : Colors.grey,
                       size: 18,
                     ),
                   ),
