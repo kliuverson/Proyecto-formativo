@@ -7,6 +7,7 @@ class Product {
   final double price;
   final IconData icon;
   final String image; // Asumo que es la URL de la imagen
+  final String category; 
 
   bool isFavorite;
 
@@ -16,6 +17,7 @@ class Product {
     required this.price,
     required this.icon,
     required this.image,
+    required this.category,
     this.isFavorite = false,
   });
 

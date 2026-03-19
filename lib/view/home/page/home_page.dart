@@ -1,9 +1,10 @@
+import 'package:ferremateriales/view/modulos/category/widgets/category_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ferremateriales/src/routes/app_routes.dart';
 
 import '../widgets/banner_carousel.dart';
-import '../widgets/category_grid.dart';
+
 import '../widgets/productos.dart';
 import '../widgets/app_drawer.dart';
 import '../cubit/search_product_cubit.dart';
