@@ -64,7 +64,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
             const Padding(
               padding: EdgeInsets.all(16),
-              child: CategoryGrid(), // ✅ ahora sin parámetros
+              child: CategoryGrid(), // 
             ),
           ],
         ),

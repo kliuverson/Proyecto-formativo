@@ -51,13 +51,7 @@ class CategoryAppBar extends StatelessWidget implements PreferredSizeWidget {
           icon: Icon(Icons.shopping_cart, color: accentColor),
           onPressed: onCart,
         ),
-        IconButton(
-          icon: Icon(
-            isDarkMode ? Icons.light_mode : Icons.dark_mode,
-            color: accentColor,
-          ),
-          onPressed: toggleTheme,
-        ),
+      
       ],
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1),

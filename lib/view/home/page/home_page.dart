@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ferremateriales/src/routes/app_routes.dart';
 
 import '../widgets/banner_carousel.dart';
-
 import '../widgets/productos.dart';
 import '../widgets/app_drawer.dart';
 import '../cubit/search_product_cubit.dart';
@@ -86,19 +85,15 @@ class _HomePageState extends State<HomePage> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
 
-                        /// TITULO
-                        const Padding(
-                          padding: EdgeInsets.only(left: 56, top: 8),
-                          child: Text(
-                            "FerreMateriales",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Color.fromARGB(255, 0, 0, 0),
-                            ),
+                        /// 🔥 LOGO (REEMPLAZA EL TEXTO)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5, top: 8),
+                          child: Image.asset(
+                            "assets/icons/icono_page.png",
+                            height: 35,
                           ),
                         ),
 
