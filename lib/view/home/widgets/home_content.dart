@@ -1,9 +1,9 @@
 import 'package:ferremateriales/view/home/page/home_page.dart';
 import 'package:ferremateriales/view/home/widgets/module_list.dart';
+import 'package:ferremateriales/view/modulos/category/widgets/category_grid.dart';
 import 'package:flutter/material.dart';
 import '../widgets/banner_carousel.dart';
 import '../widgets/buscador.dart';
-import '../widgets/category_grid.dart';
 import '../widgets/productos.dart';
 
 
