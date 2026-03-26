@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
-  // Cambia esto por tu sistema real de login
+  // Simulación de login (cámbialo luego por tu lógica real)
   bool get isAuthenticated => true;
 
   @override
@@ -14,7 +14,7 @@ class AppDrawer extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
 
-            // ===== HEADER =====
+            /// ===== HEADER =====
             const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.orange,
@@ -40,45 +40,71 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
 
-            // incio 
+            /// 🏠 INICIO
             _item(
               context,
               icon: Icons.home,
               text: "Inicio",
-              onTap: () => Navigator.pushNamed(context, '/home'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/home');
+              },
             ),
 
-            // categorías
+            /// 📂 CATEGORÍAS
             _item(
               context,
               icon: Icons.category,
               text: "Categorías",
-              onTap: () => Navigator.pushNamed(context, '/category'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/category');
+              },
             ),
 
-            // carrito
+            /// 🛒 CARRITO
             _item(
               context,
               icon: Icons.shopping_cart,
               text: "Mi Carrito",
-              onTap: () => Navigator.pushNamed(context, '/cart'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/cart');
+              },
             ),
 
-            // favoritos solo si tienes cuenta 
+            /// ❤️ FAVORITOS (solo si login)
             if (isAuthenticated)
               _item(
                 context,
                 icon: Icons.favorite,
                 text: "Mis Favoritos",
-                onTap: () => Navigator.pushNamed(context, '/favorite'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/favorite');
+                },
               ),
 
-            // mi cuenta 
+            /// 📦 PEDIDOS (YA AGREGADO 🔥)
+            if (isAuthenticated)
+              _item(
+                context,
+                icon: Icons.receipt_long,
+                text: "Mis Pedidos",
+                onTap: () {
+                  Navigator.pop(context); // 👈 cerrar drawer
+                  Navigator.pushNamed(context, '/orders');
+                },
+              ),
+
+            /// 👤 MI CUENTA
             _item(
               context,
               icon: Icons.person,
               text: "Mi Cuenta",
               onTap: () {
+                Navigator.pop(context);
+
                 if (isAuthenticated) {
                   Navigator.pushNamed(context, '/profile');
                 } else {
@@ -87,52 +113,55 @@ class AppDrawer extends StatelessWidget {
               },
             ),
 
-            // pedidos (solo si login)
-            if (isAuthenticated)
-              _item(
-                context,
-                icon: Icons.receipt_long,
-                text: "Mis Pedidos",
-                onTap: () => Navigator.pushNamed(context, '/orders'),
-              ),
-
-            // direcciones (solo si login)
+            /// 📍 DIRECCIONES (solo si login)
             if (isAuthenticated)
               _item(
                 context,
                 icon: Icons.location_on,
                 text: "Direcciones",
-                onTap: () => Navigator.pushNamed(context, '/address'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/address');
+                },
               ),
 
             const Divider(),
 
-            // acerca de nosortros
+            /// ℹ️ ACERCA DE
             _item(
               context,
               icon: Icons.info,
               text: "Acerca de Nosotros",
-              onTap: () => Navigator.pushNamed(context, '/about'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/about');
+              },
             ),
 
-            // contacto y soporte
+            /// 🎧 SOPORTE
             _item(
               context,
               icon: Icons.support_agent,
               text: "Contacto / Soporte",
-              onTap: () => Navigator.pushNamed(context, '/support'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/support');
+              },
             ),
 
             const Divider(),
 
-            // cerrar sesión solo si está autenticado
+            /// 🚪 LOGOUT
             if (isAuthenticated)
               _item(
                 context,
                 icon: Icons.logout,
                 text: "Cerrar Sesión",
-                onTap: () => _confirmLogout(context),
                 color: Colors.red,
+                onTap: () {
+                  Navigator.pop(context);
+                  _confirmLogout(context);
+                },
               ),
           ],
         ),
@@ -140,7 +169,7 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
-  //  item reutilizable
+  /// 🔹 ITEM REUTILIZABLE
   Widget _item(
     BuildContext context, {
     required IconData icon,
@@ -155,7 +184,7 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
-  //  Confirmación de logout
+  /// 🔐 CONFIRMAR LOGOUT
   void _confirmLogout(BuildContext context) {
     showDialog(
       context: context,
