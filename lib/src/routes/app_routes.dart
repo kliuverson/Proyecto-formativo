@@ -1,3 +1,4 @@
+import 'package:ferremateriales/view/modulos/modules/orders/pages/orders_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:ferremateriales/view/home/page/home_page.dart';
 import 'package:ferremateriales/view/login/login.dart';
@@ -5,7 +6,7 @@ import 'package:ferremateriales/view/modulos/category/pages/category_page.dart';
 import 'package:ferremateriales/view/modulos/carrito/pages/cart_page.dart';
 import 'package:ferremateriales/view/modulos/profile/pages/profile_page.dart';
 import 'package:ferremateriales/view/modulos/favorites/pages/favorite_page.dart';
-import 'package:ferremateriales/view/modulos/orders/pages/orders_pages.dart';
+
 
 class AppRoutes {
   static const home = '/home';
