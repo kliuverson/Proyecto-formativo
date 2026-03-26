@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:ferremateriales/view/modulos/productos/model/product.dart';
 import 'package:ferremateriales/view/modulos/carrito/pages/model/cart_model.dart';
 import 'package:ferremateriales/view/modulos/carrito/pages/service/cart_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ferremateriales/view/modulos/carrito/pages/bloc/cart_bloc.dart';
+import 'package:ferremateriales/view/modulos/carrito/pages/bloc/cart_event.dart';
 
 class ProductDetail extends StatelessWidget {
   final ProductModel product;
@@ -83,9 +86,11 @@ class ProductDetail extends StatelessWidget {
                     id: product.sku,
                     name: product.nombre,
                     price: product.precio,
+                    quantity: 1,
                   );
 
-                  CartService.addProduct(cartItem);
+                  context.read<CartBloc>().add(AddToCart(cartItem));
+
 
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
