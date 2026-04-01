@@ -4,17 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TLoginForm extends StatelessWidget {
-  const TLoginForm({
-    super.key,
-  });
+  const TLoginForm({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Form(
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: TSize.spaceBtwSections,
-        ),
+        padding: const EdgeInsets.symmetric(vertical: TSize.spaceBtwSections),
         child: Column(
           children: [
             //Correo
@@ -26,7 +22,7 @@ class TLoginForm extends StatelessWidget {
               ),
             ),
             const SizedBox(height: TSize.spaceBtwInputFields),
-    
+
             // Contraseña
             TextFormField(
               obscureText: true,
@@ -37,7 +33,7 @@ class TLoginForm extends StatelessWidget {
               ),
             ),
             const SizedBox(height: TSize.spaceBtwInputFields / 2),
-    
+
             // Recordame y Olvidar Contraseña
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -49,16 +45,13 @@ class TLoginForm extends StatelessWidget {
                     Text(TText.rememberMe),
                   ],
                 ),
-    
+
                 // Olvidar Contraseña
-                TextButton(
-                  onPressed: () {},
-                  child: Text(TText.forgetPassword),
-                ),
+                TextButton(onPressed: () {}, child: Text(TText.forgetPassword)),
               ],
             ),
             const SizedBox(height: TSize.spaceBtwSections),
-    
+
             // Iniciar Sesion Boton
             SizedBox(
               width: double.infinity,
@@ -68,6 +61,7 @@ class TLoginForm extends StatelessWidget {
               ),
             ),
             const SizedBox(height: TSize.md),
+
             // Crear Cuenta Boton
             SizedBox(
               width: double.infinity,
@@ -78,7 +72,7 @@ class TLoginForm extends StatelessWidget {
                 child: Text(TText.createAccount),
               ),
             ),
-    
+
             const SizedBox(height: TSize.spaceBtwSections),
           ],
         ),

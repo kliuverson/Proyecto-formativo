@@ -5,14 +5,23 @@ const options = {
     openapi: "3.0.0",
     info: {
       title: "API Ferremateriales",
-      version: "1.0.0",
-      description: "Documentación de la API de productos para la ferretería",
+      version: "2.0.0",
+      description: "API de e-commerce con autenticación JWT y control de roles (Admin/Cliente)"
     },
     servers: [
       {
-        url: "http://localhost:3000",
-      },
+        url: "http://localhost:3000"
+      }
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT"
+        }
+      }
+    }
   },
   apis: ["./src/routes/*.js"],
 };

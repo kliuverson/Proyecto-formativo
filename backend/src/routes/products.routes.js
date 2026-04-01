@@ -1,4 +1,6 @@
 const express = require("express");
+const authMiddleware = require("../middlewares/auth.middleware");
+const roleMiddleware = require("../middlewares/role.middleware");
 
 const router = express.Router();
 
@@ -8,47 +10,46 @@ const productController = require("../controllers/product.controller");
  * @swagger
  * /api/products:
  *   get:
- *     summary: Obtener todos los productos
+ *     summary: Obtener todos los productos (requiere autenticación)
  *     tags: [Productos]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de productos
- *       500:
- *         description: Error del servidor
+ *       401:
+ *         description: No autorizado
  */
-router.get("/", productController.getProducts);
+router.get("/", authMiddleware, productController.getProducts);
 
 
 /**
  * @swagger
  * /api/products/{id}:
  *   get:
- *     summary: Obtener un producto por ID
+ *     summary: Obtener producto por ID (requiere autenticación)
  *     tags: [Productos]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: ID del producto
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Producto encontrado
  *       404:
  *         description: Producto no encontrado
- *       500:
- *         description: Error del servidor
+ *       401:
+ *         description: No autorizado
  */
-router.get("/:id", productController.getProductById);
+router.get("/:id", authMiddleware, productController.getProductById);
 
 
 /**
  * @swagger
  * /api/products:
  *   post:
- *     summary: Crear un nuevo producto
+ *     summary: Crear producto (Solo Admin)
  *     tags: [Productos]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -57,74 +58,61 @@ router.get("/:id", productController.getProductById);
  *             sku: "FER-001"
  *             nombre: "Taladro"
  *             descripcion: "Taladro eléctrico"
- *             precio: 180000
- *             stock: 10
+ *             precio: 150000
+ *             stock: 5
  *             category: "Herramientas"
  *             image: "taladro.jpg"
  *     responses:
  *       201:
- *         description: Producto creado correctamente
+ *         description: Producto creado
  *       400:
- *         description: Error en los datos enviados
+ *         description: Error en datos
+ *       403:
+ *         description: No autorizado (requiere Admin)
  *       409:
  *         description: SKU duplicado
  */
-router.post("/", productController.createProduct);
+router.post("/", authMiddleware, roleMiddleware("Admin"), productController.createProduct);
 
 
 /**
  * @swagger
  * /api/products/{id}:
  *   put:
- *     summary: Actualizar un producto
+ *     summary: Actualizar producto (Solo Admin)
  *     tags: [Productos]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: ID del producto
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           example:
- *             nombre: "Taladro actualizado"
- *             precio: 200000
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Producto actualizado
+ *       400:
+ *         description: Error en datos
+ *       403:
+ *         description: No autorizado
  *       404:
  *         description: Producto no encontrado
- *       400:
- *         description: Error en los datos
  */
-router.put("/:id", productController.updateProduct);
+router.put("/:id", authMiddleware, roleMiddleware("Admin"), productController.updateProduct);
 
 
 /**
  * @swagger
  * /api/products/{id}:
  *   delete:
- *     summary: Eliminar un producto
+ *     summary: Eliminar producto (Solo Admin)
  *     tags: [Productos]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: ID del producto
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       204:
  *         description: Producto eliminado
+ *       403:
+ *         description: No autorizado
  *       404:
  *         description: Producto no encontrado
- *       500:
- *         description: Error del servidor
  */
-router.delete("/:id", productController.deleteProduct);
+router.delete("/:id", authMiddleware, roleMiddleware("Admin"), productController.deleteProduct);
 
 
 
