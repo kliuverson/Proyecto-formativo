@@ -1,12 +1,12 @@
 import 'package:ferremateriales/utils/constants/size.dart';
 import 'package:ferremateriales/utils/constants/text_string.dart';
+import 'package:ferremateriales/view/login/cubit/mostrar_password_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TFormRegister extends StatelessWidget {
-  const TFormRegister({
-    super.key,
-  });
+  const TFormRegister({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +16,7 @@ class TFormRegister extends StatelessWidget {
           Row(
             children: [
               Expanded(
+                //Nombre
                 child: TextFormField(
                   expands: false,
                   decoration: InputDecoration(
@@ -25,6 +26,7 @@ class TFormRegister extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: TSize.spaceBtwInputFields),
+              //Apellido
               Expanded(
                 child: TextFormField(
                   expands: false,
@@ -65,14 +67,26 @@ class TFormRegister extends StatelessWidget {
           ),
           const SizedBox(height: TSize.spaceBtwInputFields),
           // Contraseña
-          TextFormField(
-            obscureText: true,
-            expands: false,
-            decoration: InputDecoration(
-              labelText: TText.password,
-              prefixIcon: Icon(CupertinoIcons.lock),
-              suffixIcon: Icon(CupertinoIcons.eye_slash),
-            ),
+          BlocBuilder<MostrarPasswordCubit, MostrarPasswordState>(
+            builder: (context, state) {
+              return TextFormField(
+                obscureText: !state.isVisible,
+                expands: false,
+                decoration: InputDecoration(
+                  labelText: TText.password,
+                  prefixIcon: Icon(CupertinoIcons.lock),
+                  suffixIcon: IconButton(
+                    icon:
+                        state.isVisible
+                            ? Icon(CupertinoIcons.eye)
+                            : Icon(CupertinoIcons.eye_slash),
+                    onPressed: () {
+                      context.read<MostrarPasswordCubit>().alternarContra();
+                    },
+                  ),
+                ),
+              );
+            },
           ),
           const SizedBox(height: TSize.spaceBtwInputFields + 5),
           SizedBox(
