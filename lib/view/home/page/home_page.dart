@@ -114,6 +114,7 @@ class _HomePageState extends State<HomePage> {
 
                       const SizedBox(height: 10),
 
+<<<<<<< Updated upstream
                       /// BUSCADOR
                       Container(
                         height: 45,
@@ -131,6 +132,38 @@ class _HomePageState extends State<HomePage> {
                             hintText: "Buscar herramientas...",
                             prefixIcon: Icon(Icons.search),
                             border: InputBorder.none,
+=======
+              /// MENU HAMBURGUESA
+              leading: Builder(
+                builder: (context) {
+                  return IconButton(
+                    icon: const Icon(Icons.menu, color: Colors.black),
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                  );
+                },
+              ),
+
+              flexibleSpace: FlexibleSpaceBar(
+                background: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+                        /// TITULO
+                        const Padding(
+                          padding: EdgeInsets.only(left: 56, top: 8),
+                          child: Text(
+                            "Ferremateriales DGC",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: Color.fromARGB(255, 0, 0, 0),
+                            ),
+>>>>>>> Stashed changes
                           ),
                         ),
                       ),
