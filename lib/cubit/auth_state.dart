@@ -4,8 +4,14 @@ class AuthState extends Equatable {
   final bool isAuthenticated;
   final String? token;
   final Map<String, dynamic>? userData;
+  final bool isLoading;
 
-  const AuthState({this.isAuthenticated = false, this.token, this.userData});
+  const AuthState({
+    this.isLoading = true,
+    required this.isAuthenticated,
+    this.token,
+    this.userData,
+  });
 
   AuthState copyWith({
     bool? isAuthenticated,
@@ -20,5 +26,5 @@ class AuthState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [isAuthenticated, token, userData];
+  List<Object?> get props => [isAuthenticated, token, userData,isLoading];
 }
