@@ -72,7 +72,7 @@ router.get("/:id", authMiddleware, productController.getProductById);
  *       409:
  *         description: SKU duplicado
  */
-router.post("/", authMiddleware, roleMiddleware("Admin"), productController.createProduct);
+router.post("/", authMiddleware, roleMiddleware(true), productController.createProduct);
 
 
 /**
@@ -93,7 +93,7 @@ router.post("/", authMiddleware, roleMiddleware("Admin"), productController.crea
  *       404:
  *         description: Producto no encontrado
  */
-router.put("/:id", authMiddleware, roleMiddleware("Admin"), productController.updateProduct);
+router.put("/:id", authMiddleware, roleMiddleware(true), productController.updateProduct);
 
 
 /**
@@ -112,7 +112,7 @@ router.put("/:id", authMiddleware, roleMiddleware("Admin"), productController.up
  *       404:
  *         description: Producto no encontrado
  */
-router.delete("/:id", authMiddleware, roleMiddleware("Admin"), productController.deleteProduct);
+router.delete("/:id", authMiddleware, roleMiddleware(true), productController.deleteProduct);
 
 
 

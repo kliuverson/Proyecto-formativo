@@ -1,3 +1,4 @@
+import 'package:ferremateriales/cubit/auth_cubit.dart';
 import 'package:ferremateriales/utils/constants/size.dart';
 import 'package:ferremateriales/utils/constants/text_string.dart';
 import 'package:ferremateriales/view/login/cubit/cubit/login_cubit.dart';
@@ -23,12 +24,15 @@ class TLoginForm extends StatelessWidget {
         }
 
         if (state.token != null) {
+          context.read<AuthCubit>().loginSucces(state.token!, state.userData!);
+
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text("Login exitoso!")));
           Navigator.pushReplacementNamed(context, "/home");
         }
       },
+
       child: Form(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: TSize.spaceBtwSections),
@@ -71,16 +75,7 @@ class TLoginForm extends StatelessWidget {
 
               // Recordame y Olvidar Contraseña
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Recuerdame
-                  Row(
-                    children: [
-                      Checkbox(value: true, onChanged: (value) {}),
-                      Text(TText.rememberMe),
-                    ],
-                  ),
-
                   // Olvidar Contraseña
                   TextButton(
                     onPressed: () {},
