@@ -1,10 +1,14 @@
 import 'package:ferremateriales/common/form_divider.dart';
 import 'package:ferremateriales/common/social_buttons.dart';
+import 'package:ferremateriales/service/auth_service.dart';
 import 'package:ferremateriales/utils/constants/size.dart';
 import 'package:ferremateriales/utils/constants/text_string.dart';
 import 'package:ferremateriales/utils/helpers/helpers_functions.dart';
+import 'package:ferremateriales/view/login/cubit/mostrar_password_cubit.dart';
+import 'package:ferremateriales/view/modulos/register/cubit/register_cubit.dart';
 import 'package:ferremateriales/view/modulos/register/widget/register_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -26,12 +30,22 @@ class RegisterScreen extends StatelessWidget {
               ),
               const SizedBox(height: TSize.spaceBtwSections),
               // Formulario de Registro
-              TFormRegister(),
+              MultiBlocProvider(
+                providers: [
+                  BlocProvider<MostrarPasswordCubit>(
+                    create: (context) => MostrarPasswordCubit(),
+                  ),
+                  BlocProvider(
+                    create: (context) => RegisterCubit(AuthService()),
+                  ),
+                ],
+                child: TFormRegister(),
+              ),
               const SizedBox(height: TSize.spaceBtwSections),
               // Formulario Divider
               TDividerForm(isDark: isDark, dividerText: TText.orSignUpWith),
               const SizedBox(height: TSize.spaceBtwSections),
-              TSocialButtons()
+              TSocialButtons(),
             ],
           ),
         ),

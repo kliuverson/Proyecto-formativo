@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { Schema } = mongoose
 
 const userSchema = new mongoose.Schema({
 
@@ -22,10 +23,7 @@ const userSchema = new mongoose.Schema({
         unique: true,
     },
 
-    numeroTelefono: {
-        type: String,
-        required: true
-    },
+    numeroTelefono: { type: String, required: true, trim: true },
 
     username: {
         type: String,
@@ -34,16 +32,21 @@ const userSchema = new mongoose.Schema({
         required: true
     },
 
-    role: {
-        type: String,
-        default: "Cliente"
-    },
+    esAdmin: { type: Boolean, default: false }, 
 
     password: {
         type: String,
         required: true,
-        minlength: 6
-    }
+        minlength: 8
+    },
+
+    listFavo: [
+        {
+            productoID: { type: Schema.Types.ObjectId, ref: "productos", required: true },
+            productoNombre: { type: String, required: true },
+            productoImage: { type: String, required: true }
+        },
+    ],
 
 });
 

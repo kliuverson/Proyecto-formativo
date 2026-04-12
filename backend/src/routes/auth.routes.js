@@ -1,5 +1,5 @@
 const express = require("express");
-const authMiddleware = require("../middlewares/auth.middleware");
+const validatorMiddleware = require("../middlewares/validator.middleware");
 
 const router = express.Router();
 
@@ -31,7 +31,7 @@ const authController = require("../controllers/auth.controller");
  *       409:
  *         description: Usuario ya existe
  */
-router.post("/register", authController.register);
+router.post("/register", validatorMiddleware, authController.register);
 
 // Ruta de Login
 /**

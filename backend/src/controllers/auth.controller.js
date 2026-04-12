@@ -1,5 +1,5 @@
 const User = require("../models/user.model");
-
+const { validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 
 const jwt = require("jsonwebtoken");
@@ -18,10 +18,13 @@ exports.register = async (req, res) => {
     } = req.body;
 
     // Validación
-    if (!nombre || !apellido || !username || !correo || !numeroTelefono || !password) {
-      return res.status(400).json({
-        message: "Todos los campos son obligatorios"
-      });
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      const errorsMessages = errors.array().map((error) => ({
+        field: error.path,
+        message: error.msg,
+      }));
+      return res.status(400).json({ errors: errorsMessages });
     }
 
     // Verificar duplicados
@@ -49,8 +52,11 @@ exports.register = async (req, res) => {
 
     await newUser.save();
 
+    const {password : _, ...userData} = newUser._doc;
+
     res.status(201).json({
-      message: "Usuario registrado correctamente"
+      message: "Usuario registrado correctamente",
+      user: userData
     });
 
   } catch (error) {
@@ -77,7 +83,7 @@ exports.login = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({
-        message: "Usuario no encontrado"
+        message: "Usuario no encontrado, por favor verifica tu correo electronico"
       });
     }
 
@@ -89,28 +95,25 @@ exports.login = async (req, res) => {
       });
     }
 
-    if(!process.env.JWT_SECRET){
-        throw new Error("JWT_SECRET no esta definido");
+    if (!process.env.JWT_SECRET) {
+      throw new Error("JWT_SECRET no esta definido");
     }
 
     const token = jwt.sign(
       {
         id: user._id,
-        role: user.role
+        esAdmin: user.esAdmin
       },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 
+    const {password : _, ...userData} = user._doc;
+
     res.status(200).json({
       message: "Login exitoso",
       token,
-      user: {
-        id: user._id,
-        nombre: user.nombre,
-        correo: user.correo,
-        role: user.role
-      }
+      user: userData
     });
 
   } catch (error) {
