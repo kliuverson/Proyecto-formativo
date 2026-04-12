@@ -17,7 +17,7 @@ class LoginState extends Equatable {
     return LoginState(
       isLoading: isLoading ?? this.isLoading,
       error: error,
-      token: token,
+      token: token ?? this.token,
       userData: userData ?? this.userData,
     );
   }

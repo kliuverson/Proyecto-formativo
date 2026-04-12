@@ -6,10 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(AuthState(isAuthenticated: false));
+  AuthCubit() : super(AuthState(isAuthenticated: false, isLoading: true));
 
   void loginSucces(String token, Map<String, dynamic> userData) {
-    emit(AuthState(isAuthenticated: true, token: token, userData: userData));
+    emit(AuthState(isAuthenticated: true, token: token, userData: userData, isLoading: false));
   }
 
   Future<void> logout() async {
@@ -21,6 +21,8 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> checkAuthStatus() async {
     emit(AuthState(isAuthenticated: false, isLoading: true));
 
+    await Future.delayed(const Duration(seconds: 3)); 
+
     final SharedPreferences prefers = await SharedPreferences.getInstance();
     final token = prefers.getString("token");
 
@@ -28,7 +30,7 @@ class AuthCubit extends Cubit<AuthState> {
       final bool isExpired = JwtDecoder.isExpired(token);
       if (isExpired) {
         await prefers.remove("token");
-        emit(AuthState(isAuthenticated: false));
+        emit(AuthState(isAuthenticated: false, isLoading: false));
         return;
       }
       emit(AuthState(isAuthenticated: true, token: token, isLoading: false));

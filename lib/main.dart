@@ -30,7 +30,7 @@ void main() async {
         BlocProvider(create: (_) => SearchProductCubit()),
         BlocProvider(create: (_) => ProductBloc(ProductRepository())),
         BlocProvider(create: (_) => CartBloc()..add(LoadCart())),
-        BlocProvider(create: (_) => AuthCubit()..checkAuthStatus()),
+        BlocProvider(create: (_) => AuthCubit()),
       ],
       child: const MyApp(),
     ),

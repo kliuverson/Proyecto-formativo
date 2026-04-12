@@ -20,7 +20,7 @@ class TLoginForm extends StatelessWidget {
         if (state.error != null) {
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(SnackBar(content: Text("${state.error}")));
+          ).showSnackBar(SnackBar(content: Text(state.error!)));
         }
 
         if (state.token != null) {

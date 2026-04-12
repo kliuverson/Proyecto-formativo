@@ -2,7 +2,6 @@ import 'package:ferremateriales/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
 
@@ -63,6 +62,10 @@ class _SplashPageState extends State<SplashPage>
     );
 
     _controller.forward();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AuthCubit>().checkAuthStatus();
+    });
   }
 
   @override
@@ -86,10 +89,7 @@ class _SplashPageState extends State<SplashPage>
     final totalWidth = logoSize + textSize;
 
     return BlocListener<AuthCubit, AuthState>(
-      listenWhen:
-          (previus, current) =>
-              previus.isLoading != current.isLoading ||
-              previus.isAuthenticated != current.isAuthenticated,
+      listenWhen: (previus, current) => previus.isLoading != current.isLoading,
       listener: (context, state) {
         if (!state.isLoading) {
           if (state.isAuthenticated) {
