@@ -1,9 +1,7 @@
-import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:ferremateriales/service/auth_service.dart';
 import 'package:ferremateriales/view/login/models/auth_error.dart';
-import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'login_state.dart';
