@@ -1,4 +1,4 @@
-const roleMiddleware = (role) => {
+const roleMiddleware = (esAdmin) => {
   return (req, res, next) => {
 
     if (!req.user) {
@@ -7,7 +7,7 @@ const roleMiddleware = (role) => {
       });
     }
 
-    if (req.user.role !== role) {
+    if (req.user.esAdmin !== esAdmin) {
       return res.status(403).json({
         message: "No tienes permisos para esta acción"
       });

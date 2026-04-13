@@ -1,24 +1,23 @@
+import 'package:ferremateriales/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
-  // Simulación de login (cámbialo luego por tu lógica real)
-  bool get isAuthenticated => false;
-
   @override
   Widget build(BuildContext context) {
+    final authState = context.watch<AuthCubit>().state;
+    final isAuthenticated = authState.isAuthenticated;
+
     return Drawer(
       child: SafeArea(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-
             /// ===== HEADER =====
             const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.orange,
-              ),
+              decoration: BoxDecoration(color: Colors.orange),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -59,6 +58,17 @@ class AppDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/category');
+              },
+            ),
+
+            /// 🛍️ PRODUCTOS
+            _item(
+              context,
+              icon: Icons.store,
+              text: "Productos",
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/products');
               },
             ),
 
@@ -159,7 +169,6 @@ class AppDrawer extends StatelessWidget {
                 text: "Cerrar Sesión",
                 color: Colors.red,
                 onTap: () {
-                  Navigator.pop(context);
                   _confirmLogout(context);
                 },
               ),
@@ -186,25 +195,40 @@ class AppDrawer extends StatelessWidget {
 
   /// 🔐 CONFIRMAR LOGOUT
   void _confirmLogout(BuildContext context) {
+    final rootContext = Navigator.of(context).context;
+
     showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: const Text("Cerrar sesión"),
-        content: const Text("¿Seguro que deseas salir?"),
-        actions: [
-          TextButton(
-            child: const Text("Cancelar"),
-            onPressed: () => Navigator.pop(context),
+      context: rootContext,
+      builder:
+          (_) => AlertDialog(
+            title: const Text("Cerrar sesión"),
+            content: const Text("¿Seguro que deseas salir?"),
+            actions: [
+              TextButton(
+                child: const Text("Cancelar"),
+                onPressed: () => Navigator.pop(rootContext),
+              ),
+              SizedBox(
+                height: 40,
+                width: 80,
+                child: ElevatedButton(
+                  child: const Text("Salir"),
+                  onPressed: () {
+                    Navigator.pop(rootContext);
+                    Navigator.pop(context);
+
+                    rootContext.read<AuthCubit>().logout();
+
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/login',
+                      (route) => false,
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
-          ElevatedButton(
-            child: const Text("Salir"),
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/login');
-            },
-          ),
-        ],
-      ),
     );
   }
 }

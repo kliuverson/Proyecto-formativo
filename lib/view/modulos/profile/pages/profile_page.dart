@@ -1,11 +1,14 @@
 import 'package:ferremateriales/common/widgets/appbar/app_bar.dart';
 import 'package:ferremateriales/common/widgets/coustom_shapes/containers/primary_header_container.dart';
 import 'package:ferremateriales/common/widgets/text/section_heading.dart';
+import 'package:ferremateriales/cubit/auth_cubit.dart';
 import 'package:ferremateriales/utils/constants/size.dart';
 import 'package:ferremateriales/view/modulos/profile/widgets/setting_menu_list.dart';
 import 'package:ferremateriales/view/modulos/profile/widgets/user_profile_title.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -149,7 +152,14 @@ class ProfilePage extends StatelessWidget {
                     icon: CupertinoIcons.square_arrow_right,
                     title: "Cerrar sesión",
                     subtitle: "Salir de la cuenta",
-                    onTap: () {},
+                    onTap: () {
+                      context.read<AuthCubit>().logout();
+                      Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/login',
+                      (route) => false,
+                      );
+                    },
                   ),
                 ],
               ),

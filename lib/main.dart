@@ -1,9 +1,9 @@
+import 'package:ferremateriales/cubit/auth_cubit.dart';
 import 'package:ferremateriales/view/modulos/carrito/pages/bloc/cart_bloc.dart';
 import 'package:ferremateriales/view/modulos/carrito/pages/bloc/cart_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
 import 'view/modulos/carrito/pages/model/cart_model.dart';
 import 'view/modulos/carrito/pages/service/cart_service.dart';
 import 'view/modulos/productos/data/repository/product_repository.dart';
@@ -29,6 +29,7 @@ void main() async {
         BlocProvider(create: (_) => SearchProductCubit()),
         BlocProvider(create: (_) => ProductBloc(ProductRepository())),
         BlocProvider(create: (_) => CartBloc()..add(LoadCart())),
+        BlocProvider(create: (_) => AuthCubit()),
       ],
       child: const MyApp(),
     ),
