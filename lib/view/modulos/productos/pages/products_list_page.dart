@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ferremateriales/view/modulos/productos/model/product.dart';
 import 'package:ferremateriales/view/modulos/productos/pages/product_details.dart';
 import 'package:ferremateriales/view/modulos/productos/service/product_service.dart';
-
-// 👇 IMPORTS NUEVOS
 import 'widgets/product_grid.dart';
 import 'widgets/product_list.dart';
 
@@ -43,6 +41,10 @@ class _ProductListPageState extends State<ProductListPage> {
   }
 
   void _navegarDetalle(BuildContext context, ProductModel product) {
+    print(
+      '[ProductListPage] Navegando a detalle: ${product.sku} - ${product.nombre}',
+    );
+
     Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => ProductDetail(product: product)),
@@ -65,17 +67,18 @@ class _ProductListPageState extends State<ProductListPage> {
           ),
         ],
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : _isGrid
+      body:
+          _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : _isGrid
               ? ProductGrid(
-                  productos: productos,
-                  onTap: (product) => _navegarDetalle(context, product),
-                )
+                productos: productos,
+                onTap: (product) => _navegarDetalle(context, product),
+              )
               : ProductList(
-                  productos: productos,
-                  onTap: (product) => _navegarDetalle(context, product),
-                ),
+                productos: productos,
+                onTap: (product) => _navegarDetalle(context, product),
+              ),
     );
   }
-} 
+}
