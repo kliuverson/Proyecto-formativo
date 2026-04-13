@@ -4,7 +4,7 @@ class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
   // Simulación de login (cámbialo luego por tu lógica real)
-  bool get isAuthenticated => true;
+  bool get isAuthenticated => false;
 
   @override
   Widget build(BuildContext context) {

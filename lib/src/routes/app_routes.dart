@@ -1,4 +1,5 @@
 import 'package:ferremateriales/view/modulos/modules/orders/pages/orders_pages.dart';
+import 'package:ferremateriales/view/modulos/register/register.dart';
 import 'package:flutter/material.dart';
 import 'package:ferremateriales/view/home/page/home_page.dart';
 import 'package:ferremateriales/view/login/login.dart';
@@ -16,6 +17,7 @@ class AppRoutes {
   static const profile = '/profile';
   static const favorite = '/favorite';
   static const orders = '/orders'; 
+  static const register = '/register';
 
   static Map<String, WidgetBuilder> routes = {
     home: (context) => const HomePage(),
@@ -25,5 +27,6 @@ class AppRoutes {
     profile: (context) => const ProfilePage(),
     favorite: (context) => const FavoritesPage(),
     orders: (context) => OrdersPage(), 
+    register: (context) => const RegisterScreen()
   };
 }
