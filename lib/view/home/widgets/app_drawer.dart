@@ -61,6 +61,17 @@ class AppDrawer extends StatelessWidget {
               },
             ),
 
+            /// 🛍️ PRODUCTOS
+            _item(
+              context,
+              icon: Icons.store,
+              text: "Productos",
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/products');
+              },
+            ),
+
             /// 🛒 CARRITO
             _item(
               context,

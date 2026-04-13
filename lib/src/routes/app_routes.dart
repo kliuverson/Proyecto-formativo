@@ -1,4 +1,5 @@
 import 'package:ferremateriales/view/modulos/modules/orders/pages/orders_pages.dart';
+import 'package:ferremateriales/view/modulos/productos/pages/products_list_page.dart';
 import 'package:ferremateriales/view/modulos/register/register.dart';
 import 'package:flutter/material.dart';
 import 'package:ferremateriales/view/home/page/home_page.dart';
@@ -8,7 +9,6 @@ import 'package:ferremateriales/view/modulos/carrito/pages/cart_page.dart';
 import 'package:ferremateriales/view/modulos/profile/pages/profile_page.dart';
 import 'package:ferremateriales/view/modulos/favorites/pages/favorite_page.dart';
 
-
 class AppRoutes {
   static const home = '/home';
   static const login = '/login';
@@ -16,8 +16,9 @@ class AppRoutes {
   static const category = '/category';
   static const profile = '/profile';
   static const favorite = '/favorite';
-  static const orders = '/orders'; 
+  static const orders = '/orders';
   static const register = '/register';
+  static const products = '/products';
 
   static Map<String, WidgetBuilder> routes = {
     home: (context) => const HomePage(),
@@ -26,7 +27,8 @@ class AppRoutes {
     category: (context) => const CategoryPage(),
     profile: (context) => const ProfilePage(),
     favorite: (context) => const FavoritesPage(),
-    orders: (context) => OrdersPage(), 
-    register: (context) => const RegisterScreen()
+    orders: (context) => OrdersPage(),
+    register: (context) => const RegisterScreen(),
+    products: (context) => const ProductListPage(),
   };
 }
