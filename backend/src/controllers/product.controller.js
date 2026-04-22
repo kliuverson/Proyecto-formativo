@@ -1,9 +1,16 @@
 const Product = require("../models/products.model");
 
-// Obtener todos los productos
+// Obtener todos los productos con paginación y filtro por categoría
 exports.getProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 40;
+    const skip = (page - 1) * limit;
+    const category = req.query.category || null; //  filtro por categoría
+
+    const filtro = category ? { category } : {};
+
+    const products = await Product.find(filtro).skip(skip).limit(limit);
     const baseUrl = `${req.protocol}://${req.get('host')}`;
 
     const productosConUrl = products.map(p => {
@@ -14,7 +21,15 @@ exports.getProducts = async (req, res) => {
       return obj;
     });
 
-    res.status(200).json(productosConUrl);
+    const total = await Product.countDocuments(filtro);
+
+    res.status(200).json({
+      productos: productosConUrl,
+      paginaActual: page,
+      totalProductos: total,
+      totalPaginas: Math.ceil(total / limit)
+    });
+
   } catch (error) {
     res.status(500).json({
       message: "Error al obtener los productos",

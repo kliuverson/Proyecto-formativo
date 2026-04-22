@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const path = require("path"); // agregar esto
+const path = require("path");
 
 const productRoutes = require("./routes/products.routes");
 const UserRoutes = require("./routes/auth.routes");
@@ -12,9 +12,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-//  agregar esto (sirve las imágenes como archivos estáticos)
-app.use("/images", express.static("C:/Users/HP-255-G10/OneDrive/Imágenes/Proyecto-formativo/assets/images"));
-console.log("servidor listo");
+// Sirve las imágenes como archivos estáticos (ruta relativa y portable)
+app.use("/images", express.static(path.join(__dirname, "../images")));
 
 app.use("/api/products", productRoutes);
 app.use("/api/auth", UserRoutes);
@@ -25,8 +24,3 @@ app.get("/", (req, res) => {
 });
 
 module.exports = app;
-
-
-
-
-

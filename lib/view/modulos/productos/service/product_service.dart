@@ -1,28 +1,28 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart'; // 👈 agregar
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ferremateriales/view/modulos/productos/model/product.dart';
 
 class ProductService {
-  static const String baseUrl = 'http://192.168.1.2:3000';
+  static const String baseUrl = 'http://192.168.1.14:3000';
 
-  static Future<List<ProductModel>> getProducts() async {
+  static Future<List<ProductModel>> getProducts({int page = 1, int limit = 40}) async {
     try {
-      // 👇 Obtener el token guardado
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token') ?? '';
 
       final response = await http.get(
-        Uri.parse('$baseUrl/api/products'),
+        Uri.parse('$baseUrl/api/products?page=$page&limit=$limit'),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token', // 👈 enviar token
+          'Authorization': 'Bearer $token',
         },
       );
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
-        return data.map((item) => ProductModel.fromJson(item)).toList();
+        final data = jsonDecode(response.body);
+        final List<dynamic> lista = data['productos'];
+        return lista.map((item) => ProductModel.fromJson(item)).toList();
       } else {
         return [];
       }
@@ -32,9 +32,31 @@ class ProductService {
     }
   }
 
-  static Future<List<ProductModel>> getProductsByCategory(String category) async {
-    final products = await getProducts();
-    return products.where((p) => p.category == category).toList();
+  // 👇 Ahora filtra directo desde el backend
+  static Future<List<ProductModel>> getProductsByCategory(String category, {int page = 1, int limit = 20}) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token') ?? '';
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/api/products?page=$page&limit=$limit&category=$category'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final List<dynamic> lista = data['productos'];
+        return lista.map((item) => ProductModel.fromJson(item)).toList();
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print('Error: $e');
+      return [];
+    }
   }
 
   static List<ProductModel> getStaticProducts() => [];
