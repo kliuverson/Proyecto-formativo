@@ -1,6 +1,7 @@
 import 'package:ferremateriales/view/modulos/productos/model/product.dart';
 import '../providers/product_api_provider.dart';
 import 'package:hive/hive.dart';
+import '../../service/product_service.dart';
 
 class ProductRepository {
   final apiProvider = ProductApiProvider();
@@ -18,5 +19,10 @@ class ProductRepository {
       var box = await Hive.openBox<ProductModel>('productBox');
       return box.values.toList();
     }
+  }
+
+  Future<void> createProduct(Map<String, dynamic> data) async {
+    // Usa el servicio existente que hace la petición al backend
+    await ProductService.createProduct(data);
   }
 }

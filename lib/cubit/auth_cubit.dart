@@ -9,7 +9,8 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthState(isAuthenticated: false, isLoading: true));
 
   void loginSucces(String token, Map<String, dynamic> userData) {
-    emit(AuthState(isAuthenticated: true, token: token, userData: userData, isLoading: false));
+    final decodedToken = JwtDecoder.decode(token); 
+    emit(AuthState(isAuthenticated: true, token: token, userData: decodedToken, isLoading: false));
   }
 
   Future<void> logout() async {
@@ -33,7 +34,8 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthState(isAuthenticated: false, isLoading: false));
         return;
       }
-      emit(AuthState(isAuthenticated: true, token: token, isLoading: false));
+      final decodedToken = JwtDecoder.decode(token);
+      emit(AuthState(userData: decodedToken,isAuthenticated: true, token: token, isLoading: false));
     } else {
       emit(AuthState(isAuthenticated: false, isLoading: false));
     }
