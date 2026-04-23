@@ -1,54 +1,63 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ferremateriales/view/modulos/productos/model/product.dart';
 
 class ProductService {
-  /// 🔹 MOCK (para desarrollo)
-  static List<ProductModel> getStaticProducts() {
-    return [
-      ProductModel(
-        sku: "1",
-        nombre: "Taladro Bosch",
-        descripcion: "Taladro potente para uso profesional",
-        precio: 250000,
-        stock: 10,
-        category: "Electricidad",
-        image: "",
-        estaActivo: true,
-      ),
-    ];
-  }
+  static const String baseUrl = 'http://192.168.1.14:3000';
 
-  /// 🔹 FUTURO: BACKEND
-  static Future<List<ProductModel>> getProducts() async {
+  static Future<List<ProductModel>> getProducts({int page = 1, int limit = 40}) async {
     try {
-      // CUANDO CONECTES BACKEND SOLO CAMBIAS ESTO
-      // final response = await http.get(Uri.parse("http://tu-api/productos"));
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token') ?? '';
 
-      // final data = jsonDecode(response.body);
+      final response = await http.get(
+        Uri.parse('$baseUrl/api/products?page=$page&limit=$limit'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
 
-      // return List<Product>.from(
-      //   data.map((item) => Product.fromJson(item))
-      // );
-
-      /// POR AHORA:
-      await Future.delayed(const Duration(seconds: 1));
-      return getStaticProducts();
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final List<dynamic> lista = data['productos'];
+        return lista.map((item) => ProductModel.fromJson(item)).toList();
+      } else {
+        return [];
+      }
     } catch (e) {
-      return getStaticProducts();
-    }
-  }
-
-  /// 🔹 FILTRAR POR CATEGORÍA (BACKEND READY)
-  static Future<List<ProductModel>> getProductsByCategory(
-    String category,
-  ) async {
-    try {
-      final products = await getProducts();
-
-      return products.where((product) {
-        return product.category == category;
-      }).toList();
-    } catch (e) {
+      print('Error: $e');
       return [];
     }
   }
+
+  // 👇 Ahora filtra directo desde el backend
+  static Future<List<ProductModel>> getProductsByCategory(String category, {int page = 1, int limit = 20}) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token') ?? '';
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/api/products?page=$page&limit=$limit&category=$category'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final List<dynamic> lista = data['productos'];
+        return lista.map((item) => ProductModel.fromJson(item)).toList();
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print('Error: $e');
+      return [];
+    }
+  }
+
+  static List<ProductModel> getStaticProducts() => [];
 }
