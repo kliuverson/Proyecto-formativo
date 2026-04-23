@@ -1,34 +1,56 @@
 import 'package:ferremateriales/view/modulos/admin/cubit/admin/admin_cubit.dart';
 import 'package:ferremateriales/view/modulos/admin/cubit/admin/admin_state.dart';
 import 'package:ferremateriales/view/modulos/admin/data/admin_service.dart';
-import 'package:ferremateriales/view/modulos/admin/widgets/product_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ferremateriales/view/modulos/admin/widgets/product_form.dart';
 
-class AdminPage extends StatelessWidget {
-  const AdminPage({super.key});
+class CreateProductPage extends StatelessWidget {
+  const CreateProductPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AdminCubit(AdminService())..cargarProductos(),
+      create: (_) => AdminProductCubit(ProductService()),
       child: Scaffold(
-        appBar: AppBar(title: const Text('Modo Admin')),
-        body: BlocBuilder<AdminCubit, AdminState>(
+        appBar: AppBar(title: const Text("Crear Producto")),
+        body: BlocConsumer<AdminProductCubit, AdminProductState>(
+          listener: (context, state) {
+            if (state is AdminProductSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Producto creado correctamente")),
+              );
+            }
+
+            if (state is AdminProductError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.message)),
+              );
+            }
+          },
           builder: (context, state) {
-            if (state is AdminLoading) {
+            if (state is AdminProductLoading) {
               return const Center(child: CircularProgressIndicator());
             }
 
-            if (state is AdminError) {
-              return Center(child: Text(state.message));
-            }
+            return ProductForm(
+              onSubmit: (data) {
+                final cubit = context.read<AdminProductCubit>();
 
-            if (state is AdminSuccess) {
-              return ProductList(productos: state.productos);
-            }
-
-            return const SizedBox();
+                cubit.createProduct(
+                  sku: data['sku'] ?? '',
+                  nombre: data['nombre'] ?? '',
+                  precio: data['precio'] is double
+                      ? data['precio'] as double
+                      : double.parse(data['precio'].toString()),
+                  stock: data['stock'] is int
+                      ? data['stock'] as int
+                      : int.parse(data['stock'].toString()),
+                  image: data['image'] ?? '',
+                  descripcion: data['descripcion'],
+                );
+              },
+            );
           },
         ),
       ),

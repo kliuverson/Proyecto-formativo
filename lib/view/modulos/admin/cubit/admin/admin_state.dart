@@ -1,17 +1,18 @@
-abstract class AdminState {}
+// admin_state.dart
+abstract class AdminProductState {}
 
-class AdminInitial extends AdminState {}
+class AdminProductInitial extends AdminProductState {}
 
-class AdminLoading extends AdminState {}
+class AdminProductLoading extends AdminProductState {}
 
-class AdminSuccess extends AdminState {
-  final List<dynamic> productos;
+class AdminProductSuccess extends AdminProductState {
+  final Map<String, dynamic> product;
 
-  AdminSuccess(this.productos);
+  AdminProductSuccess(this.product);
 }
 
-class AdminError extends AdminState {
+class AdminProductError extends AdminProductState {
   final String message;
 
-  AdminError(this.message);
+  AdminProductError(this.message);
 }

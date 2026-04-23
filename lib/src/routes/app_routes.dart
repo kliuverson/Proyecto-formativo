@@ -1,3 +1,4 @@
+import 'package:ferremateriales/view/modulos/admin/page/admin_page.dart';
 import 'package:ferremateriales/view/modulos/modules/orders/pages/orders_pages.dart';
 import 'package:ferremateriales/view/modulos/productos/pages/products_list_page.dart';
 import 'package:ferremateriales/view/modulos/register/register.dart';
@@ -19,6 +20,7 @@ class AppRoutes {
   static const orders = '/orders';
   static const register = '/register';
   static const products = '/products';
+  static const admin = '/admin';
 
   static Map<String, WidgetBuilder> routes = {
     home: (context) => const HomePage(),
@@ -30,5 +32,6 @@ class AppRoutes {
     orders: (context) => OrdersPage(),
     register: (context) => const RegisterScreen(),
     products: (context) => const ProductListPage(),
+    admin: (context) => const CreateProductPage(),
   };
 }

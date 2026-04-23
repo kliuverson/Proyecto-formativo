@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ferremateriales/view/modulos/productos/model/product.dart';
 
 class ProductService {
-  static const String baseUrl = 'http://192.168.1.14:3000';
+  static const String baseUrl = 'http://10.2.125.253:3000';
 
   static Future<List<ProductModel>> getProducts({int page = 1, int limit = 40}) async {
     try {
@@ -58,6 +58,24 @@ class ProductService {
       return [];
     }
   }
+  static Future<void> createProduct(Map<String, dynamic> data) async {
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('token') ?? '';
+
+  final response = await http.post(
+    Uri.parse('$baseUrl/api/products'),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    },
+    body: jsonEncode(data),
+  );
+
+  if (response.statusCode != 201) {
+    final resData = jsonDecode(response.body);
+    throw Exception(resData["message"]);
+  }
+}
 
   static List<ProductModel> getStaticProducts() => [];
 }

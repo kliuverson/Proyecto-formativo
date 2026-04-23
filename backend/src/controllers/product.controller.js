@@ -65,13 +65,37 @@ exports.getProductById = async (req, res) => {
 // Crear producto
 exports.createProduct = async (req, res) => {
   try {
+    const { sku, nombre, precio, stock, image } = req.body;
+
+    // 🔎 Validación manual (lo que te están pidiendo)
+    if (!nombre || precio == null || stock == null || !sku || !image) {
+      return res.status(400).json({
+        message: "SKU, nombre, precio, stock e imagen son obligatorios"
+      });
+    }
+
+    if (precio <= 0) {
+      return res.status(400).json({
+        message: "El precio debe ser mayor a 0"
+      });
+    }
+
+    if (stock < 0) {
+      return res.status(400).json({
+        message: "El stock no puede ser negativo"
+      });
+    }
+
     const newProduct = new Product(req.body);
     const savedProduct = await newProduct.save();
+
     res.status(201).json(savedProduct);
+
   } catch (error) {
     if (error.code === 11000) {
       return res.status(409).json({ message: "El SKU ya existe" });
     }
+
     res.status(400).json({
       message: "Error al crear el producto",
       error: error.message

@@ -1,20 +1,40 @@
+// product_cubit.dart
 import 'package:ferremateriales/view/modulos/admin/cubit/admin/admin_state.dart';
 import 'package:ferremateriales/view/modulos/admin/data/admin_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AdminCubit extends Cubit<AdminState> {
-  final AdminService service;
+class AdminProductCubit extends Cubit<AdminProductState> {
+  final ProductService service;
 
-  AdminCubit(this.service) : super(AdminInitial());
+  AdminProductCubit(this.service) : super(AdminProductInitial());
 
-  Future<void> cargarProductos() async {
-    emit(AdminLoading());
+  Future<void> createProduct({
+    required String sku,
+    required String nombre,
+    required double precio,
+    required int stock,
+    required String image,
+    String? descripcion,
+    String? category,
+  }) async {
+    emit(AdminProductLoading());
 
     try {
-      final productos = await service.obtenerProductos();
-      emit(AdminSuccess(productos));
+      final data = {
+        "sku": sku,
+        "nombre": nombre,
+        "precio": precio,
+        "stock": stock,
+        "image": image,
+        "descripcion": descripcion,
+        "category": category
+      };
+
+      final result = await service.createProduct(data);
+
+      emit(AdminProductSuccess(result));
     } catch (e) {
-      emit(AdminError(e.toString()));
+      emit(AdminProductError(e.toString()));
     }
   }
 }

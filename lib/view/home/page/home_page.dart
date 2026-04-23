@@ -1,3 +1,4 @@
+import 'package:ferremateriales/cubit/auth_cubit.dart';
 import 'package:ferremateriales/view/modulos/category/widgets/category_grid.dart';
 import 'package:ferremateriales/view/modulos/productos/model/product.dart';
 import 'package:ferremateriales/view/modulos/productos/service/product_service.dart';
@@ -92,6 +93,23 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             ),
+            actions: [
+                      Builder(
+                        builder: (context) {
+                          final auth = context.watch<AuthCubit>().state;
+                          final isAdmin = auth.userData?["esAdmin"] ?? false;
+
+                          if (!isAdmin) return const SizedBox();
+
+                          return IconButton(
+                            icon: const Icon(Icons.admin_panel_settings, color: Colors.black),
+                            onPressed: () {
+                              Navigator.pushNamed(context, AppRoutes.admin);
+                            },
+                          );
+                        },
+                      )
+                    ],
 
             flexibleSpace: FlexibleSpaceBar(
               background: SafeArea(
