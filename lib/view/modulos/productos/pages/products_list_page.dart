@@ -36,7 +36,7 @@ class _ProductListPageState extends State<ProductListPage> {
     } catch (e) {
       print('[ProductListPage] Error cargando productos: $e');
       setState(() {
-        productos = ProductService.getStaticProducts();
+        productos = [];
         _isLoading = false;
       });
     }
