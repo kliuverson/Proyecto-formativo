@@ -4,6 +4,7 @@ const path = require("path");
 
 const productRoutes = require("./routes/products.routes");
 const UserRoutes = require("./routes/auth.routes");
+const profileRoutes = require("./routes/profile.routes");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
 
@@ -17,6 +18,7 @@ app.use("/images", express.static(path.join(__dirname, "../images")));
 
 app.use("/api/products", productRoutes);
 app.use("/api/auth", UserRoutes);
+app.use("/api/user", profileRoutes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get("/", (req, res) => {
