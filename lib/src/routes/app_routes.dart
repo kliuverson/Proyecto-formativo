@@ -1,6 +1,9 @@
 import 'package:ferremateriales/view/modulos/admin/page/admin_page.dart';
 import 'package:ferremateriales/view/modulos/modules/orders/pages/orders_pages.dart';
 import 'package:ferremateriales/view/modulos/productos/pages/products_list_page.dart';
+import 'package:ferremateriales/view/modulos/profile/cubit/profile_cubit.dart';
+import 'package:ferremateriales/view/modulos/profile/models/profile_user_model.dart';
+import 'package:ferremateriales/view/modulos/profile/pages/edit_profile_page.dart';
 import 'package:ferremateriales/view/modulos/register/register.dart';
 import 'package:flutter/material.dart';
 import 'package:ferremateriales/view/home/page/home_page.dart';
@@ -9,6 +12,7 @@ import 'package:ferremateriales/view/modulos/category/pages/category_page.dart';
 import 'package:ferremateriales/view/modulos/carrito/pages/cart_page.dart';
 import 'package:ferremateriales/view/modulos/profile/pages/profile_page.dart';
 import 'package:ferremateriales/view/modulos/favorites/pages/favorite_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppRoutes {
   static const home = '/home';
@@ -21,13 +25,24 @@ class AppRoutes {
   static const register = '/register';
   static const products = '/products';
   static const admin = '/admin';
+  static const editProfile = '/edit-profile';
 
   static Map<String, WidgetBuilder> routes = {
     home: (context) => const HomePage(),
     login: (context) => const Login(),
     cart: (context) => const CartPage(),
     category: (context) => const CategoryPage(),
-    profile: (context) => const ProfilePage(),
+    profile:
+        (context) => BlocProvider.value(
+          value: context.read<ProfileCubit>()..getUserProfile(),
+          child: const ProfilePage(),
+        ),
+
+    editProfile: (context) {
+      final user = ModalRoute.of(context)!.settings.arguments as UserProfileModel;
+      return EditProfilePage(user: user);
+    },
+    
     favorite: (context) => const FavoritesPage(),
     orders: (context) => OrdersPage(),
     register: (context) => const RegisterScreen(),

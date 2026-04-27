@@ -3,12 +3,12 @@ import 'package:ferremateriales/common/widgets/coustom_shapes/containers/primary
 import 'package:ferremateriales/common/widgets/text/section_heading.dart';
 import 'package:ferremateriales/cubit/auth_cubit.dart';
 import 'package:ferremateriales/utils/constants/size.dart';
+import 'package:ferremateriales/view/modulos/profile/cubit/profile_cubit.dart';
 import 'package:ferremateriales/view/modulos/profile/widgets/setting_menu_list.dart';
 import 'package:ferremateriales/view/modulos/profile/widgets/user_profile_title.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -16,156 +16,198 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            /// --Encabezado
-            TPrimaryHeaderContainer(
+      body: BlocBuilder<ProfileCubit, ProfileState>(
+        builder: (context, state) {
+          if (state is ProfileLoading) {
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+
+          if (state is ProfileError) {
+            return Scaffold(
+              body: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Error al cargar el perfil: ${state.message}",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read<ProfileCubit>().getUserProfile();
+                    },
+                    child: const Text("Reintentar"),
+                  ),
+                ],
+              ),
+            );
+          }
+          if (state is ProfileSuccess) {
+            final user = state.profile;
+
+            return SingleChildScrollView(
               child: Column(
                 children: [
-                  TAppbar(
-                    iconColor: Colors.white,
-                    showBackArrow: true,
-                    title: Text(
-                      "Mi cuenta",
-                      style: Theme.of(
-                        context,
-                      ).textTheme.headlineMedium!.apply(color: Colors.white),
+                  /// --Encabezado
+                  TPrimaryHeaderContainer(
+                    child: Column(
+                      children: [
+                        TAppbar(
+                          iconColor: Colors.white,
+                          showBackArrow: true,
+                          title: Text(
+                            "Mi cuenta",
+                            style: Theme.of(context).textTheme.headlineMedium!
+                                .apply(color: Colors.white),
+                          ),
+                        ),
+
+                        TUserProfile(user: user),
+                        const SizedBox(height: 30),
+                      ],
                     ),
                   ),
 
-                  TUserProfile(),
-                  const SizedBox(height: 30),
+                  /// --Cuerpo
+                  Padding(
+                    padding: EdgeInsets.all(TSize.defaultSpace),
+                    child: Column(
+                      children: [
+                        /// --- CUENTA
+                        const TSectionHeading(
+                          title: "Configuración de la cuenta",
+                        ),
+                        const SizedBox(height: TSize.spaceBtwItems),
+
+                        TSettingMenuList(
+                          icon: CupertinoIcons.person,
+                          title: "Perfil",
+                          subtitle: "Actualiza tu información personal",
+                          onTap: (){
+                            Navigator.pushNamed(
+                              context,
+                              '/edit-profile',
+                              arguments: user,
+                            );
+                          },
+                        ),
+
+                        TSettingMenuList(
+                          icon: CupertinoIcons.house,
+                          title: "Mis direcciones",
+                          subtitle: "Agrega tus direcciones de entrega",
+                        ),
+
+                        TSettingMenuList(
+                          icon: CupertinoIcons.creditcard,
+                          title: "Métodos de pago",
+                          subtitle: "Administra tus tarjetas",
+                        ),
+
+                        TSettingMenuList(
+                          icon: CupertinoIcons.lock,
+                          title: "Seguridad",
+                          subtitle: "Cambiar contraseña",
+                        ),
+
+                        const SizedBox(height: TSize.spaceBtwSections),
+
+                        /// --- COMPRAS
+                        TSectionHeading(title: "Compras"),
+                        const SizedBox(height: TSize.spaceBtwItems),
+
+                        TSettingMenuList(
+                          icon: CupertinoIcons.bag,
+                          title: "Mis pedidos",
+                          subtitle: "Consulta tu historial de compras",
+                        ),
+
+                        TSettingMenuList(
+                          icon: CupertinoIcons.heart,
+                          title: "Favoritos",
+                          subtitle: "Productos guardados",
+                        ),
+
+                        TSettingMenuList(
+                          icon: CupertinoIcons.ticket,
+                          title: "Cupones",
+                          subtitle: "Descuentos disponibles",
+                        ),
+
+                        const SizedBox(height: TSize.spaceBtwSections),
+
+                        /// --- PREFERENCIAS
+                        TSectionHeading(title: "Preferencias"),
+                        SizedBox(height: TSize.spaceBtwItems),
+
+                        TSettingMenuList(
+                          icon: CupertinoIcons.bell,
+                          title: "Notificaciones",
+                          subtitle: "Configura alertas",
+                        ),
+
+                        TSettingMenuList(
+                          icon: CupertinoIcons.globe,
+                          title: "Idioma",
+                          subtitle: "Selecciona tu idioma",
+                        ),
+
+                        TSettingMenuList(
+                          icon: CupertinoIcons.moon,
+                          title: "Modo oscuro",
+                          subtitle: "Cambiar apariencia",
+                        ),
+
+                        const SizedBox(height: TSize.spaceBtwSections),
+
+                        /// --- SOPORTE
+                        TSectionHeading(title: "Soporte"),
+                        SizedBox(height: TSize.spaceBtwItems),
+
+                        TSettingMenuList(
+                          icon: CupertinoIcons.question_circle,
+                          title: "Centro de ayuda",
+                          subtitle: "Soporte y preguntas frecuentes",
+                        ),
+
+                        TSettingMenuList(
+                          icon: CupertinoIcons.doc_text,
+                          title: "Términos y condiciones",
+                          subtitle: "Información legal",
+                        ),
+
+                        TSettingMenuList(
+                          icon: CupertinoIcons.shield,
+                          title: "Política de privacidad",
+                          subtitle: "Cómo protegemos tus datos",
+                        ),
+
+                        const SizedBox(height: TSize.spaceBtwSections),
+
+                        /// --- LOGOUT
+                        TSettingMenuList(
+                          icon: CupertinoIcons.square_arrow_right,
+                          title: "Cerrar sesión",
+                          subtitle: "Salir de la cuenta",
+                          onTap: () {
+                            context.read<AuthCubit>().logout();
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              '/login',
+                              (route) => false,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
-            ),
-
-            /// --Cuerpo
-            Padding(
-              padding: EdgeInsets.all(TSize.defaultSpace),
-              child: Column(
-                children: [
-                  /// --- CUENTA
-                  const TSectionHeading(title: "Configuración de la cuenta"),
-                  const SizedBox(height: TSize.spaceBtwItems),
-
-                  TSettingMenuList(
-                    icon: CupertinoIcons.person,
-                    title: "Perfil",
-                    subtitle: "Actualiza tu información personal",
-                  ),
-
-                  TSettingMenuList(
-                    icon: CupertinoIcons.house,
-                    title: "Mis direcciones",
-                    subtitle: "Agrega tus direcciones de entrega",
-                  ),
-
-                  TSettingMenuList(
-                    icon: CupertinoIcons.creditcard,
-                    title: "Métodos de pago",
-                    subtitle: "Administra tus tarjetas",
-                  ),
-
-                  TSettingMenuList(
-                    icon: CupertinoIcons.lock,
-                    title: "Seguridad",
-                    subtitle: "Cambiar contraseña",
-                  ),
-
-                  const SizedBox(height: TSize.spaceBtwSections),
-
-                  /// --- COMPRAS
-                  TSectionHeading(title: "Compras"),
-                  const SizedBox(height: TSize.spaceBtwItems),
-
-                  TSettingMenuList(
-                    icon: CupertinoIcons.bag,
-                    title: "Mis pedidos",
-                    subtitle: "Consulta tu historial de compras",
-                  ),
-
-                  TSettingMenuList(
-                    icon: CupertinoIcons.heart,
-                    title: "Favoritos",
-                    subtitle: "Productos guardados",
-                  ),
-
-                  TSettingMenuList(
-                    icon: CupertinoIcons.ticket,
-                    title: "Cupones",
-                    subtitle: "Descuentos disponibles",
-                  ),
-
-                  const SizedBox(height: TSize.spaceBtwSections),
-
-                  /// --- PREFERENCIAS
-                  TSectionHeading(title: "Preferencias"),
-                  SizedBox(height: TSize.spaceBtwItems),
-
-                  TSettingMenuList(
-                    icon: CupertinoIcons.bell,
-                    title: "Notificaciones",
-                    subtitle: "Configura alertas",
-                  ),
-
-                  TSettingMenuList(
-                    icon: CupertinoIcons.globe,
-                    title: "Idioma",
-                    subtitle: "Selecciona tu idioma",
-                  ),
-
-                  TSettingMenuList(
-                    icon: CupertinoIcons.moon,
-                    title: "Modo oscuro",
-                    subtitle: "Cambiar apariencia",
-                  ),
-
-                  const SizedBox(height: TSize.spaceBtwSections),
-
-                  /// --- SOPORTE
-                  TSectionHeading(title: "Soporte"),
-                  SizedBox(height: TSize.spaceBtwItems),
-
-                  TSettingMenuList(
-                    icon: CupertinoIcons.question_circle,
-                    title: "Centro de ayuda",
-                    subtitle: "Soporte y preguntas frecuentes",
-                  ),
-
-                  TSettingMenuList(
-                    icon: CupertinoIcons.doc_text,
-                    title: "Términos y condiciones",
-                    subtitle: "Información legal",
-                  ),
-
-                  TSettingMenuList(
-                    icon: CupertinoIcons.shield,
-                    title: "Política de privacidad",
-                    subtitle: "Cómo protegemos tus datos",
-                  ),
-
-                  const SizedBox(height: TSize.spaceBtwSections),
-
-                  /// --- LOGOUT
-                  TSettingMenuList(
-                    icon: CupertinoIcons.square_arrow_right,
-                    title: "Cerrar sesión",
-                    subtitle: "Salir de la cuenta",
-                    onTap: () {
-                      context.read<AuthCubit>().logout();
-                      Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      '/login',
-                      (route) => false,
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+            );
+          }
+          return const SizedBox();
+        },
       ),
     );
   }
