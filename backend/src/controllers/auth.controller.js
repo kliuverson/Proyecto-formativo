@@ -52,16 +52,8 @@ exports.register = async (req, res) => {
 
     await newUser.save();
 
-    res.status(200).json({
-      message: "Login exitoso",
-      token,
-      user: {
-        id: user._id,
-        nombre: user.nombre,
-        correo: user.correo,
-        esAdmin: user.esAdmin
-      }
-    });
+    const { password: _, ...userData } = newUser._doc;
+
 
     res.status(201).json({
       message: "Usuario registrado correctamente",
