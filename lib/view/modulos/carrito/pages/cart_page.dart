@@ -1,8 +1,15 @@
+import 'package:ferremateriales/view/modulos/carrito/widgets/cart_item_card.dart';
+import 'package:ferremateriales/view/modulos/carrito/widgets/cart_total_section.dart';
+import 'package:ferremateriales/view/modulos/carrito/widgets/checkout_button.dart';
+import 'package:ferremateriales/view/modulos/carrito/widgets/empty_cart_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'bloc/cart_bloc.dart';
 import 'bloc/cart_event.dart';
 import 'bloc/cart_state.dart';
+
+
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -12,94 +19,57 @@ class CartPage extends StatelessWidget {
     return BlocProvider(
       create: (_) => CartBloc()..add(LoadCart()),
       child: Scaffold(
+        backgroundColor: Colors.grey[100],
         appBar: AppBar(
-          title: const Text("Carrito"),
+          title: const Text("Mi Carrito"),
           centerTitle: true,
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
           elevation: 0,
         ),
         body: BlocBuilder<CartBloc, CartState>(
           builder: (context, state) {
             if (state is CartLoading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is CartLoaded) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            if (state is CartError) {
+              return Center(
+                child: Text(state.message),
+              );
+            }
+
+            if (state is CartLoaded) {
               if (state.items.isEmpty) {
-                return const Center(
-                  child: Text("El carrito está vacío", style: TextStyle(fontSize: 18)),
-                );
+                return const EmptyCartView();
               }
 
               return Column(
                 children: [
                   Expanded(
                     child: ListView.builder(
+                      padding: const EdgeInsets.all(12),
                       itemCount: state.items.length,
                       itemBuilder: (context, index) {
                         final item = state.items[index];
-                        return Card(
-                          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          child: ListTile(
-                            title: Text(item.name),
-                            subtitle: Text("Cantidad: ${item.quantity}"),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  "\$${item.subtotal.toStringAsFixed(2)}",
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.delete, color: Colors.red),
-                                  onPressed: () {
-                                    context.read<CartBloc>().add(RemoveFromCart(item.id));
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
+
+                        return CartItemCard(item: item);
                       },
                     ),
                   ),
-                  const Divider(),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      "Total: \$${state.total.toStringAsFixed(2)}",
-                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
+
+                  CartTotalSection(total: state.total),
+
+                  CheckoutButton(
+                    onPressed: () {
+                      context.read<CartBloc>().add(ClearCart());
+                    },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          context.read<CartBloc>().add(ClearCart());
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          backgroundColor: Colors.orange,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: const Text(
-                          'Proceder al Pago',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
                 ],
               );
-            } else if (state is CartError) {
-              return Center(child: Text(state.message));
             }
-            return Container();
+
+            return const SizedBox();
           },
         ),
       ),
