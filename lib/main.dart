@@ -16,7 +16,7 @@ import 'view/home/page/splash_page.dart';
 import 'src/routes/app_routes.dart';
 import 'src/injection_container.dart' as di;
 
-void main() async {
+void main() async {   
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
 

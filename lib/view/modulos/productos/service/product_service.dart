@@ -6,7 +6,10 @@ import 'package:ferremateriales/view/modulos/productos/model/product.dart';
 class ProductService {
   static const String baseUrl = 'http://192.168.1.17:3000';
 
-  static Future<List<ProductModel>> getProducts({int page = 1, int limit = 40}) async {
+  static Future<List<ProductModel>> getProducts({
+    int page = 1,
+    int limit = 40,
+  }) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token') ?? '';
@@ -33,13 +36,19 @@ class ProductService {
   }
 
   // 👇 Ahora filtra directo desde el backend
-  static Future<List<ProductModel>> getProductsByCategory(String category, {int page = 1, int limit = 20}) async {
+  static Future<List<ProductModel>> getProductsByCategory(
+    String category, {
+    int page = 1,
+    int limit = 20,
+  }) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token') ?? '';
 
       final response = await http.get(
-        Uri.parse('$baseUrl/api/products?page=$page&limit=$limit&category=$category'),
+        Uri.parse(
+          '$baseUrl/api/products?page=$page&limit=$limit&category=$category',
+        ),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -60,23 +69,23 @@ class ProductService {
   }
 
   static Future<void> createProduct(Map<String, dynamic> data) async {
-  final prefs = await SharedPreferences.getInstance();
-  final token = prefs.getString('token') ?? '';
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token') ?? '';
 
-  final response = await http.post(
-    Uri.parse('$baseUrl/api/products'),
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer $token',
-    },
-    body: jsonEncode(data),
-  );
+    final response = await http.post(
+      Uri.parse('$baseUrl/api/products'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(data),
+    );
 
-  if (response.statusCode != 201) {
-    final resData = jsonDecode(response.body);
-    throw Exception(resData["message"]);
+    if (response.statusCode != 201) {
+      final resData = jsonDecode(response.body);
+      throw Exception(resData["message"]);
+    }
   }
-}
 
   static List<ProductModel> getStaticProducts() => [];
 }
