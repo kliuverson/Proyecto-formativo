@@ -9,7 +9,7 @@ exports.getFavorites = async (req, res) => {
     const userId = req.user.id;
 
     let favorites = await Favorite.findOne({ userId })
-      .populate("items.productId");
+      .populate({ path: "items.productId", model: "productos" })
 
     // Si no existe, crear lista vacía
     if (!favorites) {
