@@ -9,6 +9,8 @@ const favoriteRoutes = require("./routes/favorite.routes");
 const CartRoutes = require("./routes/cart.routes");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
+const orderRoutes = require("./routes/order.routes");
+const paymentRoutes = require("./routes/payment.routes");
 
 require("./models/products.model");
 require("./models/user.model");
@@ -29,7 +31,8 @@ app.use("/api/user", profileRoutes);
 app.use("/api/favorites", favoriteRoutes);
 app.use("/api/cart", CartRoutes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
+app.use("/api/orders", orderRoutes);
+app.use("/api/payments", paymentRoutes);
 app.get("/", (req, res) => {
     res.redirect("/api-docs");
 });
