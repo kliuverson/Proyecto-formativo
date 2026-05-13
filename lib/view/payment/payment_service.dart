@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,7 +47,8 @@ class PaymentService {
       print("ORDER RESPONSE:");
       print(orderResponse.data);
 
-      final orderId = orderResponse.data["_id"];
+      final orderId = orderResponse.data["order"]["_id"];
+    
 
       // =========================
       // CREAR PAGO
@@ -67,14 +70,14 @@ class PaymentService {
       print("PAYMENT RESPONSE:");
       print(paymentResponse.data);
 
-      final checkoutUrl =
-          paymentResponse.data["checkoutUrl"];
+      final checkoutUrl = paymentResponse.data["checkoutUrl"];
+      final reference = paymentResponse.data["reference"];
 
-      if (checkoutUrl == null) {
-        throw Exception("checkoutUrl no encontrado");
+      if (checkoutUrl == null || reference == null) {
+        throw Exception("checkoutUrl o reference no encontrados");
       }
 
-      return checkoutUrl;
+      return jsonEncode({"checkoutUrl": checkoutUrl, "reference": reference});
 
     } on DioException catch (e) {
 
@@ -92,6 +95,28 @@ class PaymentService {
       print(e);
 
       throw Exception(e.toString());
+    }
+  }
+
+  Future<Map<String, dynamic>> checkPaymentStatus({
+    required String reference,
+  }) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+
+      final resp = await dio.get(
+        "/payments/status/$reference",
+        options: Options(headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json",
+        }),
+      );
+
+      return resp.data as Map<String, dynamic>;
+    } catch (e) {
+      print('checkPaymentStatus error: $e');
+      rethrow;
     }
   }
 }

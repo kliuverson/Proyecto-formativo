@@ -1,4 +1,5 @@
 import 'package:ferremateriales/common/widgets/text/section_heading.dart';
+import 'package:ferremateriales/src/routes/app_routes.dart';
 import 'package:ferremateriales/utils/constants/size.dart';
 import 'package:ferremateriales/view/modulos/profile/models/profile_user_model.dart';
 import 'package:ferremateriales/view/modulos/profile/widgets/setting_menu_list.dart';
@@ -64,6 +65,9 @@ class ProfileBodySection extends StatelessWidget {
             icon: CupertinoIcons.bag,
             title: "Mis pedidos",
             subtitle: "Consulta tu historial de compras",
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutes.orders);
+            },
           ),
 
           TSettingMenuList(

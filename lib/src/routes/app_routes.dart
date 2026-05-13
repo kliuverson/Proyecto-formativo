@@ -5,7 +5,7 @@ import 'package:ferremateriales/view/login/login.dart';
 import 'package:ferremateriales/view/modulos/carrito/pages/cart_page.dart';
 import 'package:ferremateriales/view/modulos/category/pages/category_page.dart';
 import 'package:ferremateriales/view/modulos/favorites/pages/favorite_page.dart';
-import 'package:ferremateriales/view/modulos/modules/orders/pages/orders_pages.dart';
+import 'package:ferremateriales/view/modulos/orders/pages/orders_page.dart';
 import 'package:ferremateriales/view/modulos/productos/pages/products_list_page.dart';
 import 'package:ferremateriales/view/modulos/productos/pages/products_by_category_page.dart';
 import 'package:ferremateriales/view/modulos/admin/page/admin_page.dart';
@@ -29,6 +29,7 @@ class AppRoutes {
   static const admin = '/admin';
   static const editProfile = '/edit-profile';
   static const productsByCategory = '/productsByCategory';
+  
 
   static Map<String, WidgetBuilder> routes = {
     home: (context) => const HomePage(),

@@ -110,3 +110,75 @@ exports.createPayment = async (req, res) => {
     });
   }
 };
+
+exports.checkPaymentStatus = async (req, res) => {
+  try {
+    const { reference } = req.params;
+
+    if (!reference) {
+      return res.status(400).json({ message: "Reference is required" });
+    }
+
+    // Buscar transacción en Wompi (sandbox)
+    if (!process.env.WOMPI_PRIVATE_KEY) {
+      console.error("WOMPI_PRIVATE_KEY no definida en el servidor");
+      return res.status(500).json({ message: "WOMPI_PRIVATE_KEY no definida en el servidor" });
+    }
+
+    const txResponse = await axios.get(
+      `https://sandbox.wompi.co/v1/transactions?reference=${reference}`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.WOMPI_PRIVATE_KEY}`,
+        },
+      }
+    );
+
+    const transactions = txResponse.data.data || [];
+
+    console.log("checkPaymentStatus - reference:", reference);
+    console.log("Wompi transactions:", transactions.length, transactions);
+
+    const tx = transactions.length > 0 ? transactions[0] : null;
+
+    // ejemplo: tx.status puede ser 'APPROVED', 'DECLINED', 'PENDING'
+    const txStatus = tx ? tx.status : null;
+
+    // Buscar la orden asociada
+    const order = await Order.findOne({ paymentReference: reference });
+
+    if (!order) {
+      return res.status(404).json({ message: "Orden no encontrada" });
+    }
+
+    // Si la transacción fue aprobada, marcar la orden como paid y descontar stock
+    if (txStatus && (txStatus === "APPROVED" || txStatus.toLowerCase() === "approved") && order.status !== "paid") {
+      order.status = "paid";
+
+      // descontar stock
+      for (const item of order.items) {
+        const Product = require("../models/products.model");
+        const product = await Product.findById(item.product);
+        if (product) {
+          product.stock -= item.quantity;
+          await product.save();
+        }
+      }
+
+      await order.save();
+    }
+
+    // Si no hay transacciones aún, devolvemos el estado actual de la orden (pending)
+    return res.status(200).json({
+      success: true,
+      status: order.status,
+      transaction: tx,
+      order,
+      message: tx ? 'transaction found' : 'no transaction yet',
+    });
+
+  } catch (error) {
+    console.error("ERROR checkPaymentStatus:", error.response?.data || error.message);
+    return res.status(500).json({ message: "Error consultando estado del pago", error: error.response?.data || error.message });
+  }
+};
