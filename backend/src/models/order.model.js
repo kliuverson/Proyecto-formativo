@@ -16,13 +16,25 @@ const orderSchema = new mongoose.Schema(
           required: true,
         },
 
-        nombre: String,
+        nombre: {
+          type: String,
+          required: true,
+        },
 
-        precio: Number,
+        precio: {
+          type: Number,
+          required: true,
+        },
 
-        quantity: Number,
+        quantity: {
+          type: Number,
+          required: true,
+        },
 
-        subtotal: Number,
+        subtotal: {
+          type: Number,
+          required: true,
+        },
       },
     ],
 
@@ -39,10 +51,12 @@ const orderSchema = new mongoose.Schema(
 
     paymentReference: {
       type: String,
+      default: "",
     },
 
     transactionId: {
       type: String,
+      default: "",
     },
   },
   {

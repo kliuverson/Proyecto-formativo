@@ -12,4 +12,10 @@ router.post(
   paymentController.createPayment
 );
 
+router.get(
+  "/status/:reference",
+  authMiddleware,
+  paymentController.checkPaymentStatus
+);
+
 module.exports = router;
