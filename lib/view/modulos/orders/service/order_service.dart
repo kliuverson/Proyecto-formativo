@@ -1,12 +1,10 @@
 import 'dart:convert';
-
 import 'package:ferremateriales/view/modulos/orders/model/order_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OrderService {
-  static const String baseUrl =
-      "http://10.2.124.48:3000/api/orders";
+  static const String baseUrl = "http://192.168.20.45:3000/api/orders";
 
   /// OBTENER PEDIDOS
   static Future<List<OrderModel>> getMyOrders() async {
@@ -23,18 +21,18 @@ class OrderService {
         },
       );
 
-        if (response.statusCode == 200) {
-          final data = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
 
-          return (data['orders'] as List)
-              .map((e) => OrderModel.fromJson(e))
-              .toList();
-        }
+        return (data['orders'] as List)
+            .map((e) => OrderModel.fromJson(e))
+            .toList();
+      }
 
-        // Log for debugging if not 200
-        print('getMyOrders failed: ${response.statusCode} - ${response.body}');
+      // Log for debugging if not 200
+      print('getMyOrders failed: ${response.statusCode} - ${response.body}');
 
-        return [];
+      return [];
     } catch (e) {
       return [];
     }

@@ -4,10 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PaymentService {
-
   final Dio dio = Dio(
     BaseOptions(
-      baseUrl: "http://10.2.124.48:3000/api",
+      baseUrl: "http://192.168.20.45:3000/api",
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
     ),
@@ -16,9 +15,7 @@ class PaymentService {
   Future<String> createPayment({
     required List<Map<String, dynamic>> items,
   }) async {
-
     try {
-
       final prefs = await SharedPreferences.getInstance();
 
       final token = prefs.getString("token");
@@ -33,9 +30,7 @@ class PaymentService {
 
       final orderResponse = await dio.post(
         "/orders",
-        data: {
-          "items": items,
-        },
+        data: {"items": items},
         options: Options(
           headers: {
             "Authorization": "Bearer $token",
@@ -48,7 +43,6 @@ class PaymentService {
       print(orderResponse.data);
 
       final orderId = orderResponse.data["order"]["_id"];
-    
 
       // =========================
       // CREAR PAGO
@@ -56,9 +50,7 @@ class PaymentService {
 
       final paymentResponse = await dio.post(
         "/payments/create",
-        data: {
-          "orderId": orderId,
-        },
+        data: {"orderId": orderId},
         options: Options(
           headers: {
             "Authorization": "Bearer $token",
@@ -78,19 +70,12 @@ class PaymentService {
       }
 
       return jsonEncode({"checkoutUrl": checkoutUrl, "reference": reference});
-
     } on DioException catch (e) {
-
       print("DIO ERROR:");
       print(e.response?.data);
 
-      throw Exception(
-        e.response?.data["message"] ??
-            "Error procesando pago",
-      );
-
+      throw Exception(e.response?.data["message"] ?? "Error procesando pago");
     } catch (e) {
-
       print("GENERAL ERROR:");
       print(e);
 
@@ -107,10 +92,12 @@ class PaymentService {
 
       final resp = await dio.get(
         "/payments/status/$reference",
-        options: Options(headers: {
-          "Authorization": "Bearer $token",
-          "Content-Type": "application/json",
-        }),
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+            "Content-Type": "application/json",
+          },
+        ),
       );
 
       return resp.data as Map<String, dynamic>;

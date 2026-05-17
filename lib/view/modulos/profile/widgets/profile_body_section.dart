@@ -40,6 +40,9 @@ class ProfileBodySection extends StatelessWidget {
             icon: CupertinoIcons.house,
             title: "Mis direcciones",
             subtitle: "Agrega tus direcciones de entrega",
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutes.addresses);
+            },
           ),
 
           TSettingMenuList(

@@ -1,4 +1,4 @@
-class UserProfileModel{
+class UserProfileModel {
   String nombre;
   String apellido;
   String username;

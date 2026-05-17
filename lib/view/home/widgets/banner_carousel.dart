@@ -90,20 +90,22 @@ class _BannerCarouselState extends State<BannerCarousel> {
         // 🔵 Indicadores
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: banners.asMap().entries.map((entry) {
-            return AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-              width: currentIndex == entry.key ? 16 : 8,
-              height: 8,
-              decoration: BoxDecoration(
-                color: currentIndex == entry.key
-                    ? Colors.blue
-                    : Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(10),
-              ),
-            );
-          }).toList(),
+          children:
+              banners.asMap().entries.map((entry) {
+                return AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  margin: const EdgeInsets.symmetric(horizontal: 4),
+                  width: currentIndex == entry.key ? 16 : 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    color:
+                        currentIndex == entry.key
+                            ? Colors.blue
+                            : Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                );
+              }).toList(),
         ),
       ],
     );
@@ -134,11 +136,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
               return Container(
                 color: Colors.grey.shade200,
                 child: const Center(
-                  child: Icon(
-                    Icons.broken_image,
-                    size: 40,
-                    color: Colors.grey,
-                  ),
+                  child: Icon(Icons.broken_image, size: 40, color: Colors.grey),
                 ),
               );
             },
@@ -148,10 +146,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  Colors.black.withAlpha(76),
-                  Colors.transparent,
-                ],
+                colors: [Colors.black.withAlpha(76), Colors.transparent],
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
               ),

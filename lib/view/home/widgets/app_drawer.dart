@@ -1,4 +1,5 @@
 import 'package:ferremateriales/cubit/auth_cubit.dart';
+import 'package:ferremateriales/src/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -131,7 +132,7 @@ class AppDrawer extends StatelessWidget {
                 text: "Direcciones",
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, '/address');
+                  Navigator.pushNamed(context, AppRoutes.addresses);
                 },
               ),
 
