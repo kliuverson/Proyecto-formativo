@@ -15,6 +15,7 @@ import 'package:ferremateriales/view/modulos/profile/cubit/profile_cubit.dart';
 import 'package:ferremateriales/view/modulos/profile/models/profile_user_model.dart';
 import 'package:ferremateriales/view/modulos/register/register.dart';
 import 'package:ferremateriales/view/modulos/category/cubit/category_product_cubit.dart';
+import 'package:ferremateriales/view/modulos/address/pages/address_page.dart';
 
 class AppRoutes {
   static const home = '/home';
@@ -29,7 +30,7 @@ class AppRoutes {
   static const admin = '/admin';
   static const editProfile = '/edit-profile';
   static const productsByCategory = '/productsByCategory';
-  
+  static const address = '/address';
 
   static Map<String, WidgetBuilder> routes = {
     home: (context) => const HomePage(),
@@ -64,7 +65,6 @@ class AppRoutes {
       final args = ModalRoute.of(context)!.settings.arguments;
 
       if (args == null || args is! String) {
-
         return const CategoryPage();
       }
 
@@ -78,5 +78,6 @@ class AppRoutes {
     },
 
     admin: (context) => const CreateProductPage(),
+    address: (context) => const AddressPage(),
   };
 }
