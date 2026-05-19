@@ -7,7 +7,7 @@ class PaymentService {
 
   final Dio dio = Dio(
     BaseOptions(
-      baseUrl: "http://10.2.124.48:3000/api",
+      baseUrl: "http:// 10.2.126.253:3000/api",
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
     ),
