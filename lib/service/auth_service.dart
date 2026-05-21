@@ -3,11 +3,11 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-<<<<<<< Updated upstream
-  final String baseUrl = "http://192.168.1.12:3000/api/auth";
-=======
-  final String baseUrl = "http://192.168.6.206:3000/api/auth";
->>>>>>> Stashed changes
+
+  final String baseUrl = "http://10.2.125.251:3000/api/auth";
+
+ 
+
 
   Future<Map<String, dynamic>> login(String correo, String password) async {
     final url = Uri.parse("$baseUrl/login");

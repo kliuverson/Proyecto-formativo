@@ -8,7 +8,7 @@ class HomeBottomNav extends StatelessWidget {
 
   void _onTap(BuildContext context, int index) {
     String route = '/home';
-    switch (index) {
+    switch (index) {     
       case 0:
         route = '/home';
         break;

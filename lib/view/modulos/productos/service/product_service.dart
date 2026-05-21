@@ -4,11 +4,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ferremateriales/view/modulos/productos/model/product.dart';
 
 class ProductService {
-<<<<<<< Updated upstream
-  static const String baseUrl = 'http://192.168.1.12:3000';
-=======
-  static const String baseUrl = 'http://192.168.6.206:3000';
->>>>>>> Stashed changes
+
+  static const String baseUrl = 'http://10.2.125.251:3000';
+
 
   static Future<List<ProductModel>> getProducts({int page = 1, int limit = 40}) async {
     try {
