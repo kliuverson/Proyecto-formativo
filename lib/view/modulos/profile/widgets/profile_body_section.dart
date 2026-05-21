@@ -32,7 +32,7 @@ class ProfileBodySection extends StatelessWidget {
             title: "Perfil",
             subtitle: "Actualiza tu información personal",
             onTap: () {
-              Navigator.pushNamed(context, '/edit-profile', arguments: user);
+              Navigator.pushNamed(context, AppRoutes.editProfile, arguments: user);
             },
           ),
 
@@ -40,6 +40,9 @@ class ProfileBodySection extends StatelessWidget {
             icon: CupertinoIcons.house,
             title: "Mis direcciones",
             subtitle: "Agrega tus direcciones de entrega",
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutes.address);
+            },
           ),
 
           TSettingMenuList(
@@ -74,6 +77,9 @@ class ProfileBodySection extends StatelessWidget {
             icon: CupertinoIcons.heart,
             title: "Favoritos",
             subtitle: "Productos guardados",
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutes.favorite);
+            },
           ),
 
           TSettingMenuList(
@@ -143,7 +149,7 @@ class ProfileBodySection extends StatelessWidget {
               onTap();
               Navigator.pushNamedAndRemoveUntil(
                 context,
-                '/login',
+                AppRoutes.login,
                 (route) => false,
               );
             },
