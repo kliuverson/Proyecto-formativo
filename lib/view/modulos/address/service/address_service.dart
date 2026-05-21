@@ -1,17 +1,64 @@
+import 'dart:convert';
+
 import 'package:ferremateriales/view/modulos/address/model/address_model.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddressService {
 
-  final List<AddressModel> _addresses = [];
+  /// URL BACKEND
+  final String baseUrl =
+      "http://10.2.127.221:3000/api/address";
+
+  /// OBTENER TOKEN
+  Future<String?> getToken() async {
+
+    final prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString("token");
+  }
+
+  /// HEADERS
+  Future<Map<String, String>> getHeaders() async {
+
+    final token = await getToken();
+
+    return {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $token",
+    };
+  }
 
   /// OBTENER DIRECCIONES
   Future<List<AddressModel>> getAddresses() async {
 
-    await Future.delayed(
-      const Duration(milliseconds: 300),
+    print("OBTENIENDO DIRECCIONES...");
+
+    final response = await http.get(
+      Uri.parse(baseUrl),
+      headers: await getHeaders(),
     );
 
-    return List.from(_addresses);
+    print("GET STATUS: ${response.statusCode}");
+    print("GET BODY: ${response.body}");
+
+    if (response.statusCode == 200) {
+
+      final List data = jsonDecode(response.body);
+
+      return data
+          .map(
+            (e) => AddressModel.fromJson(e),
+          )
+          .toList();
+    }
+
+    final data = jsonDecode(response.body);
+
+    throw Exception(
+      data["message"] ??
+          "Error al obtener direcciones",
+    );
   }
 
   /// CREAR DIRECCIÓN
@@ -19,42 +66,82 @@ class AddressService {
     AddressModel address,
   ) async {
 
-    await Future.delayed(
-      const Duration(milliseconds: 300),
+    print("CREANDO DIRECCIÓN...");
+    print(address.toJson());
+
+    final response = await http.post(
+      Uri.parse(baseUrl),
+      headers: await getHeaders(),
+      body: jsonEncode(address.toJson()),
     );
 
-    _addresses.add(address);
+    print("POST STATUS: ${response.statusCode}");
+    print("POST BODY: ${response.body}");
+
+    if (response.statusCode != 201) {
+
+      final data = jsonDecode(response.body);
+
+      throw Exception(
+        data["message"] ??
+            "Error al crear dirección",
+      );
+    }
   }
 
   /// ACTUALIZAR DIRECCIÓN
   Future<void> updateAddress(
     String id,
-    AddressModel updatedAddress,
+    AddressModel address,
   ) async {
 
-    await Future.delayed(
-      const Duration(milliseconds: 300),
+    print("ACTUALIZANDO DIRECCIÓN...");
+    print(address.toJson());
+
+    final response = await http.put(
+      Uri.parse("$baseUrl/$id"),
+      headers: await getHeaders(),
+      body: jsonEncode(address.toJson()),
     );
 
-    final index = _addresses.indexWhere(
-      (e) => e.id == id,
-    );
+    print("PUT STATUS: ${response.statusCode}");
+    print("PUT BODY: ${response.body}");
 
-    if (index != -1) {
-      _addresses[index] = updatedAddress;
+    if (response.statusCode != 200) {
+
+      final data = jsonDecode(response.body);
+
+      throw Exception(
+        data["message"] ??
+            "Error al actualizar dirección",
+      );
     }
   }
 
   /// ELIMINAR DIRECCIÓN
-  Future<void> deleteAddress(String id) async {
+  Future<void> deleteAddress(
+    String id,
+  ) async {
 
-    await Future.delayed(
-      const Duration(milliseconds: 300),
+    print("ELIMINANDO DIRECCIÓN...");
+
+    final response = await http.delete(
+      Uri.parse("$baseUrl/$id"),
+      headers: await getHeaders(),
     );
 
-    _addresses.removeWhere(
-      (e) => e.id == id,
-    );
+    print("DELETE STATUS: ${response.statusCode}");
+    print("DELETE BODY: ${response.body}");
+
+    if (response.statusCode != 200) {
+
+      final data = jsonDecode(response.body);
+
+      throw Exception(
+        data["message"] ??
+            "Error al eliminar dirección",
+      );
+    }
   }
 
   /// ESTABLECER DIRECCIÓN PRINCIPAL
@@ -62,16 +149,23 @@ class AddressService {
     String id,
   ) async {
 
-    await Future.delayed(
-      const Duration(milliseconds: 300),
+    print("ACTUALIZANDO DIRECCIÓN PRINCIPAL...");
+
+    final response = await http.patch(
+      Uri.parse("$baseUrl/$id/principal"),
+      headers: await getHeaders(),
     );
 
-    for (int i = 0; i < _addresses.length; i++) {
+    print("PATCH STATUS: ${response.statusCode}");
+    print("PATCH BODY: ${response.body}");
 
-      final current = _addresses[i];
+    if (response.statusCode != 200) {
 
-      _addresses[i] = current.copyWith(
-        principal: current.id == id,
+      final data = jsonDecode(response.body);
+
+      throw Exception(
+        data["message"] ??
+            "Error al actualizar dirección principal",
       );
     }
   }
