@@ -8,7 +8,7 @@ class AddressService {
 
   /// URL BACKEND
   final String baseUrl =
-      "http://10.2.125.182:3000/api/address";
+      "http://192.168.1.98:3000/api/address";
 
   /// OBTENER TOKEN
   Future<String?> getToken() async {
