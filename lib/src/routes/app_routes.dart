@@ -16,6 +16,15 @@ import 'package:ferremateriales/view/modulos/profile/models/profile_user_model.d
 import 'package:ferremateriales/view/modulos/register/register.dart';
 import 'package:ferremateriales/view/modulos/category/cubit/category_product_cubit.dart';
 import 'package:ferremateriales/view/modulos/address/pages/address_page.dart';
+import 'package:ferremateriales/view/modulos/profile/pages/payments_page.dart';
+import 'package:ferremateriales/view/modulos/profile/pages/security_page.dart';
+import 'package:ferremateriales/view/modulos/profile/pages/coupons_page.dart';
+import 'package:ferremateriales/view/modulos/profile/pages/notifications_page.dart';
+import 'package:ferremateriales/view/modulos/profile/pages/language_page.dart';
+import 'package:ferremateriales/view/modulos/profile/pages/theme_page.dart';
+import 'package:ferremateriales/view/modulos/profile/pages/help_center_page.dart';
+import 'package:ferremateriales/view/modulos/profile/pages/terms_page.dart';
+import 'package:ferremateriales/view/modulos/profile/pages/privacy_page.dart';
 
 class AppRoutes {
   static const home = '/home';
@@ -31,6 +40,15 @@ class AppRoutes {
   static const editProfile = '/edit-profile';
   static const productsByCategory = '/productsByCategory';
   static const address = '/address';
+  static const payments = '/payments';
+  static const security = '/security';
+  static const coupons = '/coupons';
+  static const notifications = '/notifications';
+  static const language = '/language';
+  static const theme = '/theme';
+  static const help = '/help';
+  static const terms = '/terms';
+  static const privacy = '/privacy';
 
   static Map<String, WidgetBuilder> routes = {
     home: (context) => const HomePage(),
@@ -79,5 +97,14 @@ class AppRoutes {
 
     admin: (context) => const CreateProductPage(),
     address: (context) => const AddressPage(),
+    payments: (context) => const PaymentsPage(),
+    security: (context) => const SecurityPage(),
+    coupons: (context) => const CouponsPage(),
+    notifications: (context) => const NotificationsPage(),
+    language: (context) => const LanguagePage(),
+    theme: (context) => const ThemePage(),
+    help: (context) => const HelpCenterPage(),
+    terms: (context) => const TermsPage(),
+    privacy: (context) => const PrivacyPage(),
   };
 }
