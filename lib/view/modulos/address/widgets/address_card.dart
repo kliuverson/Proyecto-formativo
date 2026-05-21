@@ -1,0 +1,113 @@
+import 'package:ferremateriales/view/modulos/address/model/address_model.dart';
+import 'package:flutter/material.dart';
+
+class AddressCard extends StatelessWidget {
+  final AddressModel address;
+  final VoidCallback onDelete;
+  final VoidCallback onEdit;
+  final VoidCallback onPrincipal;
+
+  const AddressCard({
+    super.key,
+    required this.address,
+    required this.onDelete,
+    required this.onEdit,
+    required this.onPrincipal,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.symmetric(
+        horizontal: 12,
+        vertical: 8,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (address.principal)
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const Text(
+                  "Principal",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+
+            const SizedBox(height: 10),
+
+            Text(
+              address.nombreDestinatario,
+              style: const TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 5),
+
+            Text(address.telefono),
+
+            const SizedBox(height: 5),
+
+            Text(address.direccion),
+
+            const SizedBox(height: 5),
+
+            Text(
+              "${address.ciudad}, ${address.departamento}",
+            ),
+
+            if (address.referencia.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: Text(
+                  "Referencia: ${address.referencia}",
+                ),
+              ),
+
+            const SizedBox(height: 15),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  onPressed: onPrincipal,
+                  icon: const Icon(
+                    Icons.star,
+                    color: Colors.orange,
+                  ),
+                ),
+
+                IconButton(
+                  onPressed: onEdit,
+                  icon: const Icon(
+                    Icons.edit,
+                    color: Colors.blue,
+                  ),
+                ),
+
+                IconButton(
+                  onPressed: onDelete,
+                  icon: const Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

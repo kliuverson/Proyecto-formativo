@@ -1,0 +1,100 @@
+import 'package:ferremateriales/view/modulos/carrito/pages/bloc/cart_bloc.dart';
+import 'package:ferremateriales/view/modulos/carrito/pages/bloc/cart_event.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+
+
+class CartItemCard extends StatelessWidget {
+  final dynamic item;
+
+  const CartItemCard({
+    super.key,
+    required this.item,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 14),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 10,
+            color: Colors.black.withOpacity(0.05),
+            offset: const Offset(0, 4),
+          )
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 70,
+            height: 70,
+            decoration: BoxDecoration(
+              color: Colors.orange.shade100,
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: const Icon(
+              Icons.shopping_bag,
+              size: 35,
+              color: Colors.orange,
+            ),
+          ),
+
+          const SizedBox(width: 14),
+
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item.name,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                const SizedBox(height: 6),
+
+                Text(
+                  "Cantidad: ${item.quantity}",
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                  ),
+                ),
+
+                const SizedBox(height: 8),
+
+                Text(
+                  "\$${item.subtotal.toStringAsFixed(2)}",
+                  style: const TextStyle(
+                    color: Colors.orange,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          IconButton(
+            onPressed: () {
+              context.read<CartBloc>().add(
+                    RemoveFromCart(item.id),
+                  );
+            },
+            icon: const Icon(
+              Icons.delete_outline,
+              color: Colors.red,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

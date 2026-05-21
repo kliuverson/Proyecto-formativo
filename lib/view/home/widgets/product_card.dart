@@ -1,4 +1,7 @@
 import 'package:ferremateriales/view/modulos/productos/model/product.dart';
+import 'package:ferremateriales/view/modulos/favorites/service/favo_service.dart';
+import 'package:ferremateriales/view/modulos/carrito/pages/service/cart_service.dart';
+import 'package:ferremateriales/view/modulos/carrito/pages/model/cart_model.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatefulWidget {
@@ -15,6 +18,7 @@ class _ProductCardState extends State<ProductCard>
     with SingleTickerProviderStateMixin {
   bool isFavorite = false;
   bool isAdding = false;
+  late final FavoritesService _favoritesService;
 
   late AnimationController _favController;
   late Animation<double> _favAnimation;
@@ -22,6 +26,12 @@ class _ProductCardState extends State<ProductCard>
   @override
   void initState() {
     super.initState();
+
+    _favoritesService = FavoritesService();
+
+    // Inicializar el estado de favorito y escuchar cambios globales
+    isFavorite = _favoritesService.isFavorite(widget.product);
+    _favoritesService.addListener(_onFavoritesChanged);
 
     _favController = AnimationController(
       vsync: this,
@@ -37,12 +47,15 @@ class _ProductCardState extends State<ProductCard>
   @override
   void dispose() {
     _favController.dispose();
+    _favoritesService.removeListener(_onFavoritesChanged);
     super.dispose();
   }
 
   void _toggleFavorite() {
-    setState(() => isFavorite = !isFavorite);
+    // Actualizar servicio de favoritos (que notificará a otros listeners)
+    _favoritesService.toggleFavorite(widget.product);
 
+    // Animación local
     _favController.forward().then((_) {
       _favController.reverse();
     });
@@ -51,9 +64,26 @@ class _ProductCardState extends State<ProductCard>
   void _addToCart() async {
     setState(() => isAdding = true);
 
+    // Crear y añadir el producto al servicio de carrito
+    final item = CartItem(
+      id: widget.product.sku,
+      name: widget.product.nombre,
+      quantity: 1,
+      price: widget.product.precio,
+    );
+
+    CartService.addProduct(item);
+
     await Future.delayed(const Duration(milliseconds: 200));
 
     setState(() => isAdding = false);
+  }
+
+  void _onFavoritesChanged() {
+    final fav = _favoritesService.isFavorite(widget.product);
+    if (fav != isFavorite) {
+      setState(() => isFavorite = fav);
+    }
   }
 
   @override
