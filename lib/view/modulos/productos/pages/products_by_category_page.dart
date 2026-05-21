@@ -2,7 +2,6 @@ import 'package:ferremateriales/view/home/widgets/product_card.dart';
 import 'package:ferremateriales/view/modulos/category/cubit/category_product_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'product_details.dart';
 
 class ProductsByCategoryPage extends StatelessWidget {
@@ -13,7 +12,13 @@ class ProductsByCategoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(categoryName)),
+      appBar: AppBar(
+        title: Text(categoryName),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
 
       body: BlocBuilder<CategoryProductCubit, CategoryProductState>(
         builder: (context, state) {
@@ -38,7 +43,8 @@ class ProductsByCategoryPage extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               child: GridView.builder(
                 itemCount: products.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate:
+                    const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
@@ -53,7 +59,8 @@ class ProductsByCategoryPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => ProductDetail(product: product),
+                          builder: (_) =>
+                              ProductDetail(product: product),
                         ),
                       );
                     },

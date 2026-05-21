@@ -82,7 +82,7 @@ class ProductDetail extends StatelessWidget {
                 onPressed: () {
 
                   final cartItem = CartItem(
-                    id: product.sku,
+                    id: product.id,
                     name: product.nombre,
                     price: product.precio,
                     quantity: 1,
