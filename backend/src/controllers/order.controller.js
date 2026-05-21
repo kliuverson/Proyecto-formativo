@@ -23,7 +23,9 @@ exports.createOrder = async (req, res) => {
     const orderItems = [];
 
     for (const item of items) {
-      const product = await Product.findById(item.productId);
+      const product = await Product.findOne({
+        sku: item.productId,
+      });
 
       if (!product) {
         return res.status(404).json({
