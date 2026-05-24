@@ -3,7 +3,6 @@ import 'package:ferremateriales/view/modulos/carrito/widgets/cart_total_section.
 import 'package:ferremateriales/view/modulos/carrito/widgets/checkout_button.dart';
 import 'package:ferremateriales/view/modulos/carrito/widgets/empty_cart_view.dart';
 import 'package:ferremateriales/view/modulos/orders/cubit/order_cubit.dart';
-import 'package:ferremateriales/view/modulos/orders/service/order_service.dart';
 import 'package:ferremateriales/view/payment/payment_service.dart';
 
 import 'package:flutter/material.dart';

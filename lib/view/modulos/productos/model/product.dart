@@ -22,32 +22,42 @@ class ProductModel {
     required this.estaActivo,
   });
 
-  /// CONVERTIR JSON → OBJETO
-  factory ProductModel.fromJson(Map<String, dynamic> json) {
+  /// JSON → OBJETO
+  factory ProductModel.fromJson(
+    Map<String, dynamic> json,
+  ) {
 
     return ProductModel(
-      id: json['_id'], // 🔥 IMPORTANTE
 
-      sku: json['sku'],
+      // ID DE MONGODB
+      id: json['_id']?.toString() ?? '',
 
-      nombre: json['nombre'],
+      sku: json['sku']?.toString() ?? '',
 
-      descripcion: json['descripcion'] ?? '',
+      nombre: json['nombre']?.toString() ?? '',
 
-      precio: (json['precio'] as num).toDouble(),
+      descripcion:
+          json['descripcion']?.toString() ?? '',
+
+      precio:
+          (json['precio'] ?? 0).toDouble(),
 
       stock: json['stock'] ?? 0,
 
-      category: json['category'] ?? '',
+      category:
+          json['category']?.toString() ?? '',
 
-      image: json['image'],
+      image:
+          json['image']?.toString() ?? '',
 
-      estaActivo: json['estaActivo'] ?? true,
+      estaActivo:
+          json['estaActivo'] ?? true,
     );
   }
 
   /// OBJETO → JSON
   Map<String, dynamic> toJson() {
+
     return {
 
       '_id': id,

@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:ferremateriales/view/modulos/orders/model/order_model.dart';
 import 'package:ferremateriales/view/modulos/orders/service/order_service.dart';
 
