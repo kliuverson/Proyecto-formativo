@@ -1,35 +1,46 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ferremateriales/view/modulos/productos/model/product.dart';
 
-class SearchProductCubit extends Cubit<List<ProductModel>> {
+class SearchProductState {
+  final List<ProductModel> products;
+  final bool isLoading;
 
-  SearchProductCubit() : super([]);
+  const SearchProductState({
+    required this.products,
+    required this.isLoading,
+  });
+}
+
+class SearchProductCubit extends Cubit<SearchProductState> {
+  SearchProductCubit()
+      : super(const SearchProductState(products: [], isLoading: true));
 
   List<ProductModel> _allProducts = [];
 
-  /// 🔹 Cargar productos UNA VEZ
+  /// Cargar productos UNA VEZ
   void setProducts(List<ProductModel> products) {
     _allProducts = products;
-    emit(products);
+    emit(SearchProductState(products: products, isLoading: false));
   }
 
-  /// 🔍 Buscar
+  /// Buscar
   void searchProducts(String query) {
-
     if (query.isEmpty) {
-      emit(_allProducts);
+      emit(SearchProductState(products: _allProducts, isLoading: false));
       return;
     }
 
-    final filteredProducts = _allProducts.where((product) {
+    final filtered = _allProducts.where((product) {
+      final nombre = product.nombre.toLowerCase();
+      final sku = product.sku.toLowerCase();
+      final categoria = product.category.toLowerCase();
+      final search = query.toLowerCase();
 
-      final productName = product.nombre.toLowerCase();
-      final searchText = query.toLowerCase();
-
-      return productName.contains(searchText);
-
+      return nombre.contains(search) ||
+          sku.contains(search) ||
+          categoria.contains(search);
     }).toList();
 
-    emit(filteredProducts);
+    emit(SearchProductState(products: filtered, isLoading: false));
   }
 }
