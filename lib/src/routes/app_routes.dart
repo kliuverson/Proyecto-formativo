@@ -8,23 +8,12 @@ import 'package:ferremateriales/view/modulos/favorites/pages/favorite_page.dart'
 import 'package:ferremateriales/view/modulos/orders/pages/orders_page.dart';
 import 'package:ferremateriales/view/modulos/productos/pages/products_list_page.dart';
 import 'package:ferremateriales/view/modulos/productos/pages/products_by_category_page.dart';
-import 'package:ferremateriales/view/modulos/admin/page/admin_page.dart';
 import 'package:ferremateriales/view/modulos/profile/pages/profile_page.dart';
 import 'package:ferremateriales/view/modulos/profile/pages/edit_profile_page.dart';
 import 'package:ferremateriales/view/modulos/profile/cubit/profile_cubit.dart';
 import 'package:ferremateriales/view/modulos/profile/models/profile_user_model.dart';
 import 'package:ferremateriales/view/modulos/register/register.dart';
 import 'package:ferremateriales/view/modulos/category/cubit/category_product_cubit.dart';
-import 'package:ferremateriales/view/modulos/address/pages/address_page.dart';
-import 'package:ferremateriales/view/modulos/profile/pages/payments_page.dart';
-import 'package:ferremateriales/view/modulos/profile/pages/security_page.dart';
-import 'package:ferremateriales/view/modulos/profile/pages/coupons_page.dart';
-import 'package:ferremateriales/view/modulos/profile/pages/notifications_page.dart';
-import 'package:ferremateriales/view/modulos/profile/pages/language_page.dart';
-import 'package:ferremateriales/view/modulos/profile/pages/theme_page.dart';
-import 'package:ferremateriales/view/modulos/profile/pages/help_center_page.dart';
-import 'package:ferremateriales/view/modulos/profile/pages/terms_page.dart';
-import 'package:ferremateriales/view/modulos/profile/pages/privacy_page.dart';
 
 class AppRoutes {
   static const home = '/home';
@@ -95,16 +84,5 @@ class AppRoutes {
       );
     },
 
-    admin: (context) => const CreateProductPage(),
-    address: (context) => const AddressPage(),
-    payments: (context) => const PaymentsPage(),
-    security: (context) => const SecurityPage(),
-    coupons: (context) => const CouponsPage(),
-    notifications: (context) => const NotificationsPage(),
-    language: (context) => const LanguagePage(),
-    theme: (context) => const ThemePage(),
-    help: (context) => const HelpCenterPage(),
-    terms: (context) => const TermsPage(),
-    privacy: (context) => const PrivacyPage(),
   };
 }
