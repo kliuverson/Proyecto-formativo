@@ -14,6 +14,7 @@ import 'package:ferremateriales/view/modulos/profile/cubit/profile_cubit.dart';
 import 'package:ferremateriales/view/modulos/profile/models/profile_user_model.dart';
 import 'package:ferremateriales/view/modulos/register/register.dart';
 import 'package:ferremateriales/view/modulos/category/cubit/category_product_cubit.dart';
+import 'package:ferremateriales/view/modulos/address/pages/address_page.dart';
 
 class AppRoutes {
   static const home = '/home';
@@ -48,11 +49,10 @@ class AppRoutes {
 
     category: (context) => const CategoryPage(),
 
-    profile:
-        (context) => BlocProvider.value(
-          value: context.read<ProfileCubit>()..getUserProfile(),
-          child: const ProfilePage(),
-        ),
+    profile: (context) => BlocProvider.value(
+      value: context.read<ProfileCubit>()..getUserProfile(),
+      child: const ProfilePage(),
+    ),
 
     editProfile: (context) {
       final user =
@@ -68,6 +68,9 @@ class AppRoutes {
 
     products: (context) => const ProductListPage(),
 
+    // Ruta de direcciones agregada
+    address: (context) => const AddressPage(),
+
     productsByCategory: (context) {
       final args = ModalRoute.of(context)!.settings.arguments;
 
@@ -78,11 +81,10 @@ class AppRoutes {
       final categoryName = args.toString();
 
       return BlocProvider(
-        create:
-            (_) => CategoryProductCubit()..loadProductsByCategory(categoryName),
+        create: (_) =>
+            CategoryProductCubit()..loadProductsByCategory(categoryName),
         child: ProductsByCategoryPage(categoryName: categoryName),
       );
     },
-
   };
 }
