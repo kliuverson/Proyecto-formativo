@@ -1,9 +1,12 @@
 import 'package:ferremateriales/common/widgets/text/section_heading.dart';
+import 'package:ferremateriales/cubit/theme_cubit.dart';
 import 'package:ferremateriales/src/routes/app_routes.dart';
 import 'package:ferremateriales/utils/constants/size.dart';
 import 'package:ferremateriales/view/modulos/profile/models/profile_user_model.dart';
 import 'package:ferremateriales/view/modulos/profile/widgets/setting_menu_list.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileBodySection extends StatelessWidget {
   final VoidCallback onTap;
@@ -24,7 +27,6 @@ class ProfileBodySection extends StatelessWidget {
         children: [
           /// CUENTA
           const TSectionHeading(title: "Configuración de la cuenta"),
-
           const SizedBox(height: TSize.spaceBtwItems),
 
           TSettingMenuList(
@@ -61,7 +63,6 @@ class ProfileBodySection extends StatelessWidget {
 
           /// COMPRAS
           const TSectionHeading(title: "Compras"),
-
           const SizedBox(height: TSize.spaceBtwItems),
 
           TSettingMenuList(
@@ -92,7 +93,6 @@ class ProfileBodySection extends StatelessWidget {
 
           /// PREFERENCIAS
           const TSectionHeading(title: "Preferencias"),
-
           const SizedBox(height: TSize.spaceBtwItems),
 
           TSettingMenuList(
@@ -107,17 +107,27 @@ class ProfileBodySection extends StatelessWidget {
             subtitle: "Selecciona tu idioma",
           ),
 
-          TSettingMenuList(
-            icon: CupertinoIcons.moon,
-            title: "Modo oscuro",
-            subtitle: "Cambiar apariencia",
+          /// MODO OSCURO con switch
+          BlocBuilder<ThemeCubit, ThemeMode>(
+            builder: (context, themeMode) {
+              final isDark = themeMode == ThemeMode.dark;
+              return TSettingMenuList(
+                icon: isDark ? CupertinoIcons.sun_max : CupertinoIcons.moon,
+                title: "Modo oscuro",
+                subtitle: isDark ? "Apariencia oscura activa" : "Cambiar apariencia",
+                trailing: CupertinoSwitch(
+                  value: isDark,
+                  activeTrackColor: Colors.orange,
+                  onChanged: (_) => context.read<ThemeCubit>().toggleTheme(),
+                ),
+              );
+            },
           ),
 
           const SizedBox(height: TSize.spaceBtwSections),
 
           /// SOPORTE
           const TSectionHeading(title: "Soporte"),
-
           const SizedBox(height: TSize.spaceBtwItems),
 
           TSettingMenuList(

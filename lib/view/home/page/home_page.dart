@@ -80,6 +80,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final searchBg = isDark ? Colors.grey[800]! : Colors.white;
+    final searchTextColor = isDark ? Colors.white : Colors.black87;
+    final hintColor = isDark ? Colors.grey[400]! : Colors.grey[500]!;
+    final iconColor = isDark ? Colors.grey[300]! : Colors.grey[600]!;
+
     return Scaffold(
       drawer: const AppDrawer(),
       body: CustomScrollView(
@@ -122,25 +128,27 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const SizedBox(height: 10),
 
-                      /// BUSCADOR
+                      /// BUSCADOR — respeta el tema
                       Container(
                         height: 45,
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: searchBg,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: TextField(
                           controller: _searchController,
+                          style: TextStyle(color: searchTextColor),
                           onChanged: (value) {
                             context.read<SearchProductCubit>().searchProducts(value);
                           },
                           decoration: InputDecoration(
                             hintText: "Buscar herramientas...",
-                            prefixIcon: const Icon(Icons.search),
+                            hintStyle: TextStyle(color: hintColor),
+                            prefixIcon: Icon(Icons.search, color: iconColor),
                             border: InputBorder.none,
                             suffixIcon: _isSearching
                                 ? IconButton(
-                                    icon: const Icon(Icons.close, size: 18),
+                                    icon: Icon(Icons.close, size: 18, color: iconColor),
                                     onPressed: () {
                                       _searchController.clear();
                                       context.read<SearchProductCubit>().searchProducts('');
@@ -209,8 +217,6 @@ class _HomePageState extends State<HomePage> {
                     );
                   }
 
-                  // Si está buscando muestra todos los resultados,
-                  // si no, solo los 4 destacados
                   final display = _isSearching
                       ? state.products
                       : (state.products.length > 4
