@@ -18,10 +18,8 @@ class AddressCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 12,
-        vertical: 8,
-      ),
+      color: Colors.white,
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
@@ -29,10 +27,7 @@ class AddressCard extends StatelessWidget {
           children: [
             if (address.principal)
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 4,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
                   color: Colors.green,
                   borderRadius: BorderRadius.circular(20),
@@ -50,21 +45,20 @@ class AddressCard extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
+                color: Colors.black87,
               ),
             ),
 
             const SizedBox(height: 5),
-
-            Text(address.telefono),
-
-            const SizedBox(height: 5),
-
-            Text(address.direccion),
+            Text(address.telefono, style: const TextStyle(color: Colors.black87)),
 
             const SizedBox(height: 5),
+            Text(address.direccion, style: const TextStyle(color: Colors.black87)),
 
+            const SizedBox(height: 5),
             Text(
               "${address.ciudad}, ${address.departamento}",
+              style: const TextStyle(color: Colors.black87),
             ),
 
             if (address.referencia.isNotEmpty)
@@ -72,6 +66,7 @@ class AddressCard extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
                   "Referencia: ${address.referencia}",
+                  style: const TextStyle(color: Colors.black54),
                 ),
               ),
 
@@ -82,26 +77,15 @@ class AddressCard extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: onPrincipal,
-                  icon: const Icon(
-                    Icons.star,
-                    color: Colors.orange,
-                  ),
+                  icon: const Icon(Icons.star, color: Colors.orange),
                 ),
-
                 IconButton(
                   onPressed: onEdit,
-                  icon: const Icon(
-                    Icons.edit,
-                    color: Colors.blue,
-                  ),
+                  icon: const Icon(Icons.edit, color: Colors.blue),
                 ),
-
                 IconButton(
                   onPressed: onDelete,
-                  icon: const Icon(
-                    Icons.delete,
-                    color: Colors.red,
-                  ),
+                  icon: const Icon(Icons.delete, color: Colors.red),
                 ),
               ],
             ),
