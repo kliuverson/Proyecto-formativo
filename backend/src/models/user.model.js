@@ -32,12 +32,22 @@ const userSchema = new mongoose.Schema({
         required: true
     },
 
-    esAdmin: { type: Boolean, default: false }, 
+    esAdmin: { type: Boolean, default: false },
 
     password: {
         type: String,
         required: true,
         minlength: 8
+    },
+
+    resetPasswordToken: {
+        type: String,
+        default: null
+    },
+
+    resetPasswordExpire: {
+        type: Date,
+        default: null
     },
 
     listFavo: [
