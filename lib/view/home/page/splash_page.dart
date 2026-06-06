@@ -1,4 +1,5 @@
 import 'package:ferremateriales/cubit/auth_cubit.dart';
+import 'package:ferremateriales/src/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -93,7 +94,8 @@ class _SplashPageState extends State<SplashPage>
       listener: (context, state) {
         if (!state.isLoading) {
           if (state.isAuthenticated) {
-            Navigator.pushReplacementNamed(context, "/home");
+            final bool esAdmin = state.userData?["esAdmin"] ?? false;
+            Navigator.pushReplacementNamed(context, esAdmin ? AppRoutes.admin : AppRoutes.home);
           } else {
             Navigator.pushReplacementNamed(context, "/login");
           }

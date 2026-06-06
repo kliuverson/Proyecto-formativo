@@ -4,11 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ferremateriales/view/modulos/productos/model/product.dart';
 
 class ProductService {
-<<<<<<< HEAD
   static const String baseUrl = 'http://192.168.1.17:3000';
-=======
-  static const String baseUrl = 'http://192.168.20.45:3000';
->>>>>>> origin/main
 
   static Future<List<ProductModel>> getProducts({
     int page = 1,
