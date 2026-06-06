@@ -1,14 +1,19 @@
-import 'package:ferremateriales/view/modulos/productos/model/product.dart';
-import 'package:ferremateriales/view/modulos/favorites/service/favo_service.dart';
-import 'package:ferremateriales/view/modulos/carrito/pages/service/cart_service.dart';
+
 import 'package:ferremateriales/view/modulos/carrito/pages/model/cart_model.dart';
+import 'package:ferremateriales/view/modulos/carrito/pages/service/cart_service.dart';
+import 'package:ferremateriales/view/modulos/favorites/service/favo_service.dart';
+import 'package:ferremateriales/view/modulos/productos/model/product.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatefulWidget {
   final ProductModel product;
   final VoidCallback onTap;
 
-  const ProductCard({super.key, required this.product, required this.onTap});
+  const ProductCard({
+    super.key,
+    required this.product,
+    required this.onTap,
+  });
 
   @override
   State<ProductCard> createState() => _ProductCardState();
@@ -18,6 +23,7 @@ class _ProductCardState extends State<ProductCard>
     with SingleTickerProviderStateMixin {
   bool isFavorite = false;
   bool isAdding = false;
+
   late final FavoritesService _favoritesService;
 
   late AnimationController _favController;
@@ -29,7 +35,6 @@ class _ProductCardState extends State<ProductCard>
 
     _favoritesService = FavoritesService();
 
-    // Inicializar el estado de favorito y escuchar cambios globales
     isFavorite = _favoritesService.isFavorite(widget.product);
     _favoritesService.addListener(_onFavoritesChanged);
 
@@ -40,31 +45,45 @@ class _ProductCardState extends State<ProductCard>
 
     _favAnimation = Tween<double>(
       begin: 1,
-      end: 1.25,
-    ).animate(CurvedAnimation(parent: _favController, curve: Curves.easeOut));
+      end: 1.2,
+    ).animate(
+      CurvedAnimation(
+        parent: _favController,
+        curve: Curves.easeOut,
+      ),
+    );
   }
 
   @override
   void dispose() {
-    _favController.dispose();
     _favoritesService.removeListener(_onFavoritesChanged);
+    _favController.dispose();
     super.dispose();
   }
 
+  void _onFavoritesChanged() {
+    final fav = _favoritesService.isFavorite(widget.product);
+
+    if (fav != isFavorite) {
+      setState(() {
+        isFavorite = fav;
+      });
+    }
+  }
+
   void _toggleFavorite() {
-    // Actualizar servicio de favoritos (que notificará a otros listeners)
     _favoritesService.toggleFavorite(widget.product);
 
-    // Animación local
     _favController.forward().then((_) {
       _favController.reverse();
     });
   }
 
   void _addToCart() async {
-    setState(() => isAdding = true);
+    setState(() {
+      isAdding = true;
+    });
 
-    // Crear y añadir el producto al servicio de carrito
     final item = CartItem(
       id: widget.product.sku,
       name: widget.product.nombre,
@@ -74,16 +93,13 @@ class _ProductCardState extends State<ProductCard>
 
     CartService.addProduct(item);
 
-    await Future.delayed(const Duration(milliseconds: 200));
+    await Future.delayed(const Duration(milliseconds: 250));
 
-    setState(() => isAdding = false);
-  }
+    if (!mounted) return;
 
-  void _onFavoritesChanged() {
-    final fav = _favoritesService.isFavorite(widget.product);
-    if (fav != isFavorite) {
-      setState(() => isFavorite = fav);
-    }
+    setState(() {
+      isAdding = false;
+    });
   }
 
   @override
@@ -95,122 +111,160 @@ class _ProductCardState extends State<ProductCard>
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: Colors.grey.shade300,
+            width: 0.8,
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withAlpha(20),
-              blurRadius: 12,
-              offset: const Offset(0, 6),
-            ),
+              color: Colors.black.withOpacity(.05),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            )
           ],
         ),
-        child: Stack(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                /// 🔹 IMAGEN
-                ClipRRect(
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(16),
-                  ),
-                  child: Image.network(
-                    product.image.isNotEmpty
-                        ? product.image
-                        : "https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0",
-                    height: 110,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                ),
 
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 14,
+            Expanded(
+              flex: 5,
+              child: Stack(
+                children: [
+
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(14),
+                      topRight: Radius.circular(14),
+                    ),
+                    child: Image.network(
+                      product.image.isNotEmpty
+                          ? product.image
+                          : "https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0",
+                      width: double.infinity,
+                      height: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        product.nombre,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
+
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: ScaleTransition(
+                      scale: _favAnimation,
+                      child: GestureDetector(
+                        onTap: _toggleFavorite,
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(.1),
+                                blurRadius: 4,
+                              )
+                            ],
+                          ),
+                          child: Icon(
+                            isFavorite
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: isFavorite
+                                ? Colors.red
+                                : Colors.grey,
+                            size: 18,
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 8),
+                    ),
+                  ),
+                ],
+              ),
+            ),
 
-                      /// 🔹 PRECIO + CARRITO EN FILA
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "\$${product.precio.toStringAsFixed(0)}",
-                            style: const TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.green,
-                            ),
+            Expanded(
+              flex: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+
+                    Text(
+                      product.nombre,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+
+                    const SizedBox(height: 4),
+
+                    Text(
+                      "SKU: ${product.sku}",
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+
+                    const SizedBox(height: 6),
+
+                    const Text(
+                      "En stock",
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+
+                    const Spacer(),
+
+                    Row(
+                      mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                      children: [
+
+                        Text(
+                          "\$${product.precio.toStringAsFixed(0)}",
+                          style: const TextStyle(
+                            color: Color(0xFFFF6A14),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
                           ),
+                        ),
 
-                          AnimatedScale(
-                            scale: isAdding ? 0.85 : 1,
-                            duration: const Duration(milliseconds: 150),
-                            child: GestureDetector(
-                              onTap: _addToCart,
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: isAdding ? Colors.green : Colors.blue,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Icon(
-                                  isAdding
-                                      ? Icons.check
-                                      : Icons.shopping_cart_outlined,
-                                  size: 18,
-                                  color: Colors.white,
-                                ),
+                        AnimatedScale(
+                          scale: isAdding ? .85 : 1,
+                          duration:
+                              const Duration(milliseconds: 150),
+                          child: GestureDetector(
+                            onTap: _addToCart,
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFFF6A14),
+                                borderRadius:
+                                    BorderRadius.circular(8),
+                              ),
+                              child: Icon(
+                                isAdding
+                                    ? Icons.check
+                                    : Icons.shopping_cart_outlined,
+                                color: Colors.white,
+                                size: 18,
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-
-            /// ❤️ FAVORITO
-            Positioned(
-              top: 8,
-              right: 8,
-              child: ScaleTransition(
-                scale: _favAnimation,
-                child: GestureDetector(
-                  onTap: _toggleFavorite,
-                  child: Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withAlpha(20),
-                          blurRadius: 6,
                         ),
                       ],
                     ),
-                    child: Icon(
-                      isFavorite ? Icons.favorite : Icons.favorite_border,
-                      color: isFavorite ? Colors.red : Colors.grey,
-                      size: 18,
-                    ),
-                  ),
+                  ],
                 ),
               ),
             ),
@@ -220,3 +274,4 @@ class _ProductCardState extends State<ProductCard>
     );
   }
 }
+

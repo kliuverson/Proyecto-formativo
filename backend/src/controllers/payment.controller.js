@@ -4,15 +4,12 @@ const crypto = require("crypto");
 
 const Order = require("../models/order.model");
 const User = require("../models/user.model");
+const Product = require("../models/products.model"); // ✅ MOVIDO AQUÍ
 
 exports.createPayment = async (req, res) => {
   try {
 
     const { orderId } = req.body;
-
-    // =========================
-    // VALIDAR ORDEN
-    // =========================
 
     const order = await Order.findById(orderId);
 
@@ -22,10 +19,6 @@ exports.createPayment = async (req, res) => {
       });
     }
 
-    // =========================
-    // USUARIO
-    // =========================
-
     const user = await User.findById(order.user);
 
     if (!user) {
@@ -34,19 +27,9 @@ exports.createPayment = async (req, res) => {
       });
     }
 
-    // =========================
-    // VARIABLES WOMPI
-    // =========================
-
     const reference = `ORDER-${uuidv4()}`;
-
     const currency = "COP";
-
     const amountInCents = Math.round(order.total * 100);
-
-    // =========================
-    // OBTENER ACCEPTANCE TOKEN
-    // =========================
 
     const merchantResponse = await axios.get(
       `https://sandbox.wompi.co/v1/merchants/${process.env.WOMPI_PUBLIC_KEY}`
@@ -54,10 +37,6 @@ exports.createPayment = async (req, res) => {
 
     const acceptanceToken =
       merchantResponse.data.data.presigned_acceptance.acceptance_token;
-
-    // =========================
-    // GENERAR FIRMA
-    // =========================
 
     const integrityString =
       `${reference}${amountInCents}${currency}${process.env.WOMPI_INTEGRITY_SECRET}`;
@@ -70,10 +49,6 @@ exports.createPayment = async (req, res) => {
     console.log("INTEGRITY STRING:", integrityString);
     console.log("SIGNATURE:", integritySignature);
 
-    // =========================
-    // URL CHECKOUT WOMPI
-    // =========================
-
     const checkoutUrl =
       `https://checkout.wompi.co/p/?public-key=${process.env.WOMPI_PUBLIC_KEY}` +
       `&currency=${currency}` +
@@ -81,17 +56,8 @@ exports.createPayment = async (req, res) => {
       `&reference=${reference}` +
       `&signature:integrity=${integritySignature}`;
 
-    // =========================
-    // GUARDAR ORDEN
-    // =========================
-
     order.paymentReference = reference;
-
     await order.save();
-
-    // =========================
-    // RESPUESTA
-    // =========================
 
     return res.status(200).json({
       success: true,
@@ -119,7 +85,6 @@ exports.checkPaymentStatus = async (req, res) => {
       return res.status(400).json({ message: "Reference is required" });
     }
 
-    // Buscar transacción en Wompi (sandbox)
     if (!process.env.WOMPI_PRIVATE_KEY) {
       console.error("WOMPI_PRIVATE_KEY no definida en el servidor");
       return res.status(500).json({ message: "WOMPI_PRIVATE_KEY no definida en el servidor" });
@@ -140,24 +105,19 @@ exports.checkPaymentStatus = async (req, res) => {
     console.log("Wompi transactions:", transactions.length, transactions);
 
     const tx = transactions.length > 0 ? transactions[0] : null;
-
-    // ejemplo: tx.status puede ser 'APPROVED', 'DECLINED', 'PENDING'
     const txStatus = tx ? tx.status : null;
 
-    // Buscar la orden asociada
     const order = await Order.findOne({ paymentReference: reference });
 
     if (!order) {
       return res.status(404).json({ message: "Orden no encontrada" });
     }
 
-    // Si la transacción fue aprobada, marcar la orden como paid y descontar stock
-    if (txStatus && (txStatus === "APPROVED" || txStatus.toLowerCase() === "approved") && order.status !== "paid") {
+    if (txStatus && txStatus.toUpperCase() === "APPROVED" && order.status !== "paid") {
       order.status = "paid";
 
-      // descontar stock
+      // ✅ require ELIMINADO del loop, ya está al inicio del archivo
       for (const item of order.items) {
-        const Product = require("../models/products.model");
         const product = await Product.findById(item.product);
         if (product) {
           product.stock -= item.quantity;
@@ -168,7 +128,6 @@ exports.checkPaymentStatus = async (req, res) => {
       await order.save();
     }
 
-    // Si no hay transacciones aún, devolvemos el estado actual de la orden (pending)
     return res.status(200).json({
       success: true,
       status: order.status,
