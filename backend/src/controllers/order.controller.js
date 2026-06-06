@@ -92,8 +92,7 @@ exports.getMyOrders = async (req, res) => {
     console.log("REQ.USER:");
     console.log(req.user);
 
-    const userId =
-      req.user.id || req.user._id;
+    const userId = req.user.id || req.user._id;
 
     console.log("USER ID:");
     console.log(userId);
@@ -163,20 +162,7 @@ exports.updateOrderStatus = async (req, res) => {
       });
     }
 
-    // DESCONTAR STOCK CUANDO EL PAGO SEA EXITOSO
-    if (status === "paid" && order.status !== "paid") {
-
-      for (const item of order.items) {
-
-        const product = await Product.findById(item.product);
-
-        if (product) {
-          product.stock -= item.quantity;
-          await product.save();
-        }
-      }
-    }
-
+  
     order.status = status;
 
     await order.save();
