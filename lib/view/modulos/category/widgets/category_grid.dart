@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
+
 import 'package:ferremateriales/src/routes/app_routes.dart';
+import 'package:flutter/material.dart';
+
 import '../model/category_data.dart';
 import 'category_card.dart';
 
@@ -16,37 +18,82 @@ class CategoryGrid extends StatelessWidget {
     final textPrimaryColor = theme.textTheme.bodyLarge!.color!;
     final textSecondaryColor = theme.textTheme.bodyMedium!.color!;
 
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.8,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-      ),
-      itemCount: categories.length,
-      itemBuilder: (context, index) {
-        final category = categories[index];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
 
-        return GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(
-              context,
-              AppRoutes.productsByCategory,
-              arguments: category.name,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+
+            const Text(
+              "Categorías",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.category,
+                );
+              },
+              child: const Text(
+                "Ver todas",
+                style: TextStyle(
+                  color: Color(0xFFFF6A14),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            )
+
+          ],
+        ),
+
+        const SizedBox(height: 12),
+
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: categories.length,
+
+          gridDelegate:
+              const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+            childAspectRatio: 1.35,
+          ),
+
+          itemBuilder: (context, index) {
+
+            final category = categories[index];
+
+            return GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.productsByCategory,
+                  arguments: category.name,
+                );
+              },
+              child: CategoryCard(
+                category: category,
+                accentColor: accentColor,
+                surfaceColor: surfaceColor,
+                borderColor: borderColor,
+                textPrimaryColor: textPrimaryColor,
+                textSecondaryColor: textSecondaryColor,
+              ),
             );
           },
-          child: CategoryCard(
-            category: category,
-            accentColor: accentColor,
-            surfaceColor: surfaceColor,
-            borderColor: borderColor,
-            textPrimaryColor: textPrimaryColor,
-            textSecondaryColor: textSecondaryColor,
-          ),
-        );
-      },
+        ),
+
+      ],
     );
   }
 }
+
