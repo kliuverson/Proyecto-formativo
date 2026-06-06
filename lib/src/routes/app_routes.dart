@@ -1,3 +1,5 @@
+// app_routes.dart
+import 'package:ferremateriales/view/modulos/admin/page/dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ferremateriales/view/home/page/home_page.dart';
@@ -16,6 +18,7 @@ import 'package:ferremateriales/view/modulos/register/register.dart';
 import 'package:ferremateriales/view/modulos/category/cubit/category_product_cubit.dart';
 import 'package:ferremateriales/view/modulos/address/pages/address_page.dart';
 
+
 class AppRoutes {
   static const home = '/home';
   static const login = '/login';
@@ -26,19 +29,10 @@ class AppRoutes {
   static const orders = '/orders';
   static const register = '/register';
   static const products = '/products';
-  static const admin = '/admin';
+  static const admin = '/admin'; // ✅ ya existía la constante, ahora tiene ruta
   static const editProfile = '/edit-profile';
   static const productsByCategory = '/productsByCategory';
   static const address = '/address';
-  static const payments = '/payments';
-  static const security = '/security';
-  static const coupons = '/coupons';
-  static const notifications = '/notifications';
-  static const language = '/language';
-  static const theme = '/theme';
-  static const help = '/help';
-  static const terms = '/terms';
-  static const privacy = '/privacy';
 
   static Map<String, WidgetBuilder> routes = {
     home: (context) => const HomePage(),
@@ -50,13 +44,12 @@ class AppRoutes {
     category: (context) => const CategoryPage(),
 
     profile: (context) => BlocProvider.value(
-      value: context.read<ProfileCubit>()..getUserProfile(),
-      child: const ProfilePage(),
-    ),
+          value: context.read<ProfileCubit>()..getUserProfile(),
+          child: const ProfilePage(),
+        ),
 
     editProfile: (context) {
-      final user =
-          ModalRoute.of(context)!.settings.arguments as UserProfileModel;
+      final user = ModalRoute.of(context)!.settings.arguments as UserProfileModel;
       return EditProfilePage(user: user);
     },
 
@@ -68,8 +61,10 @@ class AppRoutes {
 
     products: (context) => const ProductListPage(),
 
-    // Ruta de direcciones agregada
     address: (context) => const AddressPage(),
+
+    // ✅ Ruta del dashboard admin
+    admin: (context) => const AdminDashboardPage(),
 
     productsByCategory: (context) {
       final args = ModalRoute.of(context)!.settings.arguments;
@@ -81,8 +76,7 @@ class AppRoutes {
       final categoryName = args.toString();
 
       return BlocProvider(
-        create: (_) =>
-            CategoryProductCubit()..loadProductsByCategory(categoryName),
+        create: (_) => CategoryProductCubit()..loadProductsByCategory(categoryName),
         child: ProductsByCategoryPage(categoryName: categoryName),
       );
     },

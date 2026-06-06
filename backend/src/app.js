@@ -14,6 +14,7 @@ const swaggerSpec = require("./config/swagger");
 
 const orderRoutes = require("./routes/order.routes");
 const paymentRoutes = require("./routes/payment.routes");
+const dashboardRoutes = require("./routes/dashboard.routes");
 
 require("./models/products.model");
 require("./models/user.model");
@@ -49,6 +50,8 @@ app.use("/api/address", addressRoutes);
 app.use("/api/orders", orderRoutes);
 
 app.use("/api/payments", paymentRoutes);
+
+app.use("/api/dashboard", dashboardRoutes);
 
 /// SWAGGER
 app.use(
