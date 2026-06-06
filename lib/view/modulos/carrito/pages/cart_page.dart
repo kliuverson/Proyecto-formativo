@@ -3,15 +3,12 @@ import 'package:ferremateriales/view/modulos/carrito/widgets/cart_total_section.
 import 'package:ferremateriales/view/modulos/carrito/widgets/checkout_button.dart';
 import 'package:ferremateriales/view/modulos/carrito/widgets/empty_cart_view.dart';
 import 'package:ferremateriales/view/modulos/orders/cubit/order_cubit.dart';
-import 'package:ferremateriales/view/modulos/orders/service/order_service.dart';
 import 'package:ferremateriales/view/payment/payment_service.dart';
-
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'bloc/cart_bloc.dart';
 import 'bloc/cart_event.dart';
 import 'bloc/cart_state.dart';
@@ -24,7 +21,7 @@ class CartPage extends StatelessWidget {
     return BlocProvider(
       create: (_) => CartBloc()..add(LoadCart()),
       child: Scaffold(
-        backgroundColor: Colors.grey[100],
+
         appBar: AppBar(
           title: const Text("Mi Carrito"),
           centerTitle: true,
@@ -32,50 +29,32 @@ class CartPage extends StatelessWidget {
         ),
         body: BlocBuilder<CartBloc, CartState>(
           builder: (context, state) {
-            // LOADING
             if (state is CartLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const Center(child: CircularProgressIndicator());
             }
 
-            // ERROR
             if (state is CartError) {
-              return Center(
-                child: Text(state.message),
-              );
+              return Center(child: Text(state.message));
             }
 
-            // LOADED
             if (state is CartLoaded) {
-              // CARRITO VACÍO
               if (state.items.isEmpty) {
                 return const EmptyCartView();
               }
 
               return Column(
                 children: [
-                  // LISTA PRODUCTOS
                   Expanded(
                     child: ListView.builder(
                       padding: const EdgeInsets.all(12),
                       itemCount: state.items.length,
                       itemBuilder: (context, index) {
                         final item = state.items[index];
-
-                        return CartItemCard(
-                          item: item,
-                        );
+                        return CartItemCard(item: item);
                       },
                     ),
                   ),
-
-                  // TOTAL
-                  CartTotalSection(
-                    total: state.total,
-                  ),
-
-                  // BOTÓN CHECKOUT
+                  CartTotalSection(total: state.total),
                   CheckoutButton(
                     onPressed: () async {
                       try {
@@ -98,13 +77,11 @@ class CartPage extends StatelessWidget {
 
                         print(items);
 
-                        // Abrir pasarela externa
                         await launchUrl(
                           Uri.parse(checkoutUrl),
                           mode: LaunchMode.externalApplication,
                         );
 
-                        // Mostrar diálogo de comprobación y empezar polling
                         showDialog(
                           context: context,
                           barrierDismissible: false,
@@ -112,18 +89,13 @@ class CartPage extends StatelessWidget {
                             return _PaymentStatusDialog(reference: reference);
                           },
                         ).then((_) {
-                          // refrescar pedidos cuando se cierra el diálogo
                           try {
                             context.read<OrderCubit>().getOrders();
                           } catch (_) {}
                         });
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              "Error procesando pago: $e",
-                            ),
-                          ),
+                          SnackBar(content: Text("Error procesando pago: $e")),
                         );
                       }
                     },
@@ -169,10 +141,8 @@ class _PaymentStatusDialogState extends State<_PaymentStatusDialog> {
       attempts++;
       try {
         final resp = await service.checkPaymentStatus(reference: widget.reference);
-
         final status = (resp['status'] as String?)?.toLowerCase() ?? '';
 
-        // Log for debugging
         print('checkPaymentStatus resp: $resp');
 
         if (status == 'paid' || status == 'approved') {
@@ -199,9 +169,7 @@ class _PaymentStatusDialogState extends State<_PaymentStatusDialog> {
         setState(() {
           _statusText = 'Estado: ${status.isEmpty ? resp['message'] ?? 'pending' : status}';
         });
-
       } catch (e) {
-        // Mostrar detalle de error para depuración
         setState(() {
           _statusText = 'Error verificando pago: ${e.toString()}';
         });
@@ -221,7 +189,12 @@ class _PaymentStatusDialogState extends State<_PaymentStatusDialog> {
       title: const Text('Comprobando pago'),
       content: Row(
         children: [
-          if (!_done) const SizedBox(width: 24, height: 24, child: CircularProgressIndicator()),
+          if (!_done)
+            const SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(),
+            ),
           const SizedBox(width: 12),
           Expanded(child: Text(_statusText)),
         ],

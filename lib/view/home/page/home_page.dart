@@ -20,24 +20,33 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<ProductModel> allProducts = [];
+  final TextEditingController _searchController = TextEditingController();
+  bool _isSearching = false;
 
   @override
   void initState() {
     super.initState();
     loadProducts();
+    _searchController.addListener(() {
+      setState(() {
+        _isSearching = _searchController.text.isNotEmpty;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   void loadProducts() async {
     final products = await ProductService.getProducts();
-
     print("Productos cargados: ${products.length}");
-
     if (!mounted) return;
-
     setState(() {
       allProducts = products;
     });
-
     context.read<SearchProductCubit>().setProducts(products);
   }
 
@@ -47,7 +56,6 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       currentIndex = index;
     });
-
     switch (index) {
       case 0:
         Navigator.pushNamed(context, AppRoutes.home);
@@ -72,9 +80,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final searchBg = isDark ? Colors.grey[800]! : Colors.white;
+    final searchTextColor = isDark ? Colors.white : Colors.black87;
+    final hintColor = isDark ? Colors.grey[400]! : Colors.grey[500]!;
+    final iconColor = isDark ? Colors.grey[300]! : Colors.grey[600]!;
+
     return Scaffold(
       drawer: const AppDrawer(),
-
       body: CustomScrollView(
         slivers: [
           /// APPBAR
@@ -82,35 +95,27 @@ class _HomePageState extends State<HomePage> {
             pinned: true,
             expandedHeight: 120,
             backgroundColor: const Color.fromARGB(255, 255, 106, 20),
-
             leading: Builder(
               builder: (context) {
                 return IconButton(
                   icon: const Icon(Icons.menu, color: Colors.black),
-                  onPressed: () {
-                    Scaffold.of(context).openDrawer();
-                  },
+                  onPressed: () => Scaffold.of(context).openDrawer(),
                 );
               },
             ),
             actions: [
-                      Builder(
-                        builder: (context) {
-                          final auth = context.watch<AuthCubit>().state;
-                          final isAdmin = auth.userData?["esAdmin"] ?? false;
-
-                          if (!isAdmin) return const SizedBox();
-
-                          return IconButton(
-                            icon: const Icon(Icons.admin_panel_settings, color: Colors.black),
-                            onPressed: () {
-                              Navigator.pushNamed(context, AppRoutes.admin);
-                            },
-                          );
-                        },
-                      )
-                    ],
-
+              Builder(
+                builder: (context) {
+                  final auth = context.watch<AuthCubit>().state;
+                  final isAdmin = auth.userData?["esAdmin"] ?? false;
+                  if (!isAdmin) return const SizedBox();
+                  return IconButton(
+                    icon: const Icon(Icons.admin_panel_settings, color: Colors.black),
+                    onPressed: () => Navigator.pushNamed(context, AppRoutes.admin),
+                  );
+                },
+              ),
+            ],
             flexibleSpace: FlexibleSpaceBar(
               background: SafeArea(
                 child: Padding(
@@ -119,29 +124,37 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 5, top: 8),
-                        child: Image.asset(
-                          "assets/icons/icono_page.png",
-                          height: 35,
-                        ),
+                        child: Image.asset("assets/icons/icono_page.png", height: 35),
                       ),
-
                       const SizedBox(height: 10),
 
-                      /// BUSCADOR
+                      /// BUSCADOR — respeta el tema
                       Container(
                         height: 45,
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: searchBg,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: TextField(
+                          controller: _searchController,
+                          style: TextStyle(color: searchTextColor),
                           onChanged: (value) {
                             context.read<SearchProductCubit>().searchProducts(value);
                           },
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             hintText: "Buscar herramientas...",
-                            prefixIcon: Icon(Icons.search),
+                            hintStyle: TextStyle(color: hintColor),
+                            prefixIcon: Icon(Icons.search, color: iconColor),
                             border: InputBorder.none,
+                            suffixIcon: _isSearching
+                                ? IconButton(
+                                    icon: Icon(Icons.close, size: 18, color: iconColor),
+                                    onPressed: () {
+                                      _searchController.clear();
+                                      context.read<SearchProductCubit>().searchProducts('');
+                                    },
+                                  )
+                                : null,
                           ),
                         ),
                       ),
@@ -152,51 +165,81 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          /// BANNER
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.only(top: 10),
-              child: BannerCarousel(),
+          /// BANNER — se oculta al buscar
+          if (!_isSearching)
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: BannerCarousel(),
+              ),
             ),
-          ),
 
-          /// CATEGORÍAS
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: CategoryGrid(),
+          /// CATEGORÍAS — se oculta al buscar
+          if (!_isSearching)
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: CategoryGrid(),
+              ),
             ),
-          ),
 
-          /// 🔥 PRODUCTOS (AQUÍ ESTÁ LO IMPORTANTE)
+          /// PRODUCTOS
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16),
-              child: BlocBuilder<SearchProductCubit, List<ProductModel>>(
-                builder: (context, filteredProducts) {
-                  if (filteredProducts.isEmpty) {
+              child: BlocBuilder<SearchProductCubit, SearchProductState>(
+                builder: (context, state) {
+                  if (state.isLoading) {
                     return const Center(
-                      child: Text("No se encontraron productos"),
+                      child: Padding(
+                        padding: EdgeInsets.all(40),
+                        child: CircularProgressIndicator(),
+                      ),
                     );
                   }
+
+                  if (state.products.isEmpty) {
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(40),
+                        child: Column(
+                          children: [
+                            Icon(Icons.search_off, size: 48, color: Colors.grey[400]),
+                            const SizedBox(height: 12),
+                            Text(
+                              'No se encontraron productos\npara "${_searchController.text}"',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.grey[600]),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+
+                  final display = _isSearching
+                      ? state.products
+                      : (state.products.length > 4
+                          ? state.products.sublist(0, 4)
+                          : state.products);
 
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Productos",
-                        style: TextStyle(
+                      Text(
+                        _isSearching
+                            ? '${state.products.length} resultado(s)'
+                            : 'Productos Destacados',
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-
                       const SizedBox(height: 10),
-
                       GridView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: filteredProducts.length,
+                        itemCount: display.length,
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           childAspectRatio: 0.75,
@@ -204,8 +247,7 @@ class _HomePageState extends State<HomePage> {
                           mainAxisSpacing: 12,
                         ),
                         itemBuilder: (context, index) {
-                          final product = filteredProducts[index];
-
+                          final product = display[index];
                           return ProductCard(
                             product: product,
                             onTap: () {

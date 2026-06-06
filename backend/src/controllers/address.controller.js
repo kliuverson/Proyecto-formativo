@@ -22,7 +22,7 @@ exports.getAddresses = async (req, res) => {
     const userId = req.user.id;
 
     const addresses = await Address.find({ userId })
-      .sort({ principal: -1, createdAt: -1 });
+      .sort({ principal: -1, createdAt: 1 });
 
     return res.status(200).json(addresses);
 

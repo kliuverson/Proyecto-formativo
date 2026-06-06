@@ -8,7 +8,6 @@ import 'package:ferremateriales/view/modulos/favorites/pages/favorite_page.dart'
 import 'package:ferremateriales/view/modulos/orders/pages/orders_page.dart';
 import 'package:ferremateriales/view/modulos/productos/pages/products_list_page.dart';
 import 'package:ferremateriales/view/modulos/productos/pages/products_by_category_page.dart';
-import 'package:ferremateriales/view/modulos/admin/page/admin_page.dart';
 import 'package:ferremateriales/view/modulos/profile/pages/profile_page.dart';
 import 'package:ferremateriales/view/modulos/profile/pages/edit_profile_page.dart';
 import 'package:ferremateriales/view/modulos/profile/cubit/profile_cubit.dart';
@@ -41,11 +40,10 @@ class AppRoutes {
 
     category: (context) => const CategoryPage(),
 
-    profile:
-        (context) => BlocProvider.value(
-          value: context.read<ProfileCubit>()..getUserProfile(),
-          child: const ProfilePage(),
-        ),
+    profile: (context) => BlocProvider.value(
+      value: context.read<ProfileCubit>()..getUserProfile(),
+      child: const ProfilePage(),
+    ),
 
     editProfile: (context) {
       final user =
@@ -61,6 +59,9 @@ class AppRoutes {
 
     products: (context) => const ProductListPage(),
 
+    // Ruta de direcciones agregada
+    address: (context) => const AddressPage(),
+
     productsByCategory: (context) {
       final args = ModalRoute.of(context)!.settings.arguments;
 
@@ -71,13 +72,16 @@ class AppRoutes {
       final categoryName = args.toString();
 
       return BlocProvider(
-        create:
-            (_) => CategoryProductCubit()..loadProductsByCategory(categoryName),
+        create: (_) =>
+            CategoryProductCubit()..loadProductsByCategory(categoryName),
         child: ProductsByCategoryPage(categoryName: categoryName),
       );
     },
+<<<<<<< HEAD
 
     admin: (context) => const CreateProductPage(),
     address: (context) => const AddressPage(),
+=======
+>>>>>>> origin/main
   };
 }

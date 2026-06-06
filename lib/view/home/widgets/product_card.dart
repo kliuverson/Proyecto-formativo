@@ -29,7 +29,6 @@ class _ProductCardState extends State<ProductCard>
 
     _favoritesService = FavoritesService();
 
-    // Inicializar el estado de favorito y escuchar cambios globales
     isFavorite = _favoritesService.isFavorite(widget.product);
     _favoritesService.addListener(_onFavoritesChanged);
 
@@ -52,10 +51,8 @@ class _ProductCardState extends State<ProductCard>
   }
 
   void _toggleFavorite() {
-    // Actualizar servicio de favoritos (que notificará a otros listeners)
     _favoritesService.toggleFavorite(widget.product);
 
-    // Animación local
     _favController.forward().then((_) {
       _favController.reverse();
     });
@@ -64,7 +61,6 @@ class _ProductCardState extends State<ProductCard>
   void _addToCart() async {
     setState(() => isAdding = true);
 
-    // Crear y añadir el producto al servicio de carrito
     final item = CartItem(
       id: widget.product.sku,
       name: widget.product.nombre,
@@ -161,6 +157,7 @@ class _ProductCardState extends State<ProductCard>
                             duration: const Duration(milliseconds: 150),
                             child: GestureDetector(
                               onTap: _addToCart,
+                              behavior: HitTestBehavior.opaque, // ✅
                               child: Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
@@ -193,6 +190,7 @@ class _ProductCardState extends State<ProductCard>
                 scale: _favAnimation,
                 child: GestureDetector(
                   onTap: _toggleFavorite,
+                  behavior: HitTestBehavior.opaque, // ✅
                   child: Container(
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(

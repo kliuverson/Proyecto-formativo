@@ -1,5 +1,6 @@
 import 'package:ferremateriales/view/modulos/orders/model/order_model.dart';
 import 'package:flutter/material.dart';
+
 class OrderCard extends StatelessWidget {
   final OrderModel order;
 
@@ -9,13 +10,10 @@ class OrderCard extends StatelessWidget {
     switch (order.status) {
       case 'paid':
         return Colors.green;
-
       case 'pending':
         return Colors.orange;
-
       case 'failed':
         return Colors.red;
-
       default:
         return Colors.grey;
     }
@@ -24,6 +22,7 @@ class OrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.white,
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -38,6 +37,7 @@ class OrderCard extends StatelessWidget {
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
+                    color: Colors.black87,
                   ),
                 ),
                 Container(
@@ -51,9 +51,7 @@ class OrderCard extends StatelessWidget {
                   ),
                   child: Text(
                     order.status,
-                    style: const TextStyle(
-                      color: Colors.white,
-                    ),
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
               ],
@@ -61,17 +59,20 @@ class OrderCard extends StatelessWidget {
             const SizedBox(height: 10),
             Text(
               "Productos: ${order.items.length}",
+              style: const TextStyle(color: Colors.black87),
             ),
             const SizedBox(height: 5),
             Text(
               "Total: ${order.total}",
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
+                color: Colors.black87,
               ),
             ),
             const SizedBox(height: 5),
             Text(
               order.createdAt.toString(),
+              style: const TextStyle(color: Colors.black54),
             ),
           ],
         ),
