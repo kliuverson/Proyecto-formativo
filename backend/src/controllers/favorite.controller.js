@@ -9,7 +9,7 @@ exports.getFavorites = async (req, res) => {
     const userId = req.user.id;
 
     let favorites = await Favorite.findOne({ userId })
-      .populate({ path: "items.productId", model: "productos" })
+      .populate({ path: "items.productId", model: "productos" });
 
     // Si no existe, crear lista vacía
     if (!favorites) {
@@ -19,7 +19,23 @@ exports.getFavorites = async (req, res) => {
       });
     }
 
-    res.status(200).json(favorites);
+    // Construir URL completa de la imagen igual que en getProducts
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+
+    const itemsConUrl = favorites.items.map(item => {
+      const obj = item.toObject();
+      if (obj.productId && obj.productId.image) {
+        obj.productId.image = obj.productId.image.startsWith('http')
+          ? obj.productId.image
+          : `${baseUrl}${obj.productId.image}`;
+      }
+      return obj;
+    });
+
+    res.status(200).json({
+      ...favorites.toObject(),
+      items: itemsConUrl,
+    });
 
   } catch (error) {
 
@@ -38,6 +54,12 @@ exports.addFavorite = async (req, res) => {
 
     const userId = req.user.id;
     const { productId } = req.body;
+
+    if (!productId) {
+      return res.status(400).json({
+        message: "productId es requerido",
+      });
+    }
 
     // Validar si existe el producto
     const productExists = await Product.findById(productId);
@@ -60,7 +82,7 @@ exports.addFavorite = async (req, res) => {
 
     // Verifica duplicados
     const alreadyExists = favorites.items.find(
-      item => item.productId.toString() === productId
+      (item) => item.productId.toString() === productId
     );
 
     if (alreadyExists) {
@@ -73,9 +95,28 @@ exports.addFavorite = async (req, res) => {
 
     await favorites.save();
 
+    // Retornar con populate
+    await favorites.populate({ path: "items.productId", model: "productos" });
+
+    // Construir URL completa de la imagen
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+
+    const itemsConUrl = favorites.items.map(item => {
+      const obj = item.toObject();
+      if (obj.productId && obj.productId.image) {
+        obj.productId.image = obj.productId.image.startsWith('http')
+          ? obj.productId.image
+          : `${baseUrl}${obj.productId.image}`;
+      }
+      return obj;
+    });
+
     res.status(200).json({
       message: "Producto agregado a favoritos",
-      favorites,
+      favorites: {
+        ...favorites.toObject(),
+        items: itemsConUrl,
+      },
     });
 
   } catch (error) {
@@ -96,6 +137,12 @@ exports.removeFavorite = async (req, res) => {
     const userId = req.user.id;
     const { productId } = req.params;
 
+    if (!productId) {
+      return res.status(400).json({
+        message: "productId es requerido",
+      });
+    }
+
     const favorites = await Favorite.findOne({ userId });
 
     if (!favorites) {
@@ -104,9 +151,17 @@ exports.removeFavorite = async (req, res) => {
       });
     }
 
+    const beforeCount = favorites.items.length;
+
     favorites.items = favorites.items.filter(
-      item => item.productId.toString() !== productId
+      (item) => item.productId.toString() !== productId
     );
+
+    if (favorites.items.length === beforeCount) {
+      return res.status(404).json({
+        message: "Producto no encontrado en favoritos",
+      });
+    }
 
     await favorites.save();
 
@@ -157,3 +212,4 @@ exports.clearFavorites = async (req, res) => {
 
   }
 };
+
