@@ -42,12 +42,12 @@ class MetricCard extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     color: color.withOpacity(0.12),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Icon(icono, size: 20, color: color),
+                  child: Icon(icono, size: 18, color: color),
                 ),
               ],
             ),
@@ -117,7 +117,7 @@ class MetricsGrid extends StatelessWidget {
         crossAxisCount: 2,
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
-        childAspectRatio: 1.5,
+        childAspectRatio: 1.1,
       ),
       itemCount: metrics.length,
       itemBuilder: (_, i) => MetricCard(
@@ -192,13 +192,13 @@ class PedidosRecientesWidget extends StatelessWidget {
                   return ListTile(
                     contentPadding: EdgeInsets.zero,
                     leading: Container(
-                      width: 40,
-                      height: 40,
+                      width: 32,
+                      height: 32,
                       decoration: BoxDecoration(
                         color: Colors.blue.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: const Icon(Icons.receipt, color: Colors.blue, size: 20),
+                      child: const Icon(Icons.receipt, color: Colors.blue, size: 16),
                     ),
                     title: Text(
                       p["cliente"] ?? "Cliente",
@@ -282,9 +282,9 @@ class StockCriticoWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+                Row(
               children: [
-                const Icon(Icons.warning_amber, color: Colors.orange, size: 20),
+                const Icon(Icons.warning_amber, color: Colors.orange, size: 18),
                 const SizedBox(width: 8),
                 const Text(
                   "Stock crítico",
