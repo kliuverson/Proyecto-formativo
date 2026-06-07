@@ -134,18 +134,27 @@ class ProfileBodySection extends StatelessWidget {
             icon: CupertinoIcons.question_circle,
             title: "Centro de ayuda",
             subtitle: "Soporte y preguntas frecuentes",
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutes.centroAyuda);
+            },
           ),
 
           TSettingMenuList(
             icon: CupertinoIcons.doc_text,
             title: "Términos y condiciones",
             subtitle: "Información legal",
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutes.terminos);
+            },
           ),
 
           TSettingMenuList(
             icon: CupertinoIcons.shield,
             title: "Política de privacidad",
             subtitle: "Cómo protegemos tus datos",
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutes.privacidad);
+            },
           ),
 
           const SizedBox(height: TSize.spaceBtwSections),

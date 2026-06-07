@@ -1,5 +1,8 @@
 // app_routes.dart
 import 'package:ferremateriales/view/modulos/admin/page/dashboard_page.dart';
+import 'package:ferremateriales/view/modulos/soporte/pages/centro_ayuda_page.dart';
+import 'package:ferremateriales/view/modulos/soporte/pages/privacidad_page.dart';
+import 'package:ferremateriales/view/modulos/soporte/pages/terminos_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ferremateriales/view/home/page/home_page.dart';
@@ -33,6 +36,9 @@ class AppRoutes {
   static const editProfile = '/edit-profile';
   static const productsByCategory = '/productsByCategory';
   static const address = '/address';
+  static const centroAyuda = '/centro-ayuda';
+  static const terminos = '/terminos';
+  static const privacidad = '/privacidad';
 
   static Map<String, WidgetBuilder> routes = {
     home: (context) => const HomePage(),
@@ -63,7 +69,13 @@ class AppRoutes {
 
     address: (context) => const AddressPage(),
 
-    // ✅ Ruta del dashboard admin
+    centroAyuda: (context) => const CentroAyudaPage(),
+
+    terminos:    (context) => const TerminosPage(),
+
+    privacidad:  (context) => const PrivacidadPage(),
+
+    
     admin: (context) => const AdminDashboardPage(),
 
     productsByCategory: (context) {
