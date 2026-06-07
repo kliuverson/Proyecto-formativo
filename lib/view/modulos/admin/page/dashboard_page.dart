@@ -43,6 +43,8 @@ class _DashboardView extends StatelessWidget {
         title: const Text("Dashboard"),
         actions: [
           IconButton(
+            iconSize: 20,
+            padding: const EdgeInsets.all(6),
             icon: const Icon(Icons.refresh),
             tooltip: "Actualizar",
             onPressed: () => context.read<DashboardCubit>().refresh(),
@@ -68,8 +70,12 @@ class _DashboardView extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(0, 33),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    ),
                     onPressed: () => context.read<DashboardCubit>().loadDashboard(),
-                    icon: const Icon(Icons.refresh),
+                    icon: const Icon(Icons.refresh, size: 18),
                     label: const Text("Reintentar"),
                   ),
                 ],
@@ -116,14 +122,9 @@ class _DashboardContent extends StatelessWidget {
             const SizedBox(height: 20),
             PedidosRecientesWidget(pedidos: data.pedidosRecientes),
             const SizedBox(height: 16),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(child: StockCriticoWidget(productos: data.productosStockCritico)),
-                const SizedBox(width: 12),
-                Expanded(child: ProductosMasVendidosWidget(productos: data.productosMasVendidos)),
-              ],
-            ),
+            StockCriticoWidget(productos: data.productosStockCritico),
+              const SizedBox(height: 16),
+              ProductosMasVendidosWidget(productos: data.productosMasVendidos),
             const SizedBox(height: 24),
           ],
         ),
