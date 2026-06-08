@@ -1,4 +1,3 @@
-// app_routes.dart
 import 'package:ferremateriales/view/modulos/admin/page/dashboard_page.dart';
 import 'package:ferremateriales/view/modulos/soporte/pages/centro_ayuda_page.dart';
 import 'package:ferremateriales/view/modulos/soporte/pages/privacidad_page.dart';
@@ -32,7 +31,7 @@ class AppRoutes {
   static const orders = '/orders';
   static const register = '/register';
   static const products = '/products';
-  static const admin = '/admin'; // ✅ ya existía la constante, ahora tiene ruta
+  static const admin = '/admin';
   static const editProfile = '/edit-profile';
   static const productsByCategory = '/productsByCategory';
   static const address = '/address';
@@ -50,7 +49,7 @@ class AppRoutes {
     category: (context) => const CategoryPage(),
 
     profile: (context) => BlocProvider.value(
-          value: context.read<ProfileCubit>()..getUserProfile(),
+          value: context.read<ProfileCubit>(),
           child: const ProfilePage(),
         ),
 
@@ -71,11 +70,10 @@ class AppRoutes {
 
     centroAyuda: (context) => const CentroAyudaPage(),
 
-    terminos:    (context) => const TerminosPage(),
+    terminos: (context) => const TerminosPage(),
 
-    privacidad:  (context) => const PrivacidadPage(),
+    privacidad: (context) => const PrivacidadPage(),
 
-    
     admin: (context) => const AdminDashboardPage(),
 
     productsByCategory: (context) {
@@ -94,3 +92,4 @@ class AppRoutes {
     },
   };
 }
+

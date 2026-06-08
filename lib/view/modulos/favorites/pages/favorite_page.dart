@@ -1,7 +1,5 @@
-// lib/view/modulos/favorites/pages/favorites_page.dart
 import 'package:ferremateriales/view/modulos/favorites/service/favo_service.dart';
-import 'package:ferremateriales/view/modulos/productos/pages/product_details.dart'; // Para la navegación a detalles
-//import 'package:ferremateriales/view/modulos/productos/model/product.dart'; // Tu modelo Product
+import 'package:ferremateriales/view/modulos/productos/pages/product_details.dart';
 import 'package:flutter/material.dart';
 
 class FavoritesPage extends StatefulWidget {
@@ -12,38 +10,33 @@ class FavoritesPage extends StatefulWidget {
 }
 
 class _FavoritesPageState extends State<FavoritesPage> {
-  // Obtenemos la única instancia del servicio.
-  // Es importante no crear una nueva instancia cada vez que se reconstruye el widget.
   final FavoritesService _favoritesService = FavoritesService();
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mis Favoritos'),
+        title: Text(
+          'Mis Favoritos',
+          style: TextStyle(
+            color: isDark ? Colors.white : Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         centerTitle: true,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        // Sin backgroundColor fijo — usa el tema (transparente)
+        foregroundColor: isDark ? Colors.white : Colors.black,
         elevation: 0,
+        iconTheme: IconThemeData(
+          color: isDark ? Colors.white : Colors.black,
+        ),
       ),
       body: AnimatedBuilder(
-        animation: _favoritesService, // Escucha los cambios en FavoritesService
+        animation: _favoritesService,
         builder: (context, _) {
-          final favorites =
-              _favoritesService.favorites; // Accede a la lista de favoritos
-
-          // >>> DEBUGGING ADICIONAL <<<
-          debugPrint(
-            'FavoritesPage.AnimatedBuilder reconstruyendo. Favoritos en lista: ${favorites.length}',
-          );
-          if (favorites.isNotEmpty) {
-            favorites.forEach(
-              (p) => debugPrint(
-                ' Fav: ${p.nombre}, ID: ${p.sku}',
-              ),
-            );
-          }
-          // >>> FIN DEBUGGING <<<
+          final favorites = _favoritesService.favorites;
 
           if (favorites.isEmpty) {
             return const Center(
@@ -68,59 +61,41 @@ class _FavoritesPageState extends State<FavoritesPage> {
           return Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'Productos favoritos: ${favorites.length}',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF4B740).withOpacity(0.18),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        'Productos favoritos: ${favorites.length}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFFF4B740),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Expanded(
-                child: ListView.builder(
+                child: GridView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    childAspectRatio: 0.68,
+                  ),
                   itemCount: favorites.length,
                   itemBuilder: (context, index) {
                     final product = favorites[index];
 
-                    // >>> DEBUGGING ADICIONAL POR CADA ITEM <<<
-                    debugPrint(
-                      'Construyendo ListTile para favorito: ${product.nombre}, ID: ${product.sku}',
-                    );
-                    // >>> FIN DEBUGGING <<<
-
-                    return ListTile(
-                      leading:
-                          product.image.isNotEmpty
-                              ? Image.network(
-                                product.image,
-                                width: 50,
-                                height: 50,
-                                fit: BoxFit.cover,
-                                errorBuilder:
-                                    (_, __, ___) => const Icon(
-                                      Icons.image,
-                                      size: 40,
-                                      color: Colors.grey,
-                                    ),
-                              )
-                              : const Icon(
-                                Icons.image,
-                                size: 40,
-                                color: Colors.grey,
-                              ),
-
-                      title: Text(product.nombre),
-
-                      subtitle: Text("\$${product.precio.toStringAsFixed(0)}"),
-
-                      trailing: IconButton(
-                        icon: const Icon(Icons.favorite, color: Colors.red),
-                        onPressed: () {
-                          _favoritesService.toggleFavorite(product);
-                        },
-                      ),
-
+                    return GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
@@ -129,6 +104,117 @@ class _FavoritesPageState extends State<FavoritesPage> {
                           ),
                         );
                       },
+                      child: Card(
+                        elevation: 2,
+                        // Sin color fijo — usa el color de Card del tema
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Stack(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: const BorderRadius.vertical(
+                                    top: Radius.circular(12),
+                                  ),
+                                  child: product.image.isNotEmpty
+                                      ? Image.network(
+                                          product.image,
+                                          height: 140,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (_, __, ___) =>
+                                              SizedBox(
+                                            height: 140,
+                                            child: Center(
+                                              child: Icon(
+                                                Icons.image,
+                                                size: 50,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : SizedBox(
+                                          height: 140,
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.image,
+                                              size: 50,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                        ),
+                                ),
+                                Positioned(
+                                  top: 8,
+                                  right: 8,
+                                  child: GestureDetector(
+                                    onTap: () =>
+                                        _favoritesService.toggleFavorite(product),
+                                    child: CircleAvatar(
+                                      radius: 16,
+                                      backgroundColor: isDark
+                                          ? Colors.grey.shade800
+                                          : Colors.white,
+                                      child: const Icon(
+                                        Icons.favorite,
+                                        color: Colors.red,
+                                        size: 18,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    product.nombre,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'SKU: ${product.sku}',
+                                    style: const TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 2),
+                                  const Text(
+                                    'En stock',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    '\$${product.precio.toStringAsFixed(0)}',
+                                    style: const TextStyle(
+                                      color: Color(0xFFF4B740),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     );
                   },
                 ),
@@ -140,3 +226,4 @@ class _FavoritesPageState extends State<FavoritesPage> {
     );
   }
 }
+

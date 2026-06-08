@@ -10,12 +10,24 @@ class PrivacidadPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Text(
-            "Política de privacidad",
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge
-                ?.copyWith(fontWeight: FontWeight.bold),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF4B740).withOpacity(0.18),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: const Text(
+                  "Política de privacidad",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFF4B740),
+                  ),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 4),
           Text(
@@ -70,7 +82,11 @@ class _Seccion extends StatelessWidget {
         children: [
           Text(
             titulo,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFFF4B740),
+            ),
           ),
           const SizedBox(height: 6),
           Text(
@@ -82,3 +98,4 @@ class _Seccion extends StatelessWidget {
     );
   }
 }
+
