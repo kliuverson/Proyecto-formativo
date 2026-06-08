@@ -6,12 +6,24 @@ import 'package:ferremateriales/view/modulos/profile/widgets/profile_header.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<ProfileCubit>().getUserProfile();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: BlocConsumer<ProfileCubit, ProfileState>(
         listener: (context, state) {
           if (state is ProfileUpdated) {
@@ -21,14 +33,12 @@ class ProfilePage extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          /// LOADING INICIAL
           if (state is ProfileLoading) {
             return const Center(
               child: CircularProgressIndicator(color: Colors.orange),
             );
           }
 
-          /// ERROR AL CARGAR PERFIL
           if (state is ProfileFailure) {
             return ProfileFailureView(
               text: state.message,
@@ -36,7 +46,6 @@ class ProfilePage extends StatelessWidget {
             );
           }
 
-          /// PERFIL CARGADO / ACTUALIZANDO / ACTUALIZADO
           if (state is ProfileLoaded ||
               state is ProfileUpdating ||
               state is ProfileUpdated) {
@@ -52,10 +61,7 @@ class ProfilePage extends StatelessWidget {
                 SingleChildScrollView(
                   child: Column(
                     children: [
-                      /// HEADER
                       ProfileHeaderSection(user: user),
-
-                      /// BODY
                       ProfileBodySection(
                         user: user,
                         onTap: () => context.read<AuthCubit>().logout(),
@@ -63,8 +69,6 @@ class ProfilePage extends StatelessWidget {
                     ],
                   ),
                 ),
-
-                /// OVERLAY LOADING UPDATE
                 if (state is ProfileUpdating)
                   Container(
                     color: Colors.black26,
@@ -81,3 +85,4 @@ class ProfilePage extends StatelessWidget {
     );
   }
 }
+

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class DashboardService {
-  final String baseUrl = "http://192.168.1.17:3000/api/dashboard";
+  final String baseUrl = "http://192.168.20.45:3000/api/dashboard";
 
   Future<Map<String, dynamic>> getDashboardData(String token) async {
     final response = await http.get(
