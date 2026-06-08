@@ -1,4 +1,6 @@
 import 'package:ferremateriales/view/modulos/admin/page/dashboard_page.dart';
+import 'package:ferremateriales/view/modulos/about/page/acerca_de_nosotros_page.dart';
+import 'package:ferremateriales/view/modulos/soporte/pages/contacto_page.dart';
 import 'package:ferremateriales/view/modulos/soporte/pages/centro_ayuda_page.dart';
 import 'package:ferremateriales/view/modulos/soporte/pages/privacidad_page.dart';
 import 'package:ferremateriales/view/modulos/soporte/pages/terminos_page.dart';
@@ -38,6 +40,8 @@ class AppRoutes {
   static const centroAyuda = '/centro-ayuda';
   static const terminos = '/terminos';
   static const privacidad = '/privacidad';
+  static const acercaDeNosotros = '/acerca-de-nosotros';
+  static const contacto = '/contacto';
 
   static Map<String, WidgetBuilder> routes = {
     home: (context) => const HomePage(),
@@ -73,6 +77,10 @@ class AppRoutes {
     terminos: (context) => const TerminosPage(),
 
     privacidad: (context) => const PrivacidadPage(),
+
+    acercaDeNosotros: (context) => const AcercaDeNosotrosPage(),
+
+    contacto: (context) => const ContactoPage(),
 
     admin: (context) => const AdminDashboardPage(),
 
