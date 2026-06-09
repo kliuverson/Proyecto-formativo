@@ -95,14 +95,14 @@ class AppDrawer extends StatelessWidget {
                 },
               ),
 
-            /// 📦 PEDIDOS (YA AGREGADO 🔥)
+            /// 📦 PEDIDOS
             if (isAuthenticated)
               _item(
                 context,
                 icon: Icons.receipt_long,
                 text: "Mis Pedidos",
                 onTap: () {
-                  Navigator.pop(context); // 👈 cerrar drawer
+                  Navigator.pop(context);
                   Navigator.pushNamed(context, '/orders');
                 },
               ),
@@ -144,7 +144,7 @@ class AppDrawer extends StatelessWidget {
               text: "Acerca de Nosotros",
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, '/about');
+                Navigator.pushNamed(context, '/acerca-de-nosotros');
               },
             ),
 
@@ -155,7 +155,7 @@ class AppDrawer extends StatelessWidget {
               text: "Contacto / Soporte",
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, '/support');
+                Navigator.pushNamed(context, '/contacto');
               },
             ),
 
@@ -232,3 +232,4 @@ class AppDrawer extends StatelessWidget {
     );
   }
 }
+
