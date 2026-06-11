@@ -140,7 +140,7 @@ exports.forgotPassword = async (req, res) => {
 
       return res.status(400).json({ errors: errorsMessages });
     }
-    
+
     const { correo } = req.body;
 
     if (!correo) {
@@ -173,7 +173,8 @@ exports.forgotPassword = async (req, res) => {
     await user.save();
 
     const resetUrl =
-      `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+      `${process.env.FRONTEND_URL}/#/reset-password/${resetToken}`;
+
 
     await sendEmail({
       to: user.correo,

@@ -2,6 +2,7 @@ import 'package:ferremateriales/cubit/auth_cubit.dart';
 import 'package:ferremateriales/src/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:html' as html;
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -93,9 +94,19 @@ class _SplashPageState extends State<SplashPage>
       listenWhen: (previus, current) => previus.isLoading != current.isLoading,
       listener: (context, state) {
         if (!state.isLoading) {
+          final currentHash = html.window.location.hash;
+
+          if (currentHash.startsWith('#/reset-password')) {
+            return;
+          }
+
           if (state.isAuthenticated) {
             final bool esAdmin = state.userData?["esAdmin"] ?? false;
-            Navigator.pushReplacementNamed(context, esAdmin ? AppRoutes.admin : AppRoutes.home);
+            print("REDIRIGIENDO A HOME/ADMIN");
+            Navigator.pushReplacementNamed(
+              context,
+              esAdmin ? AppRoutes.admin : AppRoutes.home,
+            );
           } else {
             Navigator.pushReplacementNamed(context, "/login");
           }

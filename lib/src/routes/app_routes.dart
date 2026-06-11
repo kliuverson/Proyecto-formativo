@@ -1,7 +1,10 @@
 // app_routes.dart
 import 'package:ferremateriales/service/auth_service.dart';
 import 'package:ferremateriales/view/login/cubit/cubit/forgot_password_cubit.dart';
+import 'package:ferremateriales/view/login/cubit/cubit/reset_password_cubit.dart';
+import 'package:ferremateriales/view/login/cubit/mostrar_password_cubit.dart';
 import 'package:ferremateriales/view/login/views/forgot_password_page.dart';
+import 'package:ferremateriales/view/login/views/reset_password_page.dart';
 import 'package:ferremateriales/view/modulos/admin/page/dashboard_page.dart';
 import 'package:ferremateriales/view/modulos/about/page/acerca_de_nosotros_page.dart';
 import 'package:ferremateriales/view/modulos/soporte/pages/contacto_page.dart';
@@ -46,6 +49,7 @@ class AppRoutes {
   static const acercaDeNosotros = '/acerca-de-nosotros';
   static const contacto = '/contacto';
   static const forgotPassword = '/forgot-password';
+  static const resetPassword = '/reset-password';
 
   static Map<String, WidgetBuilder> routes = {
     home: (context) => const HomePage(),
@@ -111,5 +115,43 @@ class AppRoutes {
           create: (_) => ForgotPasswordCubit(authService: AuthService()),
           child: const ForgotPasswordPage(),
         ),
+
+    resetPassword: (context) {
+      final token = ModalRoute.of(context)!.settings.arguments as String;
+
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => ResetPasswordCubit(authService: AuthService()),
+          ),
+          BlocProvider(create: (_) => MostrarPasswordCubit()),
+        ],
+        child: ResetPasswordPage(token: token),
+      );
+    },
   };
+
+  static Route<dynamic>? generateRoute(RouteSettings settings) {
+    final uri = Uri.parse(settings.name ?? '');
+
+    if (uri.pathSegments.length == 2 &&
+        uri.pathSegments.first == 'reset-password') {
+      final token = uri.pathSegments[1];
+
+      return MaterialPageRoute(
+        builder:
+            (_) => MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (_) => ResetPasswordCubit(authService: AuthService()),
+                ),
+                BlocProvider(create: (_) => MostrarPasswordCubit()),
+              ],
+              child: ResetPasswordPage(token: token),
+            ),
+      );
+    }
+
+    return null;
+  }
 }
