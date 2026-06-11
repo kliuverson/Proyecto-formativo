@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ProductService {
-  final String baseUrl = "http://192.168.20.45:3000/api/products";
+  final String baseUrl = "http://192.168.1.98:3000/api/products";
 
   Future<Map<String, dynamic>> createProduct(Map<String, dynamic> data) async {
     final response = await http.post(

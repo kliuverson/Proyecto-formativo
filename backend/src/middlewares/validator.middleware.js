@@ -1,6 +1,6 @@
 const { body } = require("express-validator");
 
-const validationUser = [
+const registerValidator = [
     body("nombre").not().isEmpty().withMessage("El nombre es requerido"),
     body("correo").isEmail().withMessage("Por favor ingresar un correo electronico valido"),
     body("password").isLength({ min: 8 })
@@ -10,6 +10,14 @@ const validationUser = [
 
 ];
 
+const forgotPasswordValidator = [
+    body("correo")
+        .notEmpty()
+        .withMessage("El correo es obligatorio")
+        .isEmail()
+        .withMessage("Ingrese un correo electrónico válido"),
+];
 
 
-module.exports =  validationUser;
+
+module.exports = { registerValidator, forgotPasswordValidator };

@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  final String baseUrl = "http://192.168.20.45:3000/api/auth";
+  final String baseUrl = "http://192.168.1.98:3000/api/auth";
 
   Future<Map<String, dynamic>> login(String correo, String password) async {
     final url = Uri.parse("$baseUrl/login");
@@ -59,5 +59,43 @@ class AuthService {
       }
       throw Exception(data["message"] ?? "Error en el registro");
     }
+  }
+
+  Future<String> forgotPassword(String correo) async {
+    final url = Uri.parse("$baseUrl/forgot-password");
+
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({"correo": correo}),
+    );
+
+    final data = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+      return data["message"];
+    }
+
+    throw Exception(
+      data["message"] ?? "Error al enviar correo de recuperación",
+    );
+  }
+
+  Future<String> resetPassword(String token, String password) async {
+    final url = Uri.parse("$baseUrl/reset-password/$token");
+
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({"password": password}),
+    );
+
+    final data = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+      return data["message"];
+    }
+
+    throw Exception(data["message"] ?? "Error al restablecer contraseña");
   }
 }
