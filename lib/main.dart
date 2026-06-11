@@ -35,7 +35,7 @@ void main() async {
         BlocProvider(create: (_) => SearchProductCubit()),
         BlocProvider(create: (_) => ProductBloc(ProductRepository())),
         BlocProvider(create: (_) => CartBloc()..add(LoadCart())),
-        BlocProvider(create: (_) => AuthCubit()..checkAuthStatus()),
+        BlocProvider(create: (_) => AuthCubit()),
         BlocProvider(
           create: (_) => ProfileCubit(profileService: ProfileService()),
         ),
@@ -58,8 +58,9 @@ class MyApp extends StatelessWidget {
           themeMode: themeMode,
           theme: TAppTheme.lightAppTheme,
           darkTheme: TAppTheme.darkAppTheme,
-          home: const SplashPage(),
-          routes: AppRoutes.routes,
+          initialRoute: '/',
+          routes: {'/': (context) => const SplashPage(), ...AppRoutes.routes},
+          onGenerateRoute: AppRoutes.generateRoute,
         );
       },
     );

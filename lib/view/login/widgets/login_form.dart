@@ -1,4 +1,5 @@
 import 'package:ferremateriales/cubit/auth_cubit.dart';
+import 'package:ferremateriales/src/routes/app_routes.dart';
 import 'package:ferremateriales/utils/constants/size.dart';
 import 'package:ferremateriales/utils/constants/text_string.dart';
 import 'package:ferremateriales/view/login/cubit/cubit/login_cubit.dart';
@@ -78,7 +79,12 @@ class TLoginForm extends StatelessWidget {
                 children: [
                   // Olvidar Contraseña
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutes.forgotPassword,
+                      );
+                    },
                     child: Text(TText.forgetPassword),
                   ),
                 ],

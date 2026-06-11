@@ -1,3 +1,10 @@
+// app_routes.dart
+import 'package:ferremateriales/service/auth_service.dart';
+import 'package:ferremateriales/view/login/cubit/cubit/forgot_password_cubit.dart';
+import 'package:ferremateriales/view/login/cubit/cubit/reset_password_cubit.dart';
+import 'package:ferremateriales/view/login/cubit/mostrar_password_cubit.dart';
+import 'package:ferremateriales/view/login/views/forgot_password_page.dart';
+import 'package:ferremateriales/view/login/views/reset_password_page.dart';
 import 'package:ferremateriales/view/modulos/admin/page/dashboard_page.dart';
 import 'package:ferremateriales/view/modulos/about/page/acerca_de_nosotros_page.dart';
 import 'package:ferremateriales/view/modulos/soporte/pages/contacto_page.dart';
@@ -22,7 +29,6 @@ import 'package:ferremateriales/view/modulos/register/register.dart';
 import 'package:ferremateriales/view/modulos/category/cubit/category_product_cubit.dart';
 import 'package:ferremateriales/view/modulos/address/pages/address_page.dart';
 
-
 class AppRoutes {
   static const home = '/home';
   static const login = '/login';
@@ -42,6 +48,8 @@ class AppRoutes {
   static const privacidad = '/privacidad';
   static const acercaDeNosotros = '/acerca-de-nosotros';
   static const contacto = '/contacto';
+  static const forgotPassword = '/forgot-password';
+  static const resetPassword = '/reset-password';
 
   static Map<String, WidgetBuilder> routes = {
     home: (context) => const HomePage(),
@@ -52,13 +60,15 @@ class AppRoutes {
 
     category: (context) => const CategoryPage(),
 
-    profile: (context) => BlocProvider.value(
+    profile:
+        (context) => BlocProvider.value(
           value: context.read<ProfileCubit>(),
           child: const ProfilePage(),
         ),
 
     editProfile: (context) {
-      final user = ModalRoute.of(context)!.settings.arguments as UserProfileModel;
+      final user =
+          ModalRoute.of(context)!.settings.arguments as UserProfileModel;
       return EditProfilePage(user: user);
     },
 
@@ -94,10 +104,54 @@ class AppRoutes {
       final categoryName = args.toString();
 
       return BlocProvider(
-        create: (_) => CategoryProductCubit()..loadProductsByCategory(categoryName),
+        create:
+            (_) => CategoryProductCubit()..loadProductsByCategory(categoryName),
         child: ProductsByCategoryPage(categoryName: categoryName),
       );
     },
-  };
-}
 
+    forgotPassword:
+        (context) => BlocProvider(
+          create: (_) => ForgotPasswordCubit(authService: AuthService()),
+          child: const ForgotPasswordPage(),
+        ),
+
+    resetPassword: (context) {
+      final token = ModalRoute.of(context)!.settings.arguments as String;
+
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => ResetPasswordCubit(authService: AuthService()),
+          ),
+          BlocProvider(create: (_) => MostrarPasswordCubit()),
+        ],
+        child: ResetPasswordPage(token: token),
+      );
+    },
+  };
+
+  static Route<dynamic>? generateRoute(RouteSettings settings) {
+    final uri = Uri.parse(settings.name ?? '');
+
+    if (uri.pathSegments.length == 2 &&
+        uri.pathSegments.first == 'reset-password') {
+      final token = uri.pathSegments[1];
+
+      return MaterialPageRoute(
+        builder:
+            (_) => MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (_) => ResetPasswordCubit(authService: AuthService()),
+                ),
+                BlocProvider(create: (_) => MostrarPasswordCubit()),
+              ],
+              child: ResetPasswordPage(token: token),
+            ),
+      );
+    }
+
+    return null;
+  }
+}

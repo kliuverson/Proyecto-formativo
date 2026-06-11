@@ -20,7 +20,7 @@ exports.register = async (req, res) => {
     } = req.body;
 
     // Validación
-    const errors = validationResult(req)
+    const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const errorsMessages = errors.array().map((error) => ({
         field: error.path,
@@ -71,7 +71,6 @@ exports.register = async (req, res) => {
 };
 
 // Login de Usuario
-
 exports.login = async (req, res) => {
   try {
     const { correo, password } = req.body;
@@ -130,6 +129,18 @@ exports.login = async (req, res) => {
 // Recuperar contraseña
 exports.forgotPassword = async (req, res) => {
   try {
+    // Validación
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      const errorsMessages = errors.array().map((error) => ({
+        field: error.path,
+        message: error.msg,
+      }));
+
+      return res.status(400).json({ errors: errorsMessages });
+    }
+
     const { correo } = req.body;
 
     if (!correo) {
@@ -142,7 +153,7 @@ exports.forgotPassword = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({
-        message: "Usuario no encontrado",
+        message: "Si el correo existe, recibirás un enlace de recuperación",
       });
     }
 
@@ -162,7 +173,8 @@ exports.forgotPassword = async (req, res) => {
     await user.save();
 
     const resetUrl =
-      `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+      `${process.env.FRONTEND_URL}/#/reset-password/${resetToken}`;
+
 
     await sendEmail({
       to: user.correo,

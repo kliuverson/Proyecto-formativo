@@ -11,12 +11,14 @@ class AuthCubit extends Cubit<AuthState> {
 
   void loginSucces(String token, Map<String, dynamic> userData) {
     final decodedToken = JwtDecoder.decode(token);
-    emit(AuthState(
-      isAuthenticated: true,
-      token: token,
-      userData: decodedToken,
-      isLoading: false,
-    ));
+    emit(
+      AuthState(
+        isAuthenticated: true,
+        token: token,
+        userData: decodedToken,
+        isLoading: false,
+      ),
+    );
 
     FavoritesService().loadFavorites(); // ✅ carga favoritos al hacer login
   }
@@ -44,14 +46,17 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
       final decodedToken = JwtDecoder.decode(token);
-      emit(AuthState(
-        userData: decodedToken,
-        isAuthenticated: true,
-        token: token,
-        isLoading: false,
-      ));
+      emit(
+        AuthState(
+          userData: decodedToken,
+          isAuthenticated: true,
+          token: token,
+          isLoading: false,
+        ),
+      );
 
-      FavoritesService().loadFavorites(); // ✅ carga favoritos al reabrir la app con sesión activa
+      FavoritesService()
+          .loadFavorites(); // ✅ carga favoritos al reabrir la app con sesión activa
     } else {
       emit(AuthState(isAuthenticated: false, isLoading: false));
     }
