@@ -1,3 +1,4 @@
+import 'package:ferremateriales/common/widgets/language_selector.dart';
 import 'package:ferremateriales/common/widgets/text/section_heading.dart';
 import 'package:ferremateriales/cubit/theme_cubit.dart';
 import 'package:ferremateriales/src/routes/app_routes.dart';
@@ -7,6 +8,7 @@ import 'package:ferremateriales/view/modulos/profile/widgets/setting_menu_list.d
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class ProfileBodySection extends StatelessWidget {
   final VoidCallback onTap;
@@ -21,18 +23,20 @@ class ProfileBodySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return Padding(
       padding: EdgeInsets.all(TSize.defaultSpace),
       child: Column(
         children: [
           /// CUENTA
-          const TSectionHeading(title: "Configuración de la cuenta"),
+          TSectionHeading(title: tr.accountSettings),
           const SizedBox(height: TSize.spaceBtwItems),
 
           TSettingMenuList(
             icon: CupertinoIcons.person,
-            title: "Perfil",
-            subtitle: "Actualiza tu información personal",
+            title: tr.profileTitle,
+            subtitle: tr.profileSubtitle,
             onTap: () {
               Navigator.pushNamed(context, AppRoutes.editProfile, arguments: user);
             },
@@ -40,35 +44,29 @@ class ProfileBodySection extends StatelessWidget {
 
           TSettingMenuList(
             icon: CupertinoIcons.house,
-            title: "Mis direcciones",
-            subtitle: "Agrega tus direcciones de entrega",
+            title: tr.myAddresses,
+            subtitle: tr.myAddressesSubtitle,
             onTap: () {
               Navigator.pushNamed(context, AppRoutes.address);
             },
           ),
 
           TSettingMenuList(
-            icon: CupertinoIcons.creditcard,
-            title: "Métodos de pago",
-            subtitle: "Administra tus tarjetas",
-          ),
-
-          TSettingMenuList(
             icon: CupertinoIcons.lock,
-            title: "Seguridad",
-            subtitle: "Cambiar contraseña",
+            title: tr.security,
+            subtitle: tr.securitySubtitle,
           ),
 
           const SizedBox(height: TSize.spaceBtwSections),
 
           /// COMPRAS
-          const TSectionHeading(title: "Compras"),
+          TSectionHeading(title: tr.purchases),
           const SizedBox(height: TSize.spaceBtwItems),
 
           TSettingMenuList(
             icon: CupertinoIcons.bag,
-            title: "Mis pedidos",
-            subtitle: "Consulta tu historial de compras",
+            title: tr.myOrders,
+            subtitle: tr.myOrdersSubtitle,
             onTap: () {
               Navigator.pushNamed(context, AppRoutes.orders);
             },
@@ -76,35 +74,28 @@ class ProfileBodySection extends StatelessWidget {
 
           TSettingMenuList(
             icon: CupertinoIcons.heart,
-            title: "Favoritos",
-            subtitle: "Productos guardados",
+            title: tr.myFavorites,
+            subtitle: tr.myFavoritesSubtitle,
             onTap: () {
               Navigator.pushNamed(context, AppRoutes.favorite);
             },
           ),
 
-          TSettingMenuList(
-            icon: CupertinoIcons.ticket,
-            title: "Cupones",
-            subtitle: "Descuentos disponibles",
-          ),
 
           const SizedBox(height: TSize.spaceBtwSections),
 
           /// PREFERENCIAS
-          const TSectionHeading(title: "Preferencias"),
+          TSectionHeading(title: tr.preferences),
           const SizedBox(height: TSize.spaceBtwItems),
 
-          TSettingMenuList(
-            icon: CupertinoIcons.bell,
-            title: "Notificaciones",
-            subtitle: "Configura alertas",
-          ),
 
           TSettingMenuList(
             icon: CupertinoIcons.globe,
-            title: "Idioma",
-            subtitle: "Selecciona tu idioma",
+            title: tr.language,
+            subtitle: tr.languageSubtitle,
+            onTap: () {
+              showLanguageSelector(context);
+            },
           ),
 
           /// MODO OSCURO con switch
@@ -113,8 +104,8 @@ class ProfileBodySection extends StatelessWidget {
               final isDark = themeMode == ThemeMode.dark;
               return TSettingMenuList(
                 icon: isDark ? CupertinoIcons.sun_max : CupertinoIcons.moon,
-                title: "Modo oscuro",
-                subtitle: isDark ? "Apariencia oscura activa" : "Cambiar apariencia",
+                title: tr.darkMode,
+                subtitle: isDark ? tr.darkModeSubtitleOn : tr.darkModeSubtitleOff,
                 trailing: CupertinoSwitch(
                   value: isDark,
                   activeTrackColor: Colors.orange,
@@ -127,13 +118,13 @@ class ProfileBodySection extends StatelessWidget {
           const SizedBox(height: TSize.spaceBtwSections),
 
           /// SOPORTE
-          const TSectionHeading(title: "Soporte"),
+          TSectionHeading(title: tr.support),
           const SizedBox(height: TSize.spaceBtwItems),
 
           TSettingMenuList(
             icon: CupertinoIcons.question_circle,
-            title: "Centro de ayuda",
-            subtitle: "Soporte y preguntas frecuentes",
+            title: tr.helpCenter,
+            subtitle: tr.helpCenterSubtitle,
             onTap: () {
               Navigator.pushNamed(context, AppRoutes.centroAyuda);
             },
@@ -141,8 +132,8 @@ class ProfileBodySection extends StatelessWidget {
 
           TSettingMenuList(
             icon: CupertinoIcons.doc_text,
-            title: "Términos y condiciones",
-            subtitle: "Información legal",
+            title: tr.termsAndConditions,
+            subtitle: tr.termsAndConditionsSubtitle,
             onTap: () {
               Navigator.pushNamed(context, AppRoutes.terminos);
             },
@@ -150,8 +141,8 @@ class ProfileBodySection extends StatelessWidget {
 
           TSettingMenuList(
             icon: CupertinoIcons.shield,
-            title: "Política de privacidad",
-            subtitle: "Cómo protegemos tus datos",
+            title: tr.privacyPolicyTitle,
+            subtitle: tr.privacyPolicySubtitle,
             onTap: () {
               Navigator.pushNamed(context, AppRoutes.privacidad);
             },
@@ -162,8 +153,8 @@ class ProfileBodySection extends StatelessWidget {
           /// LOGOUT
           TSettingMenuList(
             icon: CupertinoIcons.square_arrow_right,
-            title: "Cerrar sesión",
-            subtitle: "Salir de la cuenta",
+            title: tr.logout,
+            subtitle: tr.logoutSubtitle,
             onTap: () {
               onTap();
               Navigator.pushNamedAndRemoveUntil(
@@ -178,3 +169,4 @@ class ProfileBodySection extends StatelessWidget {
     );
   }
 }
+

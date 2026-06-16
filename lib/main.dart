@@ -1,4 +1,5 @@
 import 'package:ferremateriales/cubit/auth_cubit.dart';
+import 'package:ferremateriales/cubit/locale_cubit.dart';
 import 'package:ferremateriales/cubit/theme_cubit.dart';
 import 'package:ferremateriales/view/modulos/carrito/pages/bloc/cart_bloc.dart';
 import 'package:ferremateriales/view/modulos/carrito/pages/bloc/cart_event.dart';
@@ -7,6 +8,8 @@ import 'package:ferremateriales/view/modulos/profile/cubit/profile_cubit.dart';
 import 'package:ferremateriales/view/modulos/profile/service/profile_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'view/modulos/carrito/pages/model/cart_model.dart';
 import 'view/modulos/carrito/pages/service/cart_service.dart';
@@ -31,6 +34,7 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => ThemeCubit()),
+        BlocProvider(create: (_) => LocaleCubit()),
         BlocProvider(create: (_) => OrderCubit()),
         BlocProvider(create: (_) => SearchProductCubit()),
         BlocProvider(create: (_) => ProductBloc(ProductRepository())),
@@ -50,11 +54,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.watch<LocaleCubit>().state;
+
     return BlocBuilder<ThemeCubit, ThemeMode>(
       builder: (context, themeMode) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Ferremateriales DGC',
+          locale: locale,
+          supportedLocales: const [
+            Locale('es'),
+            Locale('en'),
+          ],
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
           themeMode: themeMode,
           theme: TAppTheme.lightAppTheme,
           darkTheme: TAppTheme.darkAppTheme,

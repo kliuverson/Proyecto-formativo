@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class EmptyAddress extends StatelessWidget {
   const EmptyAddress({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    final tr = AppLocalizations.of(context)!;
+
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -16,7 +19,7 @@ class EmptyAddress extends StatelessWidget {
           ),
           SizedBox(height: 15),
           Text(
-            "No tienes direcciones guardadas",
+            tr.noAddresses,
             style: TextStyle(
               fontSize: 18,
               color: Colors.grey,
@@ -28,3 +31,4 @@ class EmptyAddress extends StatelessWidget {
     );
   }
 }
+

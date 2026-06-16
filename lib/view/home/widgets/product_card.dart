@@ -1,9 +1,9 @@
-
 import 'package:ferremateriales/view/modulos/carrito/pages/model/cart_model.dart';
 import 'package:ferremateriales/view/modulos/carrito/pages/service/cart_service.dart';
 import 'package:ferremateriales/view/modulos/favorites/service/favo_service.dart';
 import 'package:ferremateriales/view/modulos/productos/model/product.dart';
 import 'package:flutter/material.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class ProductCard extends StatefulWidget {
   final ProductModel product;
@@ -104,6 +104,7 @@ class _ProductCardState extends State<ProductCard>
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
     final product = widget.product;
 
     return GestureDetector(
@@ -214,9 +215,9 @@ class _ProductCardState extends State<ProductCard>
 
                     const SizedBox(height: 6),
 
-                    const Text(
-                      "En stock",
-                      style: TextStyle(
+                    Text(
+                      tr.inStock,
+                      style: const TextStyle(
                         color: Colors.green,
                         fontSize: 11,
                         fontWeight: FontWeight.w500,

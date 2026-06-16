@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class ContactoPage extends StatelessWidget {
   const ContactoPage({super.key});
@@ -14,8 +14,10 @@ class ContactoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Contacto / Soporte")),
+      appBar: AppBar(title: Text(tr.contactTitle)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -27,9 +29,9 @@ class ContactoPage extends StatelessWidget {
                   color: const Color(0xFFF4B740).withOpacity(0.18),
                   borderRadius: BorderRadius.circular(6),
                 ),
-                child: const Text(
-                  "Contacto / Soporte",
-                  style: TextStyle(
+                child: Text(
+                  tr.contactTitle,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFFF4B740),
@@ -40,41 +42,39 @@ class ContactoPage extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            "Estamos aquí para ayudarte",
+            tr.contactSubtitle,
             style: TextStyle(fontSize: 12, color: Colors.grey[500]),
           ),
           const SizedBox(height: 20),
 
-          const _Seccion(
-            titulo: "¿En qué podemos ayudarte?",
-            contenido:
-                "Nuestro equipo de soporte está disponible para resolver tus dudas sobre pedidos, productos, entregas o cualquier inconveniente que tengas con la app.",
+          _Seccion(
+            titulo: tr.contactHelpTitle,
+            contenido: tr.contactHelpContent,
           ),
-          const _Seccion(
-            titulo: "Horario de atención",
-            contenido:
-                "Lunes a viernes de 8:00 a.m. a 6:00 p.m.\nSábados de 8:00 a.m. a 1:00 p.m.\nDomingos y festivos: cerrado.",
+          _Seccion(
+            titulo: tr.contactScheduleTitle,
+            contenido: tr.contactScheduleContent,
           ),
 
-          const _TituloSeccion(texto: "Canales de contacto"),
+          _TituloSeccion(texto: tr.contactChannels),
           const SizedBox(height: 12),
 
           _ContactoCard(
             icono: Icons.email_outlined,
-            titulo: "Correo electrónico",
+            titulo: tr.contactEmail,
             subtitulo: "soporte@ferremateriales.com",
             onTap: () => _abrirUrl("mailto:soporte@ferremateriales.com"),
           ),
           _ContactoCard(
             icono: Icons.phone_outlined,
-            titulo: "Teléfono / WhatsApp",
+            titulo: tr.contactPhone,
             subtitulo: "+57 310 000 0000",
             onTap: () => _abrirUrl("https://wa.me/573100000000"),
           ),
           _ContactoCard(
             icono: Icons.location_on_outlined,
-            titulo: "Visítanos",
-            subtitulo: "Cra. 10 #45-30, Barranquilla, Colombia",
+            titulo: tr.contactVisit,
+            subtitulo: tr.contactVisitAddress,
             onTap: () => _abrirUrl(
                 "https://maps.google.com/?q=Cra.+10+%2345-30+Barranquilla"),
           ),
@@ -86,7 +86,7 @@ class ContactoPage extends StatelessWidget {
             child: ElevatedButton.icon(
               onPressed: () => _abrirUrl("https://wa.me/573100000000"),
               icon: const Icon(Icons.chat_outlined),
-              label: const Text("Chatear por WhatsApp"),
+              label: Text(tr.contactWhatsapp),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFF4B740),
                 foregroundColor: Colors.white,

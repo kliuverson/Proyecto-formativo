@@ -3,6 +3,7 @@ import 'package:ferremateriales/view/modulos/address/model/address_model.dart';
 import 'package:ferremateriales/view/modulos/address/widgets/address_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class AddAddressPage extends StatefulWidget {
   final AddressModel? address;
@@ -78,14 +79,15 @@ class _AddAddressPageState extends State<AddAddressPage> {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
     final cubit = context.read<AddressCubit>();
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
           widget.address == null
-              ? "Agregar dirección"
-              : "Editar dirección",
+              ? tr.addAddress
+              : tr.editAddress,
         ),
       ),
 
@@ -183,3 +185,4 @@ class _AddAddressPageState extends State<AddAddressPage> {
     );
   }
 }
+

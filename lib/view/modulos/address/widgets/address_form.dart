@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class AddressForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;
@@ -34,19 +35,21 @@ class AddressForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return Form(
       key: formKey,
       child: Column(
         children: [
           TextFormField(
             controller: nombreController,
-            decoration: const InputDecoration(
-              labelText: "Nombre destinatario",
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: tr.recipientName,
+              border: const OutlineInputBorder(),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "Campo requerido";
+                return tr.requiredField;
               }
               return null;
             },
@@ -57,13 +60,13 @@ class AddressForm extends StatelessWidget {
           TextFormField(
             controller: telefonoController,
             keyboardType: TextInputType.phone,
-            decoration: const InputDecoration(
-              labelText: "Teléfono",
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: tr.phone,
+              border: const OutlineInputBorder(),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "Campo requerido";
+                return tr.requiredField;
               }
               return null;
             },
@@ -73,13 +76,13 @@ class AddressForm extends StatelessWidget {
 
           TextFormField(
             controller: departamentoController,
-            decoration: const InputDecoration(
-              labelText: "Departamento",
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: tr.department,
+              border: const OutlineInputBorder(),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "Campo requerido";
+                return tr.requiredField;
               }
               return null;
             },
@@ -89,13 +92,13 @@ class AddressForm extends StatelessWidget {
 
           TextFormField(
             controller: ciudadController,
-            decoration: const InputDecoration(
-              labelText: "Ciudad",
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: tr.city,
+              border: const OutlineInputBorder(),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "Campo requerido";
+                return tr.requiredField;
               }
               return null;
             },
@@ -105,13 +108,13 @@ class AddressForm extends StatelessWidget {
 
           TextFormField(
             controller: direccionController,
-            decoration: const InputDecoration(
-              labelText: "Dirección",
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: tr.address,
+              border: const OutlineInputBorder(),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "Campo requerido";
+                return tr.requiredField;
               }
               return null;
             },
@@ -121,9 +124,9 @@ class AddressForm extends StatelessWidget {
 
           TextFormField(
             controller: referenciaController,
-            decoration: const InputDecoration(
-              labelText: "Referencia",
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: tr.reference,
+              border: const OutlineInputBorder(),
             ),
           ),
 
@@ -131,9 +134,9 @@ class AddressForm extends StatelessWidget {
 
           TextFormField(
             controller: codigoPostalController,
-            decoration: const InputDecoration(
-              labelText: "Código postal",
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: tr.postalCode,
+              border: const OutlineInputBorder(),
             ),
           ),
 
@@ -141,7 +144,7 @@ class AddressForm extends StatelessWidget {
 
           SwitchListTile(
             value: principal,
-            title: const Text("Dirección principal"),
+            title: Text(tr.mainAddress),
             onChanged: onPrincipalChanged,
           ),
 
@@ -152,7 +155,7 @@ class AddressForm extends StatelessWidget {
             height: 50,
             child: ElevatedButton(
               onPressed: onSubmit,
-              child: const Text("Guardar dirección"),
+              child: Text(tr.saveAddress),
             ),
           ),
         ],
@@ -160,3 +163,4 @@ class AddressForm extends StatelessWidget {
     );
   }
 }
+

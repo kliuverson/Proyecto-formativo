@@ -3,6 +3,7 @@ import 'package:ferremateriales/common/widgets/coustom_shapes/containers/primary
 import 'package:ferremateriales/view/modulos/profile/models/profile_user_model.dart';
 import 'package:ferremateriales/view/modulos/profile/widgets/user_profile_title.dart';
 import 'package:flutter/material.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class ProfileHeaderSection extends StatelessWidget {
   const ProfileHeaderSection({
@@ -14,6 +15,8 @@ class ProfileHeaderSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return TPrimaryHeaderContainer(
       child: Column(
         children: [
@@ -21,7 +24,7 @@ class ProfileHeaderSection extends StatelessWidget {
             iconColor: Colors.white,
             showBackArrow: true,
             title: Text(
-              "Mi cuenta",
+              tr.myAccount,
               style: Theme.of(context)
                   .textTheme
                   .headlineMedium!
@@ -37,3 +40,4 @@ class ProfileHeaderSection extends StatelessWidget {
     );
   }
 }
+

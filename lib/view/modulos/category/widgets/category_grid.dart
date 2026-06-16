@@ -1,5 +1,6 @@
 import 'package:ferremateriales/src/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 import '../model/category_data.dart';
 import 'category_card.dart';
 
@@ -10,6 +11,7 @@ class CategoryGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
     final accentColor = theme.colorScheme.primary;
@@ -17,6 +19,8 @@ class CategoryGrid extends StatelessWidget {
     final borderColor = Colors.grey.shade300;
     final textPrimaryColor = theme.textTheme.bodyLarge!.color!;
     final textSecondaryColor = theme.textTheme.bodyMedium!.color!;
+
+    final categories = buildCategories(tr);
 
     // ✅ Filtrar categorías según búsqueda
     final filteredCategories = searchQuery.isEmpty
@@ -32,9 +36,9 @@ class CategoryGrid extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              "Categorías",
-              style: TextStyle(
+            Text(
+              tr.categoriesLabel,
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
@@ -43,9 +47,9 @@ class CategoryGrid extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, AppRoutes.category);
               },
-              child: const Text(
-                "Ver todas",
-                style: TextStyle(
+              child: Text(
+                tr.seeAll,
+                style: const TextStyle(
                   color: Color(0xFFFF6A14),
                   fontWeight: FontWeight.w600,
                 ),
@@ -58,12 +62,12 @@ class CategoryGrid extends StatelessWidget {
 
         // ✅ Mensaje si no hay resultados
         if (filteredCategories.isEmpty)
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 40),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40),
             child: Center(
               child: Text(
-                'No se encontraron categorías',
-                style: TextStyle(color: Colors.grey, fontSize: 16),
+                tr.noCategoriesFound,
+                style: const TextStyle(color: Colors.grey, fontSize: 16),
               ),
             ),
           )

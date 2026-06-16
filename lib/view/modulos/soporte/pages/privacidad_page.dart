@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class PrivacidadPage extends StatelessWidget {
   const PrivacidadPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Política de privacidad")),
+      appBar: AppBar(title: Text(tr.privacyTitle)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -18,9 +21,9 @@ class PrivacidadPage extends StatelessWidget {
                   color: const Color(0xFFF4B740).withOpacity(0.18),
                   borderRadius: BorderRadius.circular(6),
                 ),
-                child: const Text(
-                  "Política de privacidad",
-                  style: TextStyle(
+                child: Text(
+                  tr.privacyTitle,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFFF4B740),
@@ -31,34 +34,34 @@ class PrivacidadPage extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            "Última actualización: junio 2025",
+            tr.privacyLastUpdate,
             style: TextStyle(fontSize: 12, color: Colors.grey[500]),
           ),
           const SizedBox(height: 20),
           _Seccion(
-            titulo: "Datos que recopilamos",
+            titulo: tr.privacy1Title,
             contenido:
-                "Recopilamos nombre, correo electrónico, dirección de entrega y datos de uso de la app para brindarte una mejor experiencia.",
+                tr.privacy1Content,
           ),
           _Seccion(
-            titulo: "Uso de la información",
+            titulo: tr.privacy2Title,
             contenido:
-                "Usamos tus datos para procesar pedidos, personalizar tu experiencia y enviarte notificaciones relevantes. Nunca vendemos tu información a terceros.",
+                tr.privacy2Content,
           ),
           _Seccion(
-            titulo: "Almacenamiento y seguridad",
+            titulo: tr.privacy3Title,
             contenido:
-                "Tu información se almacena en servidores seguros con cifrado. Aplicamos medidas técnicas y organizativas para proteger tus datos.",
+                tr.privacy3Content,
           ),
           _Seccion(
-            titulo: "Tus derechos",
+            titulo: tr.privacy4Title,
             contenido:
-                "Tienes derecho a acceder, corregir o eliminar tus datos personales. Puedes ejercerlos escribiéndonos a privacidad@ferremateriales.com.",
+                tr.privacy4Content,
           ),
           _Seccion(
-            titulo: "Cookies",
+            titulo: tr.privacy5Title,
             contenido:
-                "Usamos cookies para mejorar el rendimiento de la app. Puedes desactivarlas desde la configuración de tu dispositivo.",
+                tr.privacy5Content,
           ),
           const SizedBox(height: 24),
         ],

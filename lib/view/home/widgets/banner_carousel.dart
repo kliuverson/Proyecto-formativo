@@ -1,6 +1,6 @@
-
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class BannerCarousel extends StatefulWidget {
   const BannerCarousel({super.key});
@@ -16,30 +16,6 @@ class _BannerCarouselState extends State<BannerCarousel> {
 
   Timer? timer;
 
-  final banners = [
-
-    {
-      "image":
-          "https://images.unsplash.com/photo-1504307651254-35680f356dfd",
-      "title": "Hasta 30% OFF",
-      "subtitle": "En herramientas"
-    },
-
-    {
-      "image":
-          "https://images.unsplash.com/photo-1581578731548-c64695cc6952",
-      "title": "Nuevos productos",
-      "subtitle": "Para construcción"
-    },
-
-    {
-      "image":
-          "https://images.unsplash.com/photo-1519985176271-adb1088fa94c",
-      "title": "Grandes descuentos",
-      "subtitle": "Solo esta semana"
-    },
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -54,7 +30,9 @@ class _BannerCarouselState extends State<BannerCarousel> {
 
         currentPage++;
 
-        if (currentPage >= banners.length) {
+        final length = 3;
+
+        if (currentPage >= length) {
           currentPage = 0;
         }
 
@@ -78,6 +56,31 @@ class _BannerCarouselState extends State<BannerCarousel> {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
+    final banners = [
+
+      {
+        "image":
+            "https://images.unsplash.com/photo-1504307651254-35680f356dfd",
+        "title": tr.banner1Title,
+        "subtitle": tr.banner1Subtitle
+      },
+
+      {
+        "image":
+            "https://images.unsplash.com/photo-1581578731548-c64695cc6952",
+        "title": tr.banner2Title,
+        "subtitle": tr.banner2Subtitle
+      },
+
+      {
+        "image":
+            "https://images.unsplash.com/photo-1519985176271-adb1088fa94c",
+        "title": tr.banner3Title,
+        "subtitle": tr.banner3Subtitle
+      },
+    ];
 
     return Column(
       children: [
@@ -153,9 +156,9 @@ class _BannerCarouselState extends State<BannerCarousel> {
                                 borderRadius:
                                     BorderRadius.circular(6),
                               ),
-                              child: const Text(
-                                "Oferta especial",
-                                style: TextStyle(
+                              child: Text(
+                                tr.bannerOffer,
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 10,
                                 ),

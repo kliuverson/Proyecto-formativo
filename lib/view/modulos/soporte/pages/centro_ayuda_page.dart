@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class CentroAyudaPage extends StatefulWidget {
   const CentroAyudaPage({super.key});
@@ -8,35 +9,37 @@ class CentroAyudaPage extends StatefulWidget {
 }
 
 class _CentroAyudaPageState extends State<CentroAyudaPage> {
-  final List<Map<String, String>> _faqs = [
-    {
-      "pregunta": "¿Cómo realizo un pedido?",
-      "respuesta": "Agrega productos al carrito y sigue los pasos de pago desde la sección Carrito.",
-    },
-    {
-      "pregunta": "¿Cuáles son los métodos de pago?",
-      "respuesta": "Aceptamos tarjeta débito, crédito y transferencia bancaria.",
-    },
-    {
-      "pregunta": "¿Cuánto tarda el envío?",
-      "respuesta": "El envío estándar tarda entre 2 y 5 días hábiles según tu ubicación.",
-    },
-    {
-      "pregunta": "¿Puedo cancelar un pedido?",
-      "respuesta": "Sí, puedes cancelar un pedido antes de que sea despachado desde la sección Pedidos.",
-    },
-    {
-      "pregunta": "¿Cómo contacto al soporte?",
-      "respuesta": "Puedes escribirnos a soporte@ferremateriales.com o llamar al 300 123 4567.",
-    },
-  ];
-
   int? _expandedIndex;
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
+    final List<Map<String, String>> faqs = [
+      {
+        "pregunta": tr.faq1Q,
+        "respuesta": tr.faq1A,
+      },
+      {
+        "pregunta": tr.faq2Q,
+        "respuesta": tr.faq2A,
+      },
+      {
+        "pregunta": tr.faq3Q,
+        "respuesta": tr.faq3A,
+      },
+      {
+        "pregunta": tr.faq4Q,
+        "respuesta": tr.faq4A,
+      },
+      {
+        "pregunta": tr.faq5Q,
+        "respuesta": tr.faq5A,
+      },
+    ];
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Centro de ayuda")),
+      appBar: AppBar(title: Text(tr.helpCenterTitle)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -48,9 +51,9 @@ class _CentroAyudaPageState extends State<CentroAyudaPage> {
                   color: const Color(0xFFF4B740).withOpacity(0.18),
                   borderRadius: BorderRadius.circular(6),
                 ),
-                child: const Text(
-                  "Preguntas frecuentes",
-                  style: TextStyle(
+                child: Text(
+                  tr.faqLabel,
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFFF4B740),
@@ -61,11 +64,11 @@ class _CentroAyudaPageState extends State<CentroAyudaPage> {
           ),
           const SizedBox(height: 4),
           Text(
-            "Encuentra respuestas a las dudas más comunes",
+            tr.faqSubtitle,
             style: TextStyle(fontSize: 13, color: Colors.grey[600]),
           ),
           const SizedBox(height: 16),
-          ...List.generate(_faqs.length, (i) {
+          ...List.generate(faqs.length, (i) {
             final isOpen = _expandedIndex == i;
             return Card(
               elevation: 0,
@@ -88,7 +91,7 @@ class _CentroAyudaPageState extends State<CentroAyudaPage> {
                         children: [
                           Expanded(
                             child: Text(
-                              _faqs[i]["pregunta"]!,
+                              faqs[i]["pregunta"]!,
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
@@ -107,7 +110,7 @@ class _CentroAyudaPageState extends State<CentroAyudaPage> {
                       if (isOpen) ...[
                         const SizedBox(height: 10),
                         Text(
-                          _faqs[i]["respuesta"]!,
+                          faqs[i]["respuesta"]!,
                           style: TextStyle(
                             fontSize: 13,
                             color: Colors.grey[600],

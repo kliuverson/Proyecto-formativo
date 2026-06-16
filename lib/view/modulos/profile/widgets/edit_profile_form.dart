@@ -5,6 +5,7 @@ import 'package:ferremateriales/view/modulos/profile/widgets/profile_text_field.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class EditProfileForm extends StatefulWidget {
   final UserProfileModel user;
@@ -74,12 +75,13 @@ class _EditProfileFormState extends State<EditProfileForm> {
   }
 
   void submitForm() {
+    final tr = AppLocalizations.of(context)!;
     FocusScope.of(context).unfocus();
 
     if (!formKey.currentState!.validate()) return;
 
     if (!hasChanges) {
-      _showMessage("No hiciste cambios");
+      _showMessage(tr.noChanges);
       return;
     }
 
@@ -135,6 +137,8 @@ class _EditProfileFormState extends State<EditProfileForm> {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return BlocListener<ProfileCubit, ProfileState>(
       listener: (context, state) {
         if (state is ProfileUpdated) {
@@ -167,7 +171,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
 
                   ProfileTextField(
                     controller: nombreController,
-                    label: "Nombre",
+                    label: tr.firstName,
                     icon: CupertinoIcons.person,
                   ),
 
@@ -175,7 +179,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
 
                   ProfileTextField(
                     controller: apellidoController,
-                    label: "Apellido",
+                    label: tr.lastName,
                     icon: CupertinoIcons.person_crop_circle,
                   ),
 
@@ -183,7 +187,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
 
                   ProfileTextField(
                     controller: usernameController,
-                    label: "Usuario",
+                    label: tr.username,
                     icon: CupertinoIcons.at,
                     errorText: usernameError,
                   ),
@@ -192,7 +196,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
 
                   ProfileTextField(
                     controller: correoController,
-                    label: "Correo",
+                    label: tr.correo,
                     icon: CupertinoIcons.mail,
                     keyboardType: TextInputType.emailAddress,
                     errorText: correoError,
@@ -202,7 +206,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
 
                   ProfileTextField(
                     controller: telefonoController,
-                    label: "Teléfono",
+                    label: tr.telefono,
                     icon: CupertinoIcons.phone,
                     keyboardType: TextInputType.phone,
                     errorText: telefonoError,
@@ -223,7 +227,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                   strokeWidth: 2,
                                 ),
                               )
-                              : const Text("Guardar Cambios"),
+                              : Text(tr.saveChanges),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -236,3 +240,4 @@ class _EditProfileFormState extends State<EditProfileForm> {
     );
   }
 }
+

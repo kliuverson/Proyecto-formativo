@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class CategoryHeader extends StatelessWidget {
 
@@ -15,6 +16,7 @@ class CategoryHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
 
     return Padding(
       padding: const EdgeInsets.all(24),
@@ -29,7 +31,7 @@ class CategoryHeader extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
-              'CATÁLOGO 2026',
+              tr.catalogYear,
               style: TextStyle(
                 color: accentColor,
                 fontSize: 12,
@@ -41,7 +43,7 @@ class CategoryHeader extends StatelessWidget {
           const SizedBox(height: 20),
 
           Text(
-            'ENCUENTRA TODO LO',
+            tr.categoryHeaderTitle,
             style: TextStyle(
               color: textPrimaryColor,
               fontSize: 36,
@@ -50,7 +52,7 @@ class CategoryHeader extends StatelessWidget {
           ),
 
           Text(
-            'QUE NECESITAS',
+            tr.categoryHeaderSubtitle,
             style: TextStyle(
               color: accentColor,
               fontSize: 36,
@@ -61,7 +63,7 @@ class CategoryHeader extends StatelessWidget {
           const SizedBox(height: 16),
 
           Text(
-            'Explora nuestras categorías y encuentra las mejores herramientas.',
+            tr.categoryHeaderDesc,
             style: TextStyle(
               color: textSecondaryColor,
               fontSize: 15,
@@ -73,3 +75,4 @@ class CategoryHeader extends StatelessWidget {
     );
   }
 }
+

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 import '../widgets/category_appbar.dart';
 import '../widgets/category_header.dart';
 import '../widgets/category_grid.dart';
@@ -51,11 +52,13 @@ class _CategoryPageState extends State<CategoryPage> {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: backgroundColor,
 
       appBar: CategoryAppBar(
-        title: 'Herramientas',
+        title: tr.categoryTitle,
         isDarkMode: isDarkMode,
         toggleTheme: toggleTheme,
         accentColor: accentColor,
@@ -86,7 +89,7 @@ class _CategoryPageState extends State<CategoryPage> {
                         color: isDarkMode ? Colors.white : Colors.black,
                       ),
                       decoration: InputDecoration(
-                        hintText: 'Buscar categoría...',
+                        hintText: tr.searchCategory,
                         hintStyle: TextStyle(
                           color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
                         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class CartTotalSection extends StatelessWidget {
   final double total;
@@ -10,6 +11,8 @@ class CartTotalSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return Container(
       padding: const EdgeInsets.all(20),
       margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -20,9 +23,9 @@ class CartTotalSection extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            "Total",
-            style: TextStyle(
+          Text(
+            tr.total,
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
@@ -41,3 +44,4 @@ class CartTotalSection extends StatelessWidget {
     );
   }
 }
+
