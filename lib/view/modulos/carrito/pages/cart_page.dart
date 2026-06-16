@@ -12,18 +12,21 @@ import 'package:url_launcher/url_launcher.dart';
 import 'bloc/cart_bloc.dart';
 import 'bloc/cart_event.dart';
 import 'bloc/cart_state.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return BlocProvider(
       create: (_) => CartBloc()..add(LoadCart()),
       child: Scaffold(
 
         appBar: AppBar(
-          title: const Text("Mi Carrito"),
+          title: Text(tr.cartTitle),
           centerTitle: true,
           elevation: 0,
         ),
@@ -95,7 +98,7 @@ class CartPage extends StatelessWidget {
                         });
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Error procesando pago: $e")),
+                          SnackBar(content: Text(tr.paymentError(e.toString()))),
                         );
                       }
                     },
@@ -124,7 +127,7 @@ class _PaymentStatusDialog extends StatefulWidget {
 
 class _PaymentStatusDialogState extends State<_PaymentStatusDialog> {
   Timer? _timer;
-  String _statusText = "Comprobando pago...";
+  String _statusText = "";
   bool _done = false;
 
   @override
@@ -133,12 +136,21 @@ class _PaymentStatusDialogState extends State<_PaymentStatusDialog> {
     _startPolling();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_statusText.isEmpty) {
+      _statusText = AppLocalizations.of(context)!.checkingPayment;
+    }
+  }
+
   void _startPolling() {
     final service = PaymentService();
     int attempts = 0;
 
     _timer = Timer.periodic(const Duration(seconds: 3), (t) async {
       attempts++;
+      final tr = AppLocalizations.of(context)!;
       try {
         final resp = await service.checkPaymentStatus(reference: widget.reference);
         final status = (resp['status'] as String?)?.toLowerCase() ?? '';
@@ -147,7 +159,7 @@ class _PaymentStatusDialogState extends State<_PaymentStatusDialog> {
 
         if (status == 'paid' || status == 'approved') {
           setState(() {
-            _statusText = 'Pago confirmado';
+            _statusText = tr.paymentConfirmed;
             _done = true;
           });
           _timer?.cancel();
@@ -159,7 +171,7 @@ class _PaymentStatusDialogState extends State<_PaymentStatusDialog> {
         }
         if (status == 'failed' || status == 'declined' || attempts >= 20) {
           setState(() {
-            _statusText = 'Pago no completado';
+            _statusText = tr.paymentNotCompleted;
             _done = true;
           });
           _timer?.cancel();
@@ -167,11 +179,11 @@ class _PaymentStatusDialogState extends State<_PaymentStatusDialog> {
           return;
         }
         setState(() {
-          _statusText = 'Estado: ${status.isEmpty ? resp['message'] ?? 'pending' : status}';
+          _statusText = 'Status: ${status.isEmpty ? resp['message'] ?? 'pending' : status}';
         });
       } catch (e) {
         setState(() {
-          _statusText = 'Error verificando pago: ${e.toString()}';
+          _statusText = tr.paymentError(e.toString());
         });
       }
     });
@@ -185,8 +197,10 @@ class _PaymentStatusDialogState extends State<_PaymentStatusDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return AlertDialog(
-      title: const Text('Comprobando pago'),
+      title: Text(tr.checkingPaymentTitle),
       content: Row(
         children: [
           if (!_done)
@@ -202,3 +216,4 @@ class _PaymentStatusDialogState extends State<_PaymentStatusDialog> {
     );
   }
 }
+

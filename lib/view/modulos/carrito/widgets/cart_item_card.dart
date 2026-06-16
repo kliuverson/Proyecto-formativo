@@ -2,6 +2,7 @@ import 'package:ferremateriales/view/modulos/carrito/pages/bloc/cart_bloc.dart';
 import 'package:ferremateriales/view/modulos/carrito/pages/bloc/cart_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 
 
@@ -15,6 +16,8 @@ class CartItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 14),
       padding: const EdgeInsets.all(14),
@@ -62,7 +65,7 @@ class CartItemCard extends StatelessWidget {
                 const SizedBox(height: 6),
 
                 Text(
-                  "Cantidad: ${item.quantity}",
+                  tr.quantity(item.quantity),
                   style: TextStyle(
                     color: Colors.grey[600],
                   ),
@@ -98,3 +101,4 @@ class CartItemCard extends StatelessWidget {
     );
   }
 }
+

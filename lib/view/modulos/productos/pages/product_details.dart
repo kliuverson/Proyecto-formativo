@@ -4,6 +4,7 @@ import 'package:ferremateriales/view/modulos/carrito/pages/model/cart_model.dart
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ferremateriales/view/modulos/carrito/pages/bloc/cart_bloc.dart';
 import 'package:ferremateriales/view/modulos/carrito/pages/bloc/cart_event.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class ProductDetail extends StatelessWidget {
   final ProductModel product;
@@ -15,6 +16,7 @@ class ProductDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         title: Text(product.nombre),
@@ -69,7 +71,7 @@ class ProductDetail extends StatelessWidget {
             Text(
               product.descripcion.isNotEmpty
                   ? product.descripcion
-                  : "Sin descripción disponible",
+                  : tr.noDescription,
               style: const TextStyle(fontSize: 16),
             ),
 
@@ -90,14 +92,13 @@ class ProductDetail extends StatelessWidget {
 
                   context.read<CartBloc>().add(AddToCart(cartItem));
 
-
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Producto agregado al carrito"),
+                    SnackBar(
+                      content: Text(tr.productAddedToCart),
                     ),
                   );
                 },
-                child: const Text("Agregar al carrito"),
+                child: Text(tr.addToCart),
               ),
             ),
           ],

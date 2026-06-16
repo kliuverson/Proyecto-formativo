@@ -1,12 +1,14 @@
 import 'package:ferremateriales/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
     final authState = context.watch<AuthCubit>().state;
     final isAuthenticated = authState.isAuthenticated;
 
@@ -16,24 +18,24 @@ class AppDrawer extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             /// ===== HEADER =====
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.orange),
+            DrawerHeader(
+              decoration: const BoxDecoration(color: Colors.orange),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    "Ferremateriales DGC",
-                    style: TextStyle(
+                    tr.appName,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Text(
-                    "Tu ferretería de confianza",
-                    style: TextStyle(color: Colors.white70),
+                    tr.appSlogan,
+                    style: const TextStyle(color: Colors.white70),
                   ),
                 ],
               ),
@@ -43,7 +45,7 @@ class AppDrawer extends StatelessWidget {
             _item(
               context,
               icon: Icons.home,
-              text: "Inicio",
+              text: tr.drawerHome,
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/home');
@@ -54,7 +56,7 @@ class AppDrawer extends StatelessWidget {
             _item(
               context,
               icon: Icons.category,
-              text: "Categorías",
+              text: tr.drawerCategories,
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/category');
@@ -65,7 +67,7 @@ class AppDrawer extends StatelessWidget {
             _item(
               context,
               icon: Icons.store,
-              text: "Productos",
+              text: tr.drawerProducts,
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/products');
@@ -76,7 +78,7 @@ class AppDrawer extends StatelessWidget {
             _item(
               context,
               icon: Icons.shopping_cart,
-              text: "Mi Carrito",
+              text: tr.drawerCart,
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/cart');
@@ -88,7 +90,7 @@ class AppDrawer extends StatelessWidget {
               _item(
                 context,
                 icon: Icons.favorite,
-                text: "Mis Favoritos",
+                text: tr.drawerFavorites,
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.pushNamed(context, '/favorite');
@@ -100,7 +102,7 @@ class AppDrawer extends StatelessWidget {
               _item(
                 context,
                 icon: Icons.receipt_long,
-                text: "Mis Pedidos",
+                text: tr.drawerOrders,
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.pushNamed(context, '/orders');
@@ -111,7 +113,7 @@ class AppDrawer extends StatelessWidget {
             _item(
               context,
               icon: Icons.person,
-              text: "Mi Cuenta",
+              text: tr.drawerAccount,
               onTap: () {
                 Navigator.pop(context);
 
@@ -128,7 +130,7 @@ class AppDrawer extends StatelessWidget {
               _item(
                 context,
                 icon: Icons.location_on,
-                text: "Direcciones",
+                text: tr.drawerAddresses,
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.pushNamed(context, '/address');
@@ -141,7 +143,7 @@ class AppDrawer extends StatelessWidget {
             _item(
               context,
               icon: Icons.info,
-              text: "Acerca de Nosotros",
+              text: tr.drawerAbout,
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/acerca-de-nosotros');
@@ -152,7 +154,7 @@ class AppDrawer extends StatelessWidget {
             _item(
               context,
               icon: Icons.support_agent,
-              text: "Contacto / Soporte",
+              text: tr.drawerSupport,
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/contacto');
@@ -166,7 +168,7 @@ class AppDrawer extends StatelessWidget {
               _item(
                 context,
                 icon: Icons.logout,
-                text: "Cerrar Sesión",
+                text: tr.drawerLogout,
                 color: Colors.red,
                 onTap: () {
                   _confirmLogout(context);
@@ -195,24 +197,25 @@ class AppDrawer extends StatelessWidget {
 
   /// 🔐 CONFIRMAR LOGOUT
   void _confirmLogout(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
     final rootContext = Navigator.of(context).context;
 
     showDialog(
       context: rootContext,
       builder:
           (_) => AlertDialog(
-            title: const Text("Cerrar sesión"),
-            content: const Text("¿Seguro que deseas salir?"),
+            title: Text(tr.logoutTitle),
+            content: Text(tr.logoutConfirm),
             actions: [
               TextButton(
-                child: const Text("Cancelar"),
+                child: Text(tr.cancel),
                 onPressed: () => Navigator.pop(rootContext),
               ),
               SizedBox(
                 height: 40,
                 width: 80,
                 child: ElevatedButton(
-                  child: const Text("Salir"),
+                  child: Text(tr.exit),
                   onPressed: () {
                     Navigator.pop(rootContext);
                     Navigator.pop(context);

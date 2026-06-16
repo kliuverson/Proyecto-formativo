@@ -1,5 +1,6 @@
 import 'package:ferremateriales/view/modulos/address/model/address_model.dart';
 import 'package:flutter/material.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class AddressCard extends StatelessWidget {
   final AddressModel address;
@@ -17,6 +18,8 @@ class AddressCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return Card(
       color: Colors.white,
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -32,9 +35,9 @@ class AddressCard extends StatelessWidget {
                   color: Colors.green,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: const Text(
-                  "Principal",
-                  style: TextStyle(color: Colors.white),
+                child: Text(
+                  tr.principal,
+                  style: const TextStyle(color: Colors.white),
                 ),
               ),
 
@@ -65,7 +68,7 @@ class AddressCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
-                  "Referencia: ${address.referencia}",
+                  tr.addressReference(address.referencia),
                   style: const TextStyle(color: Colors.black54),
                 ),
               ),
@@ -95,3 +98,4 @@ class AddressCard extends StatelessWidget {
     );
   }
 }
+

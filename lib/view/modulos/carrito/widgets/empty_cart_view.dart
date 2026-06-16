@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class EmptyCartView extends StatelessWidget {
   const EmptyCartView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -17,9 +20,9 @@ class EmptyCartView extends StatelessWidget {
 
           const SizedBox(height: 20),
 
-          const Text(
-            "Tu carrito está vacío",
-            style: TextStyle(
+          Text(
+            tr.emptyCart,
+            style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
             ),
@@ -28,7 +31,7 @@ class EmptyCartView extends StatelessWidget {
           const SizedBox(height: 10),
 
           Text(
-            "Agrega productos para continuar",
+            tr.emptyCartHint,
             style: TextStyle(
               color: Colors.grey[600],
             ),
@@ -38,3 +41,4 @@ class EmptyCartView extends StatelessWidget {
     );
   }
 }
+

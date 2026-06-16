@@ -6,6 +6,7 @@ import 'package:ferremateriales/view/home/widgets/product_card.dart';
 import 'package:ferremateriales/view/modulos/productos/pages/product_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 import 'package:ferremateriales/src/routes/app_routes.dart';
 import '../widgets/banner_carousel.dart';
 import '../widgets/app_drawer.dart';
@@ -80,6 +81,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final searchBg = isDark ? Colors.grey[800]! : Colors.white;
     final searchTextColor = isDark ? Colors.white : Colors.black87;
@@ -142,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                             context.read<SearchProductCubit>().searchProducts(value);
                           },
                           decoration: InputDecoration(
-                            hintText: "Buscar herramientas...",
+                            hintText: tr.search,
                             hintStyle: TextStyle(color: hintColor),
                             prefixIcon: Icon(Icons.search, color: iconColor),
                             border: InputBorder.none,
@@ -207,7 +209,7 @@ class _HomePageState extends State<HomePage> {
                             Icon(Icons.search_off, size: 48, color: Colors.grey[400]),
                             const SizedBox(height: 12),
                             Text(
-                              'No se encontraron productos\npara "${_searchController.text}"',
+                              tr.noProductsFound(_searchController.text),
                               textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.grey[600]),
                             ),
@@ -228,8 +230,8 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Text(
                         _isSearching
-                            ? '${state.products.length} resultado(s)'
-                            : 'Productos Destacados',
+                            ? tr.results(state.products.length)
+                            : tr.featuredProducts,
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -277,15 +279,16 @@ class _HomePageState extends State<HomePage> {
         currentIndex: currentIndex,
         onTap: onTap,
         type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Inicio"),
-          BottomNavigationBarItem(icon: Icon(Icons.store), label: "Productos"),
-          BottomNavigationBarItem(icon: Icon(Icons.category), label: "Categorías"),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Favoritos"),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: "Carrito"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Perfil"),
+        items: [
+          BottomNavigationBarItem(icon: const Icon(Icons.home), label: tr.navHome),
+          BottomNavigationBarItem(icon: const Icon(Icons.store), label: tr.navProducts),
+          BottomNavigationBarItem(icon: const Icon(Icons.category), label: tr.navCategories),
+          BottomNavigationBarItem(icon: const Icon(Icons.favorite), label: tr.navFavorites),
+          BottomNavigationBarItem(icon: const Icon(Icons.shopping_cart), label: tr.navCart),
+          BottomNavigationBarItem(icon: const Icon(Icons.person), label: tr.navProfile),
         ],
       ),
     );
   }
 }
+

@@ -1,6 +1,7 @@
 import 'package:ferremateriales/view/modulos/favorites/service/favo_service.dart';
 import 'package:ferremateriales/view/modulos/productos/pages/product_details.dart';
 import 'package:flutter/material.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({super.key});
@@ -14,12 +15,13 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Mis Favoritos',
+          tr.favoritesTitle,
           style: TextStyle(
             color: isDark ? Colors.white : Colors.black,
             fontWeight: FontWeight.bold,
@@ -39,19 +41,19 @@ class _FavoritesPageState extends State<FavoritesPage> {
           final favorites = _favoritesService.favorites;
 
           if (favorites.isEmpty) {
-            return const Center(
+            return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.favorite_border, size: 80, color: Colors.grey),
-                  SizedBox(height: 20),
+                  const Icon(Icons.favorite_border, size: 80, color: Colors.grey),
+                  const SizedBox(height: 20),
                   Text(
-                    'No tienes productos en favoritos',
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                    tr.noFavorites,
+                    style: const TextStyle(fontSize: 18, color: Colors.grey),
                   ),
                   Text(
-                    '¡Marca el corazón en tus productos para añadirlos!',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                    tr.noFavoritesHint,
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                 ],
               ),
@@ -71,7 +73,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(
-                        'Productos favoritos: ${favorites.length}',
+                        tr.favoriteProducts(favorites.length),
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -192,9 +194,9 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                     ),
                                   ),
                                   const SizedBox(height: 2),
-                                  const Text(
-                                    'En stock',
-                                    style: TextStyle(
+                                  Text(
+                                    tr.inStock,
+                                    style: const TextStyle(
                                       fontSize: 11,
                                       color: Colors.green,
                                       fontWeight: FontWeight.w500,

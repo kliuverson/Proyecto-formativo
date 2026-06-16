@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 import '../model/category_model.dart';
 
 class CategoryCard extends StatelessWidget {
@@ -22,6 +22,8 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
@@ -76,9 +78,9 @@ class CategoryCard extends StatelessWidget {
                   color: const Color(0xFFFF6A14),
                   borderRadius: BorderRadius.circular(6),
                 ),
-                child: const Text(
-                  "Categoría",
-                  style: TextStyle(
+                child: Text(
+                  tr.categoryLabel,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 10,
                     fontWeight: FontWeight.w600,
@@ -128,3 +130,4 @@ class CategoryCard extends StatelessWidget {
     );
   }
 }
+

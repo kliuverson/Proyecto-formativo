@@ -5,12 +5,15 @@ import 'package:ferremateriales/view/modulos/address/widgets/address_card.dart';
 import 'package:ferremateriales/view/modulos/address/widgets/empty_address.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class AddressPage extends StatelessWidget {
   const AddressPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return BlocProvider(
       create:
           (_) => AddressCubit(
@@ -21,7 +24,7 @@ class AddressPage extends StatelessWidget {
         builder: (context) {
           return Scaffold(
             appBar: AppBar(
-              title: const Text("Mis direcciones"),
+              title: Text(tr.addressesTitle),
             ),
 
             floatingActionButton: FloatingActionButton(
@@ -136,3 +139,4 @@ class AddressPage extends StatelessWidget {
     );
   }
 }
+

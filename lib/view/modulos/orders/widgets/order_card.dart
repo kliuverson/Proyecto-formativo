@@ -1,5 +1,6 @@
 import 'package:ferremateriales/view/modulos/orders/model/order_model.dart';
 import 'package:flutter/material.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class OrderCard extends StatelessWidget {
   final OrderModel order;
@@ -19,8 +20,23 @@ class OrderCard extends StatelessWidget {
     }
   }
 
+  String getStatusLabel(AppLocalizations tr) {
+    switch (order.status) {
+      case 'paid':
+        return tr.statusPaid;
+      case 'pending':
+        return tr.statusPending;
+      case 'failed':
+        return tr.statusFailed;
+      default:
+        return order.status;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return Card(
       color: Colors.white,
       margin: const EdgeInsets.only(bottom: 12),
@@ -33,7 +49,7 @@ class OrderCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Pedido #${order.id.substring(0, 6)}",
+                  tr.orderNumber(order.id.substring(0, 6)),
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -50,7 +66,7 @@ class OrderCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
-                    order.status,
+                    getStatusLabel(tr),
                     style: const TextStyle(color: Colors.white),
                   ),
                 ),
@@ -58,12 +74,12 @@ class OrderCard extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              "Productos: ${order.items.length}",
+              tr.productsCount(order.items.length),
               style: const TextStyle(color: Colors.black87),
             ),
             const SizedBox(height: 5),
             Text(
-              "Total: ${order.total}",
+              tr.orderTotal(order.total.toString()),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.black87,
@@ -80,3 +96,4 @@ class OrderCard extends StatelessWidget {
     );
   }
 }
+

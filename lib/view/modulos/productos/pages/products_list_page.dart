@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ferremateriales/view/modulos/productos/model/product.dart';
 import 'package:ferremateriales/view/modulos/productos/pages/product_details.dart';
 import 'package:ferremateriales/view/modulos/productos/service/product_service.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 // 👇 IMPORTS NUEVOS
 import 'widgets/product_grid.dart';
@@ -51,9 +52,11 @@ class _ProductListPageState extends State<ProductListPage> {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lista de Productos'),
+        title: Text(tr.productListTitle),
         actions: [
           IconButton(
             icon: Icon(_isGrid ? Icons.list : Icons.grid_view),
@@ -78,4 +81,5 @@ class _ProductListPageState extends State<ProductListPage> {
                 ),
     );
   }
-} 
+}
+

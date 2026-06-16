@@ -2,6 +2,7 @@ import 'package:ferremateriales/view/modulos/orders/cubit/order_cubit.dart';
 import 'package:ferremateriales/view/modulos/orders/widgets/order_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class OrdersPage extends StatefulWidget {
   const OrdersPage({super.key});
@@ -21,9 +22,11 @@ class _OrdersPageState extends State<OrdersPage> {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Mis pedidos"),
+        title: Text(tr.ordersTitle),
       ),
       body: BlocBuilder<OrderCubit, OrderState>(
         builder: (context, state) {
@@ -35,8 +38,8 @@ class _OrdersPageState extends State<OrdersPage> {
           }
 
           if (state.orders.isEmpty) {
-            return const Center(
-              child: Text("No tienes pedidos"),
+            return Center(
+              child: Text(tr.noOrders),
             );
           }
 
@@ -59,3 +62,4 @@ class _OrdersPageState extends State<OrdersPage> {
     );
   }
 }
+

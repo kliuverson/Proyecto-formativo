@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:ferremateriales/translations/app_localizations.dart';
 
 class TerminosPage extends StatelessWidget {
   const TerminosPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Términos y condiciones")),
+      appBar: AppBar(title: Text(tr.termsTitle)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -18,9 +21,9 @@ class TerminosPage extends StatelessWidget {
                   color: const Color(0xFFF4B740).withOpacity(0.18),
                   borderRadius: BorderRadius.circular(6),
                 ),
-                child: const Text(
-                  "Términos y condiciones",
-                  style: TextStyle(
+                child: Text(
+                  tr.termsTitle,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFFF4B740),
@@ -31,39 +34,39 @@ class TerminosPage extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            "Última actualización: junio 2025",
+            tr.termsLastUpdate,
             style: TextStyle(fontSize: 12, color: Colors.grey[500]),
           ),
           const SizedBox(height: 20),
           _Seccion(
-            titulo: "1. Aceptación de los términos",
+            titulo: tr.terms1Title,
             contenido:
-                "Al usar esta aplicación, aceptas estos términos en su totalidad. Si no estás de acuerdo, por favor no uses el servicio.",
+                tr.terms1Content,
           ),
           _Seccion(
-            titulo: "2. Uso del servicio",
+            titulo: tr.terms2Title,
             contenido:
-                "Esta plataforma es exclusiva para la compra de productos de ferretería y materiales de construcción. Queda prohibido el uso indebido o con fines ilícitos.",
+                tr.terms2Content,
           ),
           _Seccion(
-            titulo: "3. Cuenta de usuario",
+            titulo: tr.terms3Title,
             contenido:
-                "Eres responsable de mantener la confidencialidad de tus credenciales. Notifícanos de inmediato ante cualquier uso no autorizado de tu cuenta.",
+                tr.terms3Content,
           ),
           _Seccion(
-            titulo: "4. Precios y pagos",
+            titulo: tr.terms4Title,
             contenido:
-                "Los precios están expresados en pesos colombianos e incluyen IVA. Nos reservamos el derecho de modificar precios sin previo aviso.",
+                tr.terms4Content,
           ),
           _Seccion(
-            titulo: "5. Cancelaciones y devoluciones",
+            titulo: tr.terms5Title,
             contenido:
-                "Puedes cancelar un pedido antes de su despacho. Las devoluciones se gestionan dentro de los 5 días hábiles siguientes a la entrega.",
+                tr.terms5Content,
           ),
           _Seccion(
-            titulo: "6. Contacto",
+            titulo: tr.terms6Title,
             contenido:
-                "Para consultas sobre estos términos escríbenos a legal@ferremateriales.com.",
+                tr.terms6Content,
           ),
           const SizedBox(height: 24),
         ],
