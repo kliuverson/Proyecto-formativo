@@ -55,6 +55,9 @@ class ProfileBodySection extends StatelessWidget {
             icon: CupertinoIcons.lock,
             title: tr.security,
             subtitle: tr.securitySubtitle,
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutes.forgotPassword);
+            },
           ),
 
           const SizedBox(height: TSize.spaceBtwSections),
@@ -81,13 +84,11 @@ class ProfileBodySection extends StatelessWidget {
             },
           ),
 
-
           const SizedBox(height: TSize.spaceBtwSections),
 
           /// PREFERENCIAS
           TSectionHeading(title: tr.preferences),
           const SizedBox(height: TSize.spaceBtwItems),
-
 
           TSettingMenuList(
             icon: CupertinoIcons.globe,

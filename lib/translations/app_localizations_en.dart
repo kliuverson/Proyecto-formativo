@@ -701,4 +701,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get productAddedToCart => 'Product added to cart';
+
+  @override
+  String get forgotPasswordTitle => 'Forgot your password?';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'Enter your email address and we will send you a link to reset your password.';
+
+  @override
+  String get forgotPasswordEmailLabel => 'Email address';
+
+  @override
+  String get forgotPasswordEmailHint => 'example@email.com';
+
+  @override
+  String get forgotPasswordEmailRequired => 'Please enter your email address';
+
+  @override
+  String get forgotPasswordEmailInvalid => 'Please enter a valid email address';
+
+  @override
+  String get forgotPasswordButton => 'Send reset link';
 }
