@@ -12,12 +12,13 @@ class CartTotalSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tr = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       padding: const EdgeInsets.all(20),
       margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
         borderRadius: BorderRadius.circular(18),
       ),
       child: Row(
@@ -25,9 +26,10 @@ class CartTotalSection extends StatelessWidget {
         children: [
           Text(
             tr.total,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
+              color: isDark ? Colors.white : Colors.black,
             ),
           ),
 
@@ -44,4 +46,3 @@ class CartTotalSection extends StatelessWidget {
     );
   }
 }
-

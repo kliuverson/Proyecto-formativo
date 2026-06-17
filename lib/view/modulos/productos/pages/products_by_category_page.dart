@@ -6,14 +6,19 @@ import 'product_details.dart';
 
 class ProductsByCategoryPage extends StatelessWidget {
   final String categoryName;
+  final String categoryDisplayName;
 
-  const ProductsByCategoryPage({super.key, required this.categoryName});
+  const ProductsByCategoryPage({
+    super.key,
+    required this.categoryName,
+    required this.categoryDisplayName,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(categoryName),
+        title: Text(categoryDisplayName),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),

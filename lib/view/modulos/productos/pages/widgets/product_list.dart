@@ -13,11 +13,19 @@ class ProductList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = Localizations.localeOf(context).languageCode;
+    final isEn = locale == 'en';
+
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: productos.length,
       itemBuilder: (context, index) {
         final product = productos[index];
+
+        final nombre = isEn && product.nombreEn.isNotEmpty
+            ? product.nombreEn
+            : product.nombre;
+
         return Card(
           margin: const EdgeInsets.only(bottom: 12),
           child: ListTile(
@@ -44,8 +52,11 @@ class ProductList extends StatelessWidget {
                   : Icon(Icons.image, size: 30, color: Colors.grey[600]),
             ),
             title: Text(
-              product.nombre,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              nombre,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).textTheme.bodyLarge?.color,
+              ),
             ),
             subtitle: Text(
               '\$${product.precio.toStringAsFixed(2)}',

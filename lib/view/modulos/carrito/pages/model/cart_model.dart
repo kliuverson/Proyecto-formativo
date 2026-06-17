@@ -16,11 +16,15 @@ class CartItem {
   @HiveField(3)
   final double price;
 
+  @HiveField(4)
+  final String nameEn;
+
   CartItem({
     required this.id,
     required this.name,
     required this.quantity,
     required this.price,
+    this.nameEn = '',
   });
 
   double get subtotal => price * quantity;
@@ -30,12 +34,14 @@ class CartItem {
     String? name,
     int? quantity,
     double? price,
+    String? nameEn,
   }) {
     return CartItem(
       id: id ?? this.id,
       name: name ?? this.name,
       quantity: quantity ?? this.quantity,
       price: price ?? this.price,
+      nameEn: nameEn ?? this.nameEn,
     );
   }
 }

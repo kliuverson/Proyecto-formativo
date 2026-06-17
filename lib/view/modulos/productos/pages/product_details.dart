@@ -17,9 +17,22 @@ class ProductDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tr = AppLocalizations.of(context)!;
+    final locale = Localizations.localeOf(context).languageCode;
+    final isEn = locale == 'en';
+
+    final nombre = isEn && product.nombreEn.isNotEmpty
+        ? product.nombreEn
+        : product.nombre;
+
+    final descripcion = isEn && product.descripcionEn.isNotEmpty
+        ? product.descripcionEn
+        : product.descripcion.isNotEmpty
+            ? product.descripcion
+            : tr.noDescription;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(product.nombre),
+        title: Text(nombre),
       ),
 
       body: SingleChildScrollView(
@@ -46,7 +59,7 @@ class ProductDetail extends StatelessWidget {
 
             /// 🔹 NOMBRE
             Text(
-              product.nombre,
+              nombre,
               style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -69,9 +82,7 @@ class ProductDetail extends StatelessWidget {
 
             /// 🔹 DESCRIPCIÓN
             Text(
-              product.descripcion.isNotEmpty
-                  ? product.descripcion
-                  : tr.noDescription,
+              descripcion,
               style: const TextStyle(fontSize: 16),
             ),
 
@@ -84,8 +95,9 @@ class ProductDetail extends StatelessWidget {
                 onPressed: () {
 
                   final cartItem = CartItem(
-                    id: product.id,
+                    id: product.sku,           // ← era product.id
                     name: product.nombre,
+                    nameEn: product.nombreEn,  // ← AÑADIDO
                     price: product.precio,
                     quantity: 1,
                   );

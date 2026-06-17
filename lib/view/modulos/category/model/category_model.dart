@@ -7,6 +7,7 @@ class Category {
   final int productCount;
   final String imageUrl;
   final Color color;
+  final String dbKey;
 
   Category({
     required this.name,
@@ -14,6 +15,8 @@ class Category {
     required this.productCount,
     required this.imageUrl,
     required this.color,
+    required this.dbKey,
   });
 
 }
+

@@ -65,7 +65,10 @@ class _ProductCardState extends State<ProductCard> {
                   children: [
                     Text(
                       widget.product.nombre,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
+                      ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),

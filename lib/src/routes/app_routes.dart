@@ -97,16 +97,20 @@ class AppRoutes {
     productsByCategory: (context) {
       final args = ModalRoute.of(context)!.settings.arguments;
 
-      if (args == null || args is! String) {
+      if (args == null || args is! Map<String, String>) {
         return const CategoryPage();
       }
 
-      final categoryName = args.toString();
+      final categoryName = args['dbKey']!;
+      final categoryDisplayName = args['displayName']!;
 
       return BlocProvider(
         create:
             (_) => CategoryProductCubit()..loadProductsByCategory(categoryName),
-        child: ProductsByCategoryPage(categoryName: categoryName),
+        child: ProductsByCategoryPage(
+          categoryName: categoryName,
+          categoryDisplayName: categoryDisplayName,
+        ),
       );
     },
 
@@ -155,3 +159,4 @@ class AppRoutes {
     return null;
   }
 }
+
