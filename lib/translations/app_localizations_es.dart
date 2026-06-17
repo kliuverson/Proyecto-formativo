@@ -704,4 +704,28 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get productAddedToCart => 'Producto agregado al carrito';
+
+  @override
+  String get forgotPasswordTitle => '¿Olvidaste tu contraseña?';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.';
+
+  @override
+  String get forgotPasswordEmailLabel => 'Correo electrónico';
+
+  @override
+  String get forgotPasswordEmailHint => 'ejemplo@correo.com';
+
+  @override
+  String get forgotPasswordEmailRequired =>
+      'Por favor ingresa tu correo electrónico';
+
+  @override
+  String get forgotPasswordEmailInvalid =>
+      'Por favor ingresa un correo electrónico válido';
+
+  @override
+  String get forgotPasswordButton => 'Enviar enlace de restablecimiento';
 }

@@ -1,6 +1,7 @@
+import 'package:ferremateriales/translations/app_localizations.dart';
 import 'package:ferremateriales/utils/helpers/helpers_functions.dart';
 import 'package:ferremateriales/view/login/cubit/cubit/forgot_password_cubit.dart';
-import 'package:flutter/cupertino.dart'; // Importante añadir los iconos de Cupertino
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,6 +26,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     final isDarkMode = THelpersFunctions.esModoOscuro(context);
     final textTheme = Theme.of(context).textTheme;
+    final tr = AppLocalizations.of(context)!;
 
     return BlocConsumer<ForgotPasswordCubit, ForgotPasswordState>(
       listener: (context, state) {
@@ -83,7 +85,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   const SizedBox(height: 40),
 
                   Text(
-                    "¿Olvidaste tu contraseña?",
+                    tr.forgotPasswordTitle,
                     style: textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       letterSpacing: -0.5,
@@ -91,7 +93,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    "Ingresa el correo electrónico asociado a tu cuenta de Ferremateriales DGC y te enviaremos las instrucciones para restablecer tu contraseña.",
+                    tr.forgotPasswordSubtitle,
                     style: textTheme.bodyMedium?.copyWith(
                       color: isDarkMode ? Colors.grey[400] : Colors.grey[700],
                       height: 1.5,
@@ -106,7 +108,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return "El correo es obligatorio";
+                          return tr.forgotPasswordEmailRequired;
                         }
 
                         final emailRegex = RegExp(
@@ -114,15 +116,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         );
 
                         if (!emailRegex.hasMatch(value.trim())) {
-                          return "Por favor ingresa un correo válido";
+                          return tr.forgotPasswordEmailInvalid;
                         }
 
                         return null;
                       },
-                      decoration: const InputDecoration(
-                        labelText: "Correo electrónico",
-                        hintText: "ejemplo@correo.com",
-                        prefixIcon: Icon(CupertinoIcons.mail, size: 22),
+                      decoration: InputDecoration(
+                        labelText: tr.forgotPasswordEmailLabel,
+                        hintText: tr.forgotPasswordEmailHint,
+                        prefixIcon: const Icon(CupertinoIcons.mail, size: 22),
                       ),
                     ),
                   ),
@@ -150,7 +152,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       child:
                           state.isLoading
                               ? CircularProgressIndicator(color: Colors.white)
-                              : const Text("Enviar enlace de recuperación"),
+                              : Text(tr.forgotPasswordButton),
                     ),
                   ),
                 ],
@@ -162,3 +164,4 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     );
   }
 }
+

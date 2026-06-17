@@ -225,5 +225,13 @@
   "statusFailed": "fallido",
   "noDescription": "Sin descripción disponible",
   "addToCart": "Agregar al carrito",
-  "productAddedToCart": "Producto agregado al carrito"
+  "productAddedToCart": "Producto agregado al carrito",
+  "forgotPasswordTitle": "¿Olvidaste tu contraseña?",
+  "forgotPasswordSubtitle": "Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.",
+  "forgotPasswordEmailLabel": "Correo electrónico",
+  "forgotPasswordEmailHint": "ejemplo@correo.com",
+  "forgotPasswordEmailRequired": "Por favor ingresa tu correo electrónico",
+  "forgotPasswordEmailInvalid": "Por favor ingresa un correo electrónico válido",
+  "forgotPasswordButton": "Enviar enlace de restablecimiento"
 }
+

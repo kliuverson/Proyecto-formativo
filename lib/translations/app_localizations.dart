@@ -1399,6 +1399,48 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Producto agregado al carrito'**
   String get productAddedToCart;
+
+  /// No description provided for @forgotPasswordTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Olvidaste tu contraseña?'**
+  String get forgotPasswordTitle;
+
+  /// No description provided for @forgotPasswordSubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.'**
+  String get forgotPasswordSubtitle;
+
+  /// No description provided for @forgotPasswordEmailLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo electrónico'**
+  String get forgotPasswordEmailLabel;
+
+  /// No description provided for @forgotPasswordEmailHint.
+  ///
+  /// In es, this message translates to:
+  /// **'ejemplo@correo.com'**
+  String get forgotPasswordEmailHint;
+
+  /// No description provided for @forgotPasswordEmailRequired.
+  ///
+  /// In es, this message translates to:
+  /// **'Por favor ingresa tu correo electrónico'**
+  String get forgotPasswordEmailRequired;
+
+  /// No description provided for @forgotPasswordEmailInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Por favor ingresa un correo electrónico válido'**
+  String get forgotPasswordEmailInvalid;
+
+  /// No description provided for @forgotPasswordButton.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviar enlace de restablecimiento'**
+  String get forgotPasswordButton;
 }
 
 class _AppLocalizationsDelegate
