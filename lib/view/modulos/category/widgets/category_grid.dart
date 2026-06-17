@@ -90,7 +90,10 @@ class CategoryGrid extends StatelessWidget {
                   Navigator.pushNamed(
                     context,
                     AppRoutes.productsByCategory,
-                    arguments: category.name,
+                    arguments: {
+                      'dbKey': category.dbKey,
+                      'displayName': category.name,
+                    },
                   );
                 },
                 child: CategoryCard(
@@ -108,4 +111,3 @@ class CategoryGrid extends StatelessWidget {
     );
   }
 }
-

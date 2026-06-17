@@ -10,6 +10,7 @@ List<Category> buildCategories(AppLocalizations tr) => [
     productCount: 185,
     imageUrl: 'assets/images/category/bathroom.png',
     color: const Color(0xFF2A3B4C),
+    dbKey: 'Baños',
   ),
 
   Category(
@@ -18,6 +19,7 @@ List<Category> buildCategories(AppLocalizations tr) => [
     productCount: 210,
     imageUrl: 'assets/images/category/floors.png',
     color: const Color(0xFF3A4A3C),
+    dbKey: 'Pisos',
   ),
 
   Category(
@@ -26,6 +28,7 @@ List<Category> buildCategories(AppLocalizations tr) => [
     productCount: 289,
     imageUrl: 'assets/images/category/construction.jpg',
     color: const Color(0xFF4A3A3A),
+    dbKey: 'Construcción',
   ),
 
   Category(
@@ -34,6 +37,7 @@ List<Category> buildCategories(AppLocalizations tr) => [
     productCount: 195,
     imageUrl: 'assets/images/category/electrical.jpg',
     color: const Color(0xFF3A3A4A),
+    dbKey: 'Electricidad',
   ),
 ];
 

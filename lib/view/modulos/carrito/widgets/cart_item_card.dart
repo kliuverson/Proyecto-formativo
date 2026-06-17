@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ferremateriales/translations/app_localizations.dart';
 
-
-
 class CartItemCard extends StatelessWidget {
   final dynamic item;
 
@@ -17,12 +15,20 @@ class CartItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tr = AppLocalizations.of(context)!;
+    final locale = Localizations.localeOf(context).languageCode;
+    final isEn = locale == 'en';
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // Mostrar nombre en el idioma activo
+    final displayName = isEn && item.nameEn.isNotEmpty
+        ? item.nameEn
+        : item.name;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 14),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
@@ -55,10 +61,11 @@ class CartItemCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  item.name,
-                  style: const TextStyle(
+                  displayName,
+                  style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
+                    color: isDark ? Colors.white : Colors.black,
                   ),
                 ),
 
@@ -101,4 +108,3 @@ class CartItemCard extends StatelessWidget {
     );
   }
 }
-

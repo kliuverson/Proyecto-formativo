@@ -17,6 +17,8 @@ class _FavoritesPageState extends State<FavoritesPage> {
   Widget build(BuildContext context) {
     final tr = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final locale = Localizations.localeOf(context).languageCode;
+    final isEn = locale == 'en';
 
     return Scaffold(
       appBar: AppBar(
@@ -28,7 +30,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
           ),
         ),
         centerTitle: true,
-        // Sin backgroundColor fijo — usa el tema (transparente)
         foregroundColor: isDark ? Colors.white : Colors.black,
         elevation: 0,
         iconTheme: IconThemeData(
@@ -96,6 +97,9 @@ class _FavoritesPageState extends State<FavoritesPage> {
                   itemCount: favorites.length,
                   itemBuilder: (context, index) {
                     final product = favorites[index];
+                    final displayName = isEn && product.nombreEn.isNotEmpty
+                        ? product.nombreEn
+                        : product.nombre;
 
                     return GestureDetector(
                       onTap: () {
@@ -108,7 +112,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                       },
                       child: Card(
                         elevation: 2,
-                        // Sin color fijo — usa el color de Card del tema
+                        color: Theme.of(context).colorScheme.surface,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -177,10 +181,11 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    product.nombre,
-                                    style: const TextStyle(
+                                    displayName,
+                                    style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 13,
+                                      color: Theme.of(context).textTheme.bodyLarge?.color,
                                     ),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
@@ -228,4 +233,3 @@ class _FavoritesPageState extends State<FavoritesPage> {
     );
   }
 }
-

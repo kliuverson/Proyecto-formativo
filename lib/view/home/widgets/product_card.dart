@@ -87,6 +87,7 @@ class _ProductCardState extends State<ProductCard>
     final item = CartItem(
       id: widget.product.sku,
       name: widget.product.nombre,
+      nameEn: widget.product.nombreEn,
       quantity: 1,
       price: widget.product.precio,
     );
@@ -106,12 +107,18 @@ class _ProductCardState extends State<ProductCard>
   Widget build(BuildContext context) {
     final tr = AppLocalizations.of(context)!;
     final product = widget.product;
+    final locale = Localizations.localeOf(context).languageCode;
+    final isEn = locale == 'en';
+
+    final nombre = isEn && product.nombreEn.isNotEmpty
+        ? product.nombreEn
+        : product.nombre;
 
     return GestureDetector(
       onTap: widget.onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: Colors.grey.shade300,
@@ -194,12 +201,13 @@ class _ProductCardState extends State<ProductCard>
                   children: [
 
                     Text(
-                      product.nombre,
+                      nombre,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
                       ),
                     ),
 
@@ -275,4 +283,3 @@ class _ProductCardState extends State<ProductCard>
     );
   }
 }
-
