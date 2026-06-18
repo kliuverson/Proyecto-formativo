@@ -2,7 +2,7 @@ import 'package:ferremateriales/cubit/auth_cubit.dart';
 import 'package:ferremateriales/src/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'dart:html' as html;
+import 'package:flutter/foundation.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -20,10 +20,9 @@ class _SplashPageState extends State<SplashPage>
   late Animation<double> _textSlide;
   late Animation<double> _textOpacity;
 
-  // 🔧 AJUSTA SOLO ESTO
   static const double logoSize = 90;
   static const double textSize = 150;
-  static const double spacing = -2; // negativo = más pegados
+  static const double spacing = -2;
 
   @override
   void initState() {
@@ -34,7 +33,6 @@ class _SplashPageState extends State<SplashPage>
       duration: const Duration(milliseconds: 2200),
     );
 
-    // POP del logo
     _logoScale = Tween<double>(begin: 0.8, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
@@ -42,7 +40,6 @@ class _SplashPageState extends State<SplashPage>
       ),
     );
 
-    // LOGO se mueve a la izquierda después del pop
     _logoMove = Tween<double>(begin: 0, end: -(textSize / 2)).animate(
       CurvedAnimation(
         parent: _controller,
@@ -50,17 +47,19 @@ class _SplashPageState extends State<SplashPage>
       ),
     );
 
-    // TEXTO sale desde dentro del logo
-    _textSlide = Tween<double>(begin: 0, end: (logoSize / 2) + spacing).animate(
+    _textSlide =
+        Tween<double>(begin: 0, end: (logoSize / 2) + spacing).animate(
       CurvedAnimation(
         parent: _controller,
         curve: const Interval(0.45, 1.0, curve: Curves.easeOut),
       ),
     );
 
-    // aparición del texto
     _textOpacity = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: _controller, curve: const Interval(0.45, 1.0)),
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.45, 1.0),
+      ),
     );
 
     _controller.forward();
@@ -79,36 +78,44 @@ class _SplashPageState extends State<SplashPage>
   Widget _image(String path, double size) {
     return SizedBox.square(
       dimension: size,
-      child: FittedBox(fit: BoxFit.contain, child: Image.asset(path)),
+      child: FittedBox(
+        fit: BoxFit.contain,
+        child: Image.asset(path),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    // 🔥 DETECTA SI ES MODO OSCURO
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final isDarkMode =
+        Theme.of(context).brightness == Brightness.dark;
 
     final totalWidth = logoSize + textSize;
 
     return BlocListener<AuthCubit, AuthState>(
-      listenWhen: (previus, current) => previus.isLoading != current.isLoading,
+      listenWhen: (previous, current) =>
+          previous.isLoading != current.isLoading,
       listener: (context, state) {
         if (!state.isLoading) {
-          final currentHash = html.window.location.hash;
 
-          if (currentHash.startsWith('#/reset-password')) {
+          // En Web no redirige automáticamente.
+          if (kIsWeb) {
             return;
           }
 
           if (state.isAuthenticated) {
-            final bool esAdmin = state.userData?["esAdmin"] ?? false;
-            print("REDIRIGIENDO A HOME/ADMIN");
+            final bool esAdmin =
+                state.userData?["esAdmin"] ?? false;
+
             Navigator.pushReplacementNamed(
               context,
               esAdmin ? AppRoutes.admin : AppRoutes.home,
             );
           } else {
-            Navigator.pushReplacementNamed(context, "/login");
+            Navigator.pushReplacementNamed(
+              context,
+              AppRoutes.login,
+            );
           }
         }
       },
@@ -119,33 +126,29 @@ class _SplashPageState extends State<SplashPage>
             builder: (context, child) {
               return SizedBox(
                 width: totalWidth,
-                height: logoSize > textSize ? logoSize : textSize,
+                height:
+                    logoSize > textSize ? logoSize : textSize,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    // 🔤 TEXTO
                     Transform.translate(
                       offset: Offset(_textSlide.value, 0),
                       child: Opacity(
                         opacity: _textOpacity.value,
                         child: _image(
                           isDarkMode
-                              ? "assets/icons/logo_recortado_light.png" // blanco
-                              : "assets/icons/logo_recortado_dark.png", // negro
+                              ? "assets/icons/logo_recortado_light.png"
+                              : "assets/icons/logo_recortado_dark.png",
                           textSize,
                         ),
                       ),
                     ),
-
-                    // 🔵 LOGO
                     Transform.translate(
                       offset: Offset(_logoMove.value, 0),
                       child: ScaleTransition(
                         scale: _logoScale,
                         child: _image(
-                          isDarkMode
-                              ? "assets/icons/logo_recortado.png" // blanco
-                              : "assets/icons/logo_recortado.png", // negro
+                          "assets/icons/logo_recortado.png",
                           logoSize,
                         ),
                       ),

@@ -10,7 +10,7 @@ class FavoritesService extends ChangeNotifier {
   factory FavoritesService() => _instance;
   FavoritesService._internal();
 
-  static const String baseUrl = 'http://192.168.20.45:3000';
+  static const String baseUrl = 'http://192.168.1.17:3000';
 
   final List<ProductModel> _favorites = [];
   bool _isLoading = false;
