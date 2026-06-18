@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OrderService {
-  static const String baseUrl = "http://192.168.20.45:3000/api/orders";
+  static const String baseUrl = "http://192.168.1.17:3000/api/orders";
 
   /// OBTENER PEDIDOS
   static Future<List<OrderModel>> getMyOrders() async {
